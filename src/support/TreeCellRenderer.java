@@ -105,7 +105,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
         if(ObjectName.equals("root") || ObjectName.equals("preferences") || ObjectName.equals("location") || ObjectName.equals("app")
                 || ObjectName.startsWith("page") || ObjectName.startsWith("dynamic") || ObjectName.startsWith("section")
-                || ObjectName.startsWith("input") || ObjectName.equals("href") || ObjectName.equals("label")) {
+                || ObjectName.startsWith("input") || ObjectName.startsWith("href") || ObjectName.startsWith("label")) {
             return true;
         }
 
@@ -151,7 +151,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             int size = subscribeList.size();
             for (int i = 0; i < size; i++) {
                 Subscribe method = (Subscribe) subscribeList.get(i);
-                String Handler = method.getHandler().toLowerCase();
+                String Handler = method.handler.toLowerCase();
                 if (ObjectName.equals(Handler))
                     return true;
             }

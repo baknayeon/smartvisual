@@ -10,29 +10,22 @@ import java.util.ArrayList;
  */
 public class DialogHref extends JDialog {
 
-    public DialogHref(JTree tree, String hrefName, ArrayList dynamicList, ArrayList subscribeList){
-        TreeNode treeNode = ((DefaultMutableTreeNode)tree.getModel().getRoot()).getChildAt(2);
+    public DialogHref(DefaultMutableTreeNode target, ArrayList dynamicList, ArrayList subscribeList){
+        String pageName = target.getUserObject().toString();
 
-        int count = ((DefaultMutableTreeNode)treeNode).getChildCount();
-        int i;
-        for(i =0; i < count; i++){
-            DefaultMutableTreeNode target = ((DefaultMutableTreeNode)(treeNode).getChildAt(i));
-            String pageName = target.getUserObject().toString();
+        JTree jTree = new JTree(target);
+        jTree.setRootVisible(false);
+        jTree.setShowsRootHandles(true);
+        jTree.setCellRenderer(new TreeCellRenderer(dynamicList, subscribeList));
 
-            if(pageName.equals("dynamicMethod ".concat(hrefName))){
-                JTree jTree = new JTree(target);
-                jTree.setRootVisible(false);
-                jTree.setShowsRootHandles(true);
-                jTree.setCellRenderer(new TreeCellRenderer(dynamicList, subscribeList));
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(jTree);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        getContentPane().add(scrollPane);
 
-                JScrollPane scrollPane = new JScrollPane();
-                scrollPane.setViewportView(jTree);
-                scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-                getContentPane().add(scrollPane);
-            }
-        }
 
-        this.setSize(300,300);
+        this.setTitle(pageName);
+        this.setSize(500,500);
         this.setModal(true);
         this.setVisible(true);
     }

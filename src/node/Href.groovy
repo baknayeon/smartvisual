@@ -19,51 +19,22 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
  */
 class Href {
 
-    String type
     String page
-    String params
     String capability
     ArrayList option
 
-    public Href(){
-    }
 
     public Href(def args){
         option = new ArrayList()
-        this.type = "href"
         args.each { arg ->
             handingArgs(arg)
         }
+        //println("\t"+ page+" " +capability)
     }
 
     void setOption(def option){
         this.option.add(option)
     }
-
-    String getType() {
-        return type
-    }
-
-    void setType(String nodeType) {
-        this.type = nodeType
-    }
-
-    String getPage() {
-        return page
-    }
-
-    void setPage(String page) {
-        this.page = page
-    }
-
-    String getCapability() {
-        return capability
-    }
-
-    void setCapability(String capability) {
-        this.capability = capability
-    }
-
 
     private void handingArgs(ConstantExpression arg){
         def text = arg.getText()
@@ -103,8 +74,6 @@ class Href {
             if (keyExpr instanceof ConstantExpression) {
                 def keytxt = ((ConstantExpression) keyExpr).getText()
 
-
-                def sub = new ArrayList();
                 if(valExpr instanceof ConstantExpression){
                     def valtxt = ((ConstantExpression) valExpr).getText()
                     if (keytxt.equals("page")){
@@ -132,37 +101,19 @@ class Href {
             }
         }
     }
-
     private void handingInputArgs(NamedArgumentListExpression arg){
 
         def arrayList = (NamedArgumentListExpression) arg
         setOption(arrayList)
     }
 
-
     private void handingArgs(ClosureExpression args){
 
-        Input i = new Input()
         ((java.util.ArrayList)((BlockStatement)args.code).statements).eachWithIndex{ def entry, int j ->
-            handingClosureInputArgs(entry,  i)
+            def subArgs =  ((MethodCallExpression)((ExpressionStatement)entry).expression).arguments.expressions
+            Input i = new Input(subArgs)
+            option.add(i)//?
         }
-        setOption(i)
-    }
-
-    private void handingClosureInputArgs(ExpressionStatement args, Input input){
-
-        ((java.util.ArrayList)(((MethodCallExpression)args.expression).arguments).expressions).eachWithIndex{ def entry, int i ->
-            handingArgs(entry , input)
-        }
-
-    }
-
-    private void handingInputArgs(TupleExpression arg, ArrayList inputArg){
-        arg
-    }
-
-    private void handingInputArgs(TernaryExpression arg, ArrayList inputArg){
-        arg
     }
 }
 

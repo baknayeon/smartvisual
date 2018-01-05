@@ -1,7 +1,6 @@
 package support
 
 import node.Error_sub
-import node.Handler
 import node.Input
 import node.Subscribe
 
@@ -85,50 +84,5 @@ class DetectingError {
 
         }
     }
-
-
-/*    private def decoding(ArrayList leafList){
-
-        ArrayList list = new ArrayList()
-
-        leafList.each { DefaultMutableTreeNode node ->
-            String type = node.getUserObject().toString().split()[0]
-            String name = node.getUserObject().toString().split()[1]
-            String cap = node.getChildAt(0)?.toString()
-            ArrayList handler = makeHandlerList(node)
-
-
-            if(type.equals("input")) {
-                Input input = new Input()
-                input.setName(name)
-                input.setCapability(cap)
-                input.setHandler(handler)
-                list.add(input)
-            }else if(type.equals("href")){
-
-            }else if(type.equals("label")){
-            }
-
-        }
-
-        return list
-    }
-    private def makeHandlerList(DefaultMutableTreeNode node) {
-        ArrayList handlerList = new ArrayList()
-
-        int i = 1
-        while (i < node.getChildCount()) {
-            DefaultMutableTreeNode handlerNode = node.getChildAt(i++)
-            String handlerText = handlerNode.getUserObject().toString()
-            String cap = handlerNode.getChildAt(0)
-            Handler handler = new Handler(handlerText, cap)
-
-            handlerList.add(handler)
-        }
-
-        return handlerList
-    }*/
-
-
 }
 

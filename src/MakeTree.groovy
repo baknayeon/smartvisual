@@ -23,10 +23,6 @@ class MakeTree {
     ArrayList subscribeList
     ArrayList dynamicPageList
 
-    ArrayList wrongInputList
-    ArrayList wrongCapList
-    ArrayList wrongHandlerList
-
 
     public DefaultMutableTreeNode getPage(){
 
@@ -143,11 +139,11 @@ class MakeTree {
             makeInputArg(node, input)
         }else if(type in Href){
             Href href = type
-            node.add(new DefaultMutableTreeNode(href.getPage()?.toString()))
+            //node.add(new DefaultMutableTreeNode(href.getPage()?.toString()))
 
         }else if(type in Label){
             Label label = type
-            node.add(new DefaultMutableTreeNode(label.getName()))
+            //node.add(new DefaultMutableTreeNode(label.getName()))
         }
         //leaf_sub.add(node)
 
@@ -367,7 +363,7 @@ class MakeTree {
         boolean result = false
 
         if(called.getMethodName().equals(caller.getMethodName())){
-            ArrayList caller__P = (java.util.ArrayList)((caller.parameter).expressions)
+            ArrayList caller__P = (java.util.ArrayList)(caller.parameter)
             Parameter[] called__P = called.getParameter()
 
             if(caller__P.size() == called__P.size()){

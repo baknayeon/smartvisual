@@ -23,17 +23,17 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 public class MainTool extends JFrame {
 
 	private CheckBoxList checkBoxList;
 	private JFileChooser chooser;
-
 	private JTextPane fileName;
 	private JScrollPane treeScrollPane;
-	private JScrollPane subScrollPane;
 	private JPanel errorJPanel;
+	JTree tree;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -62,6 +62,9 @@ public class MainTool extends JFrame {
 		JMenuItem fileItem = new JMenuItem("Open");
 		fileItem.addActionListener(new OpenFileActionListener());
 		menuFile.add(fileItem);
+		JMenuItem fileItem2 = new JMenuItem("OpenDir");
+		fileItem2.addActionListener(new OpenDirActionListener());
+		menuFile.add(fileItem2);
 
 		JMenu menuSetting = new JMenu("Setting");
 		menuBar.add(menuSetting);
@@ -76,6 +79,8 @@ public class MainTool extends JFrame {
 			}
 		});
 		menuSetting.add(settingItem2);
+
+
 		setJMenuBar(menuBar);
 
 		JPanel contentPane = new JPanel();
@@ -138,6 +143,43 @@ public class MainTool extends JFrame {
 		}
 	}
 
+	class OpenDirActionListener implements ActionListener {
+
+		public OpenDirActionListener() {
+
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String path="D:\\2_Master\\석사\\smartThgins_template";
+			File dirFile=new File(path);
+			File []fileList=dirFile.listFiles();
+			CodeVisitor analysis = new CodeVisitor(checkBoxList);
+			CompilerConfiguration cc = new CompilerConfiguration(CompilerConfiguration.DEFAULT);
+			cc.addCompilationCustomizers(analysis);
+			GroovyShell gshell = new GroovyShell(cc);
+
+			for(File tempFile : fileList) {
+
+				System.out.println(tempFile.getName());
+				try {
+					gshell.evaluate(tempFile);
+				} catch (CompilationFailedException e2) {
+					e2.printStackTrace();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				} catch (MissingMethodException mme) {
+
+				}
+
+				analysis.getPreferenceTree();
+				analysis.errorReport();
+			}
+
+
+		}
+	}
+
 	class OpenFileActionListener implements ActionListener {
 
 		public OpenFileActionListener() {
@@ -165,13 +207,13 @@ public class MainTool extends JFrame {
 
 	private void fileOpen(){
 
-		JTree tree;
 		ArrayList error;
+
 		CodeVisitor analysis = new CodeVisitor(checkBoxList);
 		CompilerConfiguration cc = new CompilerConfiguration(CompilerConfiguration.DEFAULT);
 		cc.addCompilationCustomizers(analysis);
-
 		GroovyShell gshell = new GroovyShell(cc);
+
 		File selectedFile = chooser.getSelectedFile();
 		fileName.setText(chooser.getSelectedFile().getName());
 
@@ -191,14 +233,22 @@ public class MainTool extends JFrame {
 		tree.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent me) {
-				TreePath path = tree.getPathForLocation(me.getX(), me.getY());
-				if(path != null) {
-					int pathCount = path.getPathCount() - 2;
-					if (pathCount < 0)
-						pathCount = 0;
-					String type = path.getPathComponent(pathCount).toString();
-					if (type.equals("href")) {
-						new DialogHref(tree, (path.getLastPathComponent()).toString(), analysis.getDynamicPageList(), analysis.getSubscribeList());
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+				if (node != null) {
+					String href = node.getUserObject().toString();
+					if (href.toString().startsWith("href")) {
+
+						TreeNode treeNode = ((DefaultMutableTreeNode) tree.getModel().getRoot()).getChildAt(2);
+						int count = treeNode.getChildCount();
+						for (int i = 0; i < count; i++) {
+							DefaultMutableTreeNode dynamicNode = ((DefaultMutableTreeNode) (treeNode).getChildAt(i));
+							String pageName = dynamicNode.getUserObject().toString().split(" ")[1];
+							String hrefName = href.split(" ")[1];
+
+							if (pageName.equals(hrefName)) {
+								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList());
+							}
+						}
 					}
 				}
 			}

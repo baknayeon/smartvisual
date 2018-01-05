@@ -119,8 +119,8 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
 
         String methodCall
-        def args = call.arguments
-
+        //def args = call.arguments
+        def args = (java.util.ArrayList) call.arguments.expressions
         if (call.getMethodAsString() == null)
             methodCall = call.getText()
         else
@@ -132,9 +132,9 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 preferenceList.add(methodCall)
             } else if (methodCall.equals("page")) {
                 multiPage = true
-                ArrayList pageArgList = (java.util.ArrayList) call.arguments.expressions
+                //ArrayList pageArgList = (java.util.ArrayList) call.arguments.expressions
 
-                if (helper.isDynamicPage(pageArgList)) {
+                if (helper.isDynamicPage(args)) {
                     dynamicMethodList.add(new Page(args, "dynamicPage").getName())
                     preferenceList.add(new Page(args, "dynamicPage"))
                 } else {
@@ -194,13 +194,11 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
         if (installed)
             if (methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand")) {
 
-                ArrayList list = (java.util.ArrayList) args.expressions
-
-                if (list.size() > 0) {
-                    Subscribe subscribe = new Subscribe(list)
-                    if (helper.checkSameSubscribeOrNot(subscribeList, subscribe)) {
+                if (args.size() > 0) {
+                    Subscribe subscribe = new Subscribe(args)
+                    //if (helper.checkSameSubscribeOrNot(subscribeList, subscribe)) {
                         subscribeList.add(subscribe)
-                    }
+                    //}
                 }
             }
 

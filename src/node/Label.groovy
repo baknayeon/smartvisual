@@ -19,83 +19,49 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
  */
 class Label {
 
-    String type
     String name
     String capability
     ArrayList option
 
-    public Label(){
-    }
-
-    public Label(def args){
+    public Label(def args) {
         option = new ArrayList()
 
-        this.type = "label"
         args.each { arg ->
             handingArgs(arg)
         }
     }
 
-
-    void setOption(def option){
-        this.option.add(option)
-    }
-
-    String getType() {
-        return type
-    }
-
-    void setType(String nodeType) {
-        this.type = nodeType
-    }
-
-    String getName() {
-        return name
-    }
-
-    void setName(String name) {
-        this.name = name
-    }
-
-    String getCapability() {
-        return capability
-    }
-
-    void setCapability(String capability) {
-        this.capability = capability
-    }
-
-    private void handingArgs(ConstantExpression arg){
+    private void handingArgs(ConstantExpression arg) {
         def text = arg.getText()
-        if(getName() == null)
+        if (getName() == null)
             setName(text)
         else setCapability(text)
     }
 
-    private void handingArgs(PropertyExpression arg){
+    private void handingArgs(PropertyExpression arg) {
         def text = ((PropertyExpression) arg).getText()
-        if(getName() == null)
+        if (getName() == null)
             setName(text)
         else setCapability(text)
     }
 
-    private void handingArgs(VariableExpression argvex){
+    private void handingArgs(VariableExpression argvex) {
         def text = argvex.getName()
-        if(getName() == null)
+        if (getName() == null)
             setName(text)
         else setCapability(text)
     }
 
-    private void handingArgs(GStringExpression arg){
+    private void handingArgs(GStringExpression arg) {
         def text = arg.verbatimText.toString()
-        if(getName() == null)
+        if (getName() == null)
             setName(text)
         else setCapability(text)
     }
 
-    private void handingArgs(MapExpression arg){
+    private void handingArgs(MapExpression arg) {
 
-        arg?.mapEntryExpressions.each{ inner ->
+        arg?.mapEntryExpressions.each { inner ->
 
             def keyExpr = inner.getKeyExpression()
             def valExpr = inner.getValueExpression()
@@ -105,64 +71,47 @@ class Label {
 
 
                 def sub = new ArrayList();
-                if(valExpr instanceof ConstantExpression){
+                if (valExpr instanceof ConstantExpression) {
                     def valtxt = ((ConstantExpression) valExpr).getText()
-                    if (keytxt.equals("title")){
+                    if (keytxt.equals("title")) {
                         setName(valtxt)
-                    }else if(keytxt.equals("type")) {
+                    } else if (keytxt.equals("type")) {
                         setCapability(valtxt)
                     } else {
 
                     }
 
-                }else if(valExpr instanceof GStringExpression){
-                    def valtxt = ((ConstantExpression)((java.util.ArrayList)((GStringExpression)valExpr).strings).get(0)).value
+                } else if (valExpr instanceof GStringExpression) {
+                    def valtxt = ((ConstantExpression) ((java.util.ArrayList) ((GStringExpression) valExpr).strings).get(0)).value
 
-                    if (keytxt.equals("title")){
+                    if (keytxt.equals("title")) {
                         setName(valtxt)
-                    }else if(keytxt.equals("type")) {
+                    } else if (keytxt.equals("type")) {
                         setCapability(valtxt)
                     } else {
 
                     }
-                }else if(valExpr instanceof ListExpression){
+                } else if (valExpr instanceof ListExpression) {
                     def arrayList = (java.util.ArrayList) ((ListExpression) valExpr).expressions
                     setOption(arrayList)
                 }
             }
         }
     }
-
     private void handingInputArgs(NamedArgumentListExpression arg){
 
         def arrayList = (NamedArgumentListExpression) arg
         setOption(arrayList)
     }
 
-
     private void handingArgs(ClosureExpression args){
 
-        Input i = new Input()
         ((java.util.ArrayList)((BlockStatement)args.code).statements).eachWithIndex{ def entry, int j ->
-            handingClosureInputArgs(entry,  i)
+            def subArgs =  ((MethodCallExpression)((ExpressionStatement)entry).expression).arguments.expressions
+            Input i = new Input(subArgs)
+            option.add(i)//?
         }
-        setOption(i)
     }
 
-    private void handingClosureInputArgs(ExpressionStatement args, Input input){
-
-        ((java.util.ArrayList)(((MethodCallExpression)args.expression).arguments).expressions).eachWithIndex{ def entry, int i ->
-            handingArgs(entry , input)
-        }
-
-    }
-
-    private void handingInputArgs(TupleExpression arg, ArrayList inputArg){
-        arg
-    }
-
-    private void handingInputArgs(TernaryExpression arg, ArrayList inputArg){
-        arg
-    }
 }
 

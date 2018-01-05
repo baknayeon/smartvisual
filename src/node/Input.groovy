@@ -19,10 +19,8 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
  */
 class Input {
 
-    String type
     String name
     String capability
-    ArrayList handler
     ArrayList option
 
     public Input(){
@@ -30,47 +28,9 @@ class Input {
 
     public Input(def args){
         option = new ArrayList()
-        this.type = "input"
         args.each { arg ->
             handingArgs(arg)
         }
-    }
-
-    public Input(def args, String type){
-        option = new ArrayList()
-        this.type = type
-        args.each { arg ->
-            handingArgs(arg)
-        }
-    }
-
-
-    void setOption(def option){
-        this.option.add(option)
-    }
-
-    String getType() {
-        return type
-    }
-
-    void setType(String nodeType) {
-        this.type = nodeType
-    }
-
-    String getName() {
-        return name
-    }
-
-    void setName(String name) {
-        this.name = name
-    }
-
-    String getCapability() {
-        return capability
-    }
-
-    void setCapability(String capability) {
-        this.capability = capability
     }
 
     private void handingArgs(ConstantExpression arg){
@@ -111,7 +71,6 @@ class Input {
             if (keyExpr instanceof ConstantExpression) {
                 def keytxt = ((ConstantExpression) keyExpr).getText()
 
-
                 def sub = new ArrayList();
                 if(valExpr instanceof ConstantExpression){
                     def valtxt = ((ConstantExpression) valExpr).getText()
@@ -147,27 +106,13 @@ class Input {
         setOption(arrayList)
     }
 
-
     private void handingArgs(ClosureExpression args){
 
         ((java.util.ArrayList)((BlockStatement)args.code).statements).eachWithIndex{ def entry, int j ->
             def subArgs =  ((MethodCallExpression)((ExpressionStatement)entry).expression).arguments.expressions
             Input i = new Input(subArgs)
-            setOption(i)
+            option.add(i)//?
         }
-    }
-
-    private void handingClosureInputArgs(ExpressionStatement args, Input input){
-
-
-    }
-
-    private void handingInputArgs(TupleExpression arg, ArrayList inputArg){
-        arg
-    }
-
-    private void handingInputArgs(TernaryExpression arg, ArrayList inputArg){
-        arg
     }
 }
 

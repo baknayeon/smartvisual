@@ -43,6 +43,7 @@ class CodeVisitor extends CompilationCustomizer{
 
         SmartThingAppCodeVisitor codeVisitor = new SmartThingAppCodeVisitor()
         codeVisitor.setSetting(settingList)
+
         classNode.visitContents(codeVisitor)
 
         preferenceList = codeVisitor.getPreferenceList()

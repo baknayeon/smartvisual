@@ -10,35 +10,27 @@ import org.codehaus.groovy.ast.expr.VariableExpression
  */
 public class Subscribe {
 
-    boolean error
+    boolean error = false
     public String input
     public String handler
     public String capability
-    ArrayList cap_val
+    public String cap_val
 
     public Subscribe(ArrayList methodArgList){
-        error = false
 
         this.input = handingArgs(methodArgList.get(0))
 
-        if(methodArgList.size()  == 2){
+        if(input.equals("app") || input.equals("location")){
             this.handler = handingArgs(methodArgList.get(1))
             this.capability = "default"
 
-        }else if(methodArgList.size()  == 3){
+        }else {
             this.capability = handingArgs(methodArgList.get(1))
             this.handler = handingArgs(methodArgList.get(2))
-        }
 
-        setVal()
-
-
-    }
-
-    private void setVal(){
-        cap_val = new ArrayList()
-        if(capability.contains(".")){
-            cap_val = capability.tokenize(".")
+            if(capability.contains(".")){
+                cap_val = capability.tokenize(".").get(1)
+            }
         }
     }
 
@@ -52,30 +44,6 @@ public class Subscribe {
         this.input = input
         this.handler = handler
         this.capability = capability
-    }
-
-    String getInput() {
-        return input
-    }
-
-    void setInput(String input) {
-        this.input = input
-    }
-
-    String getCapability() {
-        return capability
-    }
-
-    void setCapability(String capability) {
-        this.capability = capability
-    }
-
-    String getHandler() {
-        return handler
-    }
-
-    void setHandler(String handler) {
-        this.handler = handler
     }
 
     private def handingArgs(ConstantExpression arg){
@@ -94,4 +62,17 @@ public class Subscribe {
         return arg.verbatimText.toString()
     }
 
+    public String getInput(){
+        return input
+    }
+    public String getHandler(){
+        return handler
+    }
+    public String getCapability(){
+        return capability
+    }
+
+    public String getCap_val(){
+        return cap_val
+    }
 }

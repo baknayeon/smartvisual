@@ -12,7 +12,6 @@ public class Error_sub{
 
     public Subscribe subscribe
 
-
     public Error_sub(boolean i, boolean c, boolean h, Subscribe s){
         input = i
         capability = c
