@@ -58,9 +58,7 @@ class Helper {
 
         String sub_capVal = sub.getCap_val()
         String input_cap = input.getCapability()
-
         Capability cap = allCommands[input_cap]
-
 
         if(cap !=null){
             if(cap.checkVal(sub_capVal))

@@ -196,9 +196,9 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
                 if (args.size() > 0) {
                     Subscribe subscribe = new Subscribe(args)
-                    //if (helper.checkSameSubscribeOrNot(subscribeList, subscribe)) {
+                    if (helper.checkSameSubscribeOrNot(subscribeList, subscribe)) {
                         subscribeList.add(subscribe)
-                    //}
+                    }
                 }
             }
 

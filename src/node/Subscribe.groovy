@@ -18,11 +18,12 @@ public class Subscribe {
 
     public Subscribe(ArrayList methodArgList){
         int size = methodArgList.size();
+
         if(size == 2){
             this.input = handingArgs(methodArgList.get(0))
+            this.capability = "default"
             this.handler = handingArgs(methodArgList.get(1))
         }else if(size >= 3) {
-
             this.input = handingArgs(methodArgList.get(0))
             this.capability = handingArgs(methodArgList.get(1))
             this.handler = handingArgs(methodArgList.get(2))
