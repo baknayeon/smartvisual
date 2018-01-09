@@ -35,40 +35,46 @@ class DetectingError {
         subscribeList.each { Subscribe sub ->
             String subInput = sub.getInput()
 
-            boolean subi = false
+            boolean sub_i = false
             boolean i = false
             boolean c = false
             boolean h = false
 
             int index  = 0
 
-            while(index < preferenceList.size()){
-                def list = preferenceList.get(index)
-
-                if(list in Input){
-                    Input input = (Input)list
-                    String inputName = input.getName()
-
-                    if(subInput.equals(inputName)){
-                        subi = true
-                        break
-                    }
-                }
-                index++
-            }
-
-            if(subi){
-                Input input = preferenceList.get(index)
+            if(subInput.equals("location") || subInput.equals("app")){
                 i = true
+                String sub_cap = sub.getCapability()
+                if(sub_cap.equals("position") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
+                        c = true
+                else
+                    sub.setError(true)
+            }else{
+                while(index < preferenceList.size()){
+                    def list = preferenceList.get(index)
 
-                if (helper.isItRightCapability(sub, input)) {
-                    c = true
+                    if(list in Input){
+                        Input input = (Input)list
+                        String inputName = input.getName()
+
+                        if(subInput.equals(inputName)){
+                            sub_i = true
+                            break
+                        }
+                    }
+                    index++
+                }
+                if(sub_i){
+                    Input input = preferenceList.get(index)
+                    i = true
+
+                    if (helper.isItRightCapability(sub, input)) {
+                        c = true
+                    }else
+                        sub.setError(true)
                 }else
                     sub.setError(true)
-            }else
-                sub.setError(true)
-
-
+            }
 
             if(helper.isItRightHandler(sub, methodList)) {
                 h = true

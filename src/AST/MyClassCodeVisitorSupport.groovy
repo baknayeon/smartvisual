@@ -68,7 +68,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 setMakingPreference(true)
         }
 
-        if("installed".equals(methodName) && !makeingDynamicPre)
+        if(!makeingDynamicPre)
             setInstalled(true)
 
         if(makeingDynamicPre) {//second

@@ -17,17 +17,15 @@ public class Subscribe {
     public String cap_val
 
     public Subscribe(ArrayList methodArgList){
-
-        this.input = handingArgs(methodArgList.get(0))
-
-        if(input.equals("app") || input.equals("location")){
+        int size = methodArgList.size();
+        if(size == 2){
+            this.input = handingArgs(methodArgList.get(0))
             this.handler = handingArgs(methodArgList.get(1))
-            this.capability = "default"
+        }else if(size >= 3) {
 
-        }else {
+            this.input = handingArgs(methodArgList.get(0))
             this.capability = handingArgs(methodArgList.get(1))
             this.handler = handingArgs(methodArgList.get(2))
-
             if(capability.contains(".")){
                 cap_val = capability.tokenize(".").get(1)
             }
