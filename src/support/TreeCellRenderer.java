@@ -87,12 +87,12 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         } else if (ObjectName.startsWith("input") || ObjectName.equals("href") || ObjectName.equals("label")) {
             imageUrl = iconFolder + "/input.png";
         }else {
-            DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
+            /*DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
             if(parent != null) {
                 String parentObject = parent.getUserObject().toString();
                 if (parentObject.equals("input") || ObjectName.equals("href") || ObjectName.equals("label"))
                     imageUrl = iconFolder + "/infor.png";
-            }
+            }*/
         }
         if(isItSubscribe(ObjectName))
             imageUrl = iconFolder + "/handler.png";
