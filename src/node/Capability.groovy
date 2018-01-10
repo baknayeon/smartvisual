@@ -16,6 +16,8 @@ class Capability {
     }
 
     public boolean checkVal(String newVal){
+        if(cap_val.size() == 0)
+            return true
         for(String val : cap_val){
             if(newVal.equals(val))
                 return true

@@ -1,10 +1,8 @@
 package support
 
-import node.Error_sub
+import node.ErrorSubscribe
 import node.Input
 import node.Subscribe
-
-import javax.swing.tree.DefaultMutableTreeNode
 
 /**
  * Created by b_newyork on 2017-12-05.
@@ -33,41 +31,40 @@ class DetectingError {
         Helper helper = new Helper()
 
         subscribeList.each { Subscribe sub ->
-            String subInput = sub.getInput()
 
-            boolean sub_i = false
+            String sub_input = sub.getInput()
+            String sub_cap = sub.getCapability()
+
             boolean i = false
             boolean c = false
             boolean h = false
 
-            int index  = 0
-
-            if(subInput.equals("location") || subInput.equals("app")){
+            if(sub_input.equals("location") || sub_input.equals("app")){
                 i = true
-                String sub_cap = sub.getCapability()
-                if(sub_cap.equals("position") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
-                        c = true
+                if(sub_cap.equals("default") ||
+                        sub_cap.equals("position") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
+                        c = true // capability of location, app
                 else
                     sub.setError(true)
             }else{
+                int index  = 0
                 while(index < preferenceList.size()){
                     def list = preferenceList.get(index)
 
                     if(list in Input){
-                        Input input = (Input)list
-                        String inputName = input.getName()
 
-                        if(subInput.equals(inputName)){
-                            sub_i = true
+                        // input
+                        String Input_input = ((Input)list).getName()
+                        if(sub_input.equals(Input_input)){
+                            i = true
                             break
                         }
                     }
                     index++
                 }
-                if(sub_i){
+                if(i){
+                    // capability
                     Input input = preferenceList.get(index)
-                    i = true
-
                     if (helper.isItRightCapability(sub, input)) {
                         c = true
                     }else
@@ -76,18 +73,17 @@ class DetectingError {
                     sub.setError(true)
             }
 
+            // handler
             if(helper.isItRightHandler(sub, methodList)) {
                 h = true
             }else
                 sub.setError(true)
 
-
-
+            //make ErrorSubscribe
             if(!i || !c || !h){
-                Error_sub e = new Error_sub(i, c, h, sub)
+                ErrorSubscribe e = new ErrorSubscribe(i, c, h, sub)
                 errorList.add(e)
             }
-
         }
     }
 }

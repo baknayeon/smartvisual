@@ -1,6 +1,6 @@
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingMethodException;
-import node.Error_sub;
+import node.ErrorSubscribe;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import support.CheckBoxList;
@@ -264,7 +264,7 @@ public class MainTool extends JFrame {
 		ArrayList errorList = new ArrayList();
 
 		while(i < error.size()){
-			Error_sub sub = (Error_sub )error.get(i);
+			ErrorSubscribe sub = (ErrorSubscribe)error.get(i);
 			JTextPane inputPane = new JTextPane();
 			JTextPane capPane = new JTextPane();
 			JTextPane handlerPane = new JTextPane();

@@ -1,4 +1,4 @@
-Acceleration Sensor,capability.accelerationSensor,acceleration,
+Acceleration Sensor,capability.accelerationSensor,acceleration,active inactive
 Actuator,capability.actuator,,
 Alarm,capability.alarm,alarm,off strobe siren both
 Battery,capability.battery,battery,
@@ -15,7 +15,7 @@ Image Capture,capability.imageCapture,image,take
 Lock,capability.lock,lock,lock unlock
 Media Controller,capability.mediaController,activities currentActivity,startActivity getAllActivities getCurrentActivity
 Momentary,capability.momentary,,push
-Motion Sensor,capability.motionSensor,motion,
+Motion Sensor,capability.motionSensor,motion,active inactive
 Music Player,capability.musicPlayer,status level trackDescription trackData mute,play pause stop nextTrack playTrack setLevel playText mute previousTrack unmute setTrack resumeTrack restoreTrack
 Notification,capability.notification,,deviceNotification
 Polling,capability.polling,,poll
