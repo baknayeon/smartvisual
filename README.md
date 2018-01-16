@@ -17,16 +17,15 @@ Visualization Tool for SmartThings
 
 How to run code
 -------------
-Download a ZIP file of source code from GitHub 
+1. Download a ZIP file of source code from GitHub 
 
-or Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
-
-
-Import a ZIP file
+Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
 
 
+2. Import a ZIP file
 
-Run 
+
+3. Run 
 
 
 
