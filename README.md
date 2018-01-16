@@ -23,7 +23,7 @@ we recommend to add Groovy-2.4.10
 
 
 
-How to run code
+How to run
 -------------
 1. Download a ZIP file of source code from GitHub 
 
