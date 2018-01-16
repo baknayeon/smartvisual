@@ -7,9 +7,11 @@ Software Language Lab, Computer Science, Sookmyung Women’s University
 
 
 
+
 > **Note:**
 > - Visualizing the structure of a SmartApp as tree model, it helps programmers understanding the main service of SmartApp. 
 > - Detecting errors of a SmartApp, it helps programmers developing more reliable SmartApp. 
+
 
 
 
