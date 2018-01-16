@@ -17,7 +17,7 @@ Visualization Tool **visualizes** a page structure of SmartApp as a tree and **d
 
 Groovy Library
 -------------
-You need to add Groovy Library when you try to run Visualization Tool
+You need to add Groovy Library to you project when you try to run Visualization Tool
 
 we recommend to add Groovy-2.4.10
 
