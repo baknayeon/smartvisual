@@ -3,13 +3,16 @@ Visualization Tool for SmartThings
 *Software Language Lab, Computer Science, Sookmyung Women’s University*
 
 
-
+SmartThings
+-------------
 
 **SmartThings** is a one of IOT platform. This provide an automated service to a user using SmartApp and SmartDevice.
 
 **SmartApp** is a Groovy-based program that allows developers to create automation for users to tap into the capabilities of SmartDevice.
 
 
+Visualization Tool
+-------------
 
 Visualization Tool **visualizes** a page structure of SmartApp as a tree and **detects errors** about invalid Subscribe methods.
 
