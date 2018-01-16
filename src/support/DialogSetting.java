@@ -1,7 +1,5 @@
 package support;
 
-import support.CheckBoxList;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,13 +8,13 @@ import java.awt.*;
  */
 public class DialogSetting extends JDialog {
 
-    CheckBoxList checkBoxArrayList = new CheckBoxList();
+    SettingBoxList checkBoxArrayList = new SettingBoxList();
 
-    public CheckBoxList getJDialog(){
+    public SettingBoxList getJDialog(){
         return checkBoxArrayList;
     }
 
-    public DialogSetting(CheckBoxList boxList){
+    public DialogSetting(SettingBoxList boxList){
 
         setting(boxList);
 
@@ -25,7 +23,7 @@ public class DialogSetting extends JDialog {
         this.setVisible(true);
     }
 
-    public void setting(CheckBoxList boxList){
+    public void setting(SettingBoxList boxList){
 
         setTitle("setting");
         setBounds(100, 100, 600, 600);

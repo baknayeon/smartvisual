@@ -6,11 +6,11 @@ import java.util.ArrayList;
 /**
  * Created by b_newyork on 2017-09-26.
  */
-public class CheckBoxList {
+public class SettingBoxList {
 
     ArrayList<JCheckBox> jCheckBoxArrayList = new ArrayList();
 
-    public CheckBoxList() {
+    public SettingBoxList() {
         jCheckBoxArrayList.add(new JCheckBox("show DynamicPage",true));
         jCheckBoxArrayList.add(new JCheckBox("show method",true));
         jCheckBoxArrayList.add(new JCheckBox("show If condition",true));

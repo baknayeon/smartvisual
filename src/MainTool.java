@@ -3,7 +3,7 @@ import groovy.lang.MissingMethodException;
 import node.ErrorSubscribe;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import support.CheckBoxList;
+import support.SettingBoxList;
 import support.DialogHref;
 import support.DialogSetting;
 
@@ -28,7 +28,7 @@ import javax.swing.tree.TreeNode;
 
 public class MainTool extends JFrame {
 
-	private CheckBoxList checkBoxList;
+	private SettingBoxList settingBoxList;
 	private JFileChooser chooser;
 	private JTextPane fileName;
 	private JScrollPane treeScrollPane;
@@ -130,7 +130,7 @@ public class MainTool extends JFrame {
 		errorJPanel = new JPanel();
 		tabbedPane.addTab("error subscribe", null, errorJPanel, null);
 
-		checkBoxList = new CheckBoxList();
+		settingBoxList = new SettingBoxList();
 	}
 
 
@@ -138,8 +138,8 @@ public class MainTool extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			DialogSetting dialogSetting =  new DialogSetting(checkBoxList);
-			checkBoxList = dialogSetting.getJDialog();
+			DialogSetting dialogSetting =  new DialogSetting(settingBoxList);
+			settingBoxList = dialogSetting.getJDialog();
 		}
 	}
 
@@ -154,7 +154,7 @@ public class MainTool extends JFrame {
 			String path="D:\\2_Master\\석사\\smartThgins_template";
 			File dirFile=new File(path);
 			File []fileList=dirFile.listFiles();
-			CodeVisitor analysis = new CodeVisitor(checkBoxList);
+			CodeVisitor analysis = new CodeVisitor(settingBoxList);
 			CompilerConfiguration cc = new CompilerConfiguration(CompilerConfiguration.DEFAULT);
 			cc.addCompilationCustomizers(analysis);
 			GroovyShell gshell = new GroovyShell(cc);
@@ -209,7 +209,7 @@ public class MainTool extends JFrame {
 
 		ArrayList error;
 
-		CodeVisitor analysis = new CodeVisitor(checkBoxList);
+		CodeVisitor analysis = new CodeVisitor(settingBoxList);
 		CompilerConfiguration cc = new CompilerConfiguration(CompilerConfiguration.DEFAULT);
 		cc.addCompilationCustomizers(analysis);
 		GroovyShell gshell = new GroovyShell(cc);

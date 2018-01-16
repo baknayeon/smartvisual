@@ -10,7 +10,7 @@ import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.control.customizers.CompilationCustomizer
 import org.codehaus.groovy.transform.GroovyASTTransformation
-import support.CheckBoxList
+import support.SettingBoxList
 import support.TreeCellRenderer
 
 import javax.swing.*
@@ -27,10 +27,10 @@ class CodeVisitor extends CompilationCustomizer{
     ArrayList methodList
 
 
-    CheckBoxList settingList
+    SettingBoxList settingList
     boolean multiPage
 
-    public CodeVisitor(CheckBoxList boxList) {
+    public CodeVisitor(SettingBoxList boxList) {
         super(CompilePhase.SEMANTIC_ANALYSIS)
 
         settingList = boxList
@@ -120,7 +120,7 @@ class CodeVisitor extends CompilationCustomizer{
         }
 
         @Override
-        void setSetting(CheckBoxList setting) {
+        void setSetting(SettingBoxList setting) {
             super.setSetting(setting)
         }
 

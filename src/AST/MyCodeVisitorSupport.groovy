@@ -49,7 +49,7 @@ import org.codehaus.groovy.ast.expr.UnaryPlusExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.*
 import org.codehaus.groovy.classgen.BytecodeExpression
-import support.CheckBoxList
+import support.SettingBoxList
 import support.Helper
 
 public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
@@ -74,7 +74,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     int Level
 
     Helper helper = new Helper()
-    CheckBoxList setting
+    SettingBoxList setting
 
     public void visitBlockStatement(BlockStatement block) {
 
