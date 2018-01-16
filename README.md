@@ -15,7 +15,9 @@ Visualization Tool **visualizes** a page structure of SmartApp as a tree and **d
 > - Detecting errors of a SmartApp, it helps programmers developing more reliable SmartApp. 
 
 
-
+you need to add Groovy Library
+-------------
+we recommend to add Groovy-2.4.10
 
 
 
