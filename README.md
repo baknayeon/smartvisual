@@ -1,9 +1,9 @@
-#Visualization Tool for SmartThings
+Visualization Tool for SmartThings
 ===================
-###*Software Language Lab, Computer Science, Sookmyung Women’s University*
+*Software Language Lab, Computer Science, Sookmyung Women’s University*
 
 
-##**Visualization tool** for SmartThings **visualizes** a page structure of SmartThings as a tree model and **detects errors** about invalid subscribe methods.
+**Visualization tool** for SmartThings **visualizes** a page structure of SmartThings as a tree model and **detects errors** about invalid subscribe methods.
 
 
 
@@ -17,11 +17,16 @@
 
 How to run code
 -------------
-##Download a ZIP file of source code from GitHub or Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
+Download a ZIP file of source code from GitHub 
 
-##Import a ZIP file
+or Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
 
-##Run 
+
+Import a ZIP file
+
+
+
+Run 
 
 
 
