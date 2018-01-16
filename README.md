@@ -5,7 +5,7 @@ Visualization Tool for SmartThings
 
 
 
-**Visualization tool** **visualizes** a page structure of SmartApp as a tree model and **detects errors** about invalid Subscribe methods.
+Visualization Tool **visualizes** a page structure of SmartApp as a tree and **detects errors** about invalid Subscribe methods.
 
 
 
