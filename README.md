@@ -34,4 +34,5 @@ How to run code
 
 
 3. Run MainTool.main()
+![Visualization Tool](https://github.com/baknayeon/SmartThings_VisualizationTool/blob/master/maintool.PNG)
 
