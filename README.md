@@ -29,7 +29,5 @@ How to run code
 2. Import a ZIP file
 
 
-3. Run 
-
-
+3. Run MainTool.main()
 
