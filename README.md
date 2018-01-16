@@ -19,7 +19,7 @@ How to run code
 -------------
 1. Download a ZIP file of source code from GitHub 
 
-Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
+    Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
 
 
 2. Import a ZIP file
