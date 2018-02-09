@@ -22,13 +22,17 @@ class DetectingError {
     }
 
     public void run(){
-
-        errorList = new ArrayList<>()
-        error()
+        subscribe_error()
     }
 
-    private void error() {
-        Helper helper = new Helper()
+    public void unused_input(){
+
+
+    }
+
+    public void subscribe_error(){
+        errorList = new ArrayList<>()
+        //Helper helper = new Helper()
 
         subscribeList.each { Subscribe sub ->
 
@@ -65,7 +69,7 @@ class DetectingError {
                 if(i){
                     // capability
                     Input input = preferenceList.get(index)
-                    if (helper.isItRightCapability(sub, input)) {
+                    if (Helper.isItRightCapability(sub, input)) {
                         c = true
                     }else
                         sub.setError(true)
@@ -74,7 +78,7 @@ class DetectingError {
             }
 
             // handler
-            if(helper.isItRightHandler(sub, methodList)) {
+            if(Helper.isItRightHandler(sub, methodList)) {
                 h = true
             }else
                 sub.setError(true)

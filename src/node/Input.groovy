@@ -13,6 +13,7 @@ import org.codehaus.groovy.ast.expr.TupleExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
+import support.Helper
 
 /**
  * Created by b_newyork on 2017-09-11.
@@ -21,7 +22,10 @@ class Input {
 
     String name
     String capability
+    String device
     ArrayList option
+
+    Boolean used = false
 
     public Input(){
     }
@@ -31,6 +35,16 @@ class Input {
         args.each { arg ->
             handingArgs(arg)
         }
+    }
+
+    void setCapability(String capability) {
+        if(capability.contains("capability")){
+            Capability cap = Helper.allCommands.get(capability)
+            if(cap) {
+                this.device = cap.device
+            }
+        }
+        this.capability = capability
     }
 
     private void handingArgs(ConstantExpression arg){

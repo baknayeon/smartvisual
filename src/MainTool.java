@@ -3,6 +3,7 @@ import groovy.lang.MissingMethodException;
 import node.ErrorSubscribe;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import support.Logger;
 import support.SettingBoxList;
 import support.DialogHref;
 import support.DialogSetting;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,9 +32,9 @@ public class MainTool extends JFrame {
 
 	private SettingBoxList settingBoxList;
 	private JFileChooser chooser;
-	private JTextPane fileName;
+	private JTextPane file;
 	private JScrollPane treeScrollPane;
-	private JPanel errorJPanel;
+	private JPanel errorJPanel, app_Panel;
 	JTree tree;
 
 	public static void main(String[] args) {
@@ -80,55 +82,34 @@ public class MainTool extends JFrame {
 		});
 		menuSetting.add(settingItem2);
 
-
 		setJMenuBar(menuBar);
 
-		JPanel contentPane = new JPanel();
-		contentPane.setBackground(UIManager.getColor("Button.disabledShadow"));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setPreferredSize(new Dimension(500,500));
-		setContentPane(contentPane);
+		JPanel mainPane = new JPanel();
+		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.setPreferredSize(new Dimension(500,500));
+		mainPane.setLayout(new BorderLayout());
+		setContentPane(mainPane);
 
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] {300, 0};
-		gbl_contentPane.rowHeights = new int[]{56, 122, 0};
-		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		app_Panel = new JPanel();
+		app_Panel.setPreferredSize(new Dimension(500,100));
+		app_Panel.setLayout(new GridLayout(3,1));
+		app_Panel.setBorder(BorderFactory.createEmptyBorder(3 , 10 , 0 , 10));
 
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		contentPane.add(panel, gbc_panel);
+		file = new JTextPane();
+		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+		file.setEditable(false);
+		app_Panel.add(file);
 
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{314, 0};
-		gbl_panel.rowHeights = new int[] {20};
-		gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0};
-		panel.setLayout(gbl_panel);
-
-		fileName = new JTextPane();
-		fileName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-		fileName.setEditable(false);
-		panel.add(fileName);
+		mainPane.add("North", app_Panel);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.gridheight = 3;
-		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
-		gbc_tabbedPane.gridx = 0;
-		gbc_tabbedPane.gridy = 1;
-		gbc_tabbedPane.gridheight = 300;
-		gbc_tabbedPane.gridwidth = 450;
-		contentPane.add(tabbedPane, gbc_tabbedPane);
-
 		treeScrollPane = new JScrollPane();
-		tabbedPane.addTab("main view", null, treeScrollPane, null);
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		errorJPanel = new JPanel();
-		tabbedPane.addTab("error subscribe", null, errorJPanel, null);
+		tabbedPane.addTab("main view", null, treeScrollPane, null);
+		tabbedPane.addTab("subscribe_error subscribe", null, errorJPanel, null);
+
+		mainPane.add("Center", tabbedPane);
 
 		settingBoxList = new SettingBoxList();
 	}
@@ -152,6 +133,7 @@ public class MainTool extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String path="D:\\2_Master\\석사\\smartThgins_template";
+
 			File dirFile=new File(path);
 			File []fileList=dirFile.listFiles();
 			CodeVisitor analysis = new CodeVisitor(settingBoxList);
@@ -215,7 +197,7 @@ public class MainTool extends JFrame {
 		GroovyShell gshell = new GroovyShell(cc);
 
 		File selectedFile = chooser.getSelectedFile();
-		fileName.setText(chooser.getSelectedFile().getName());
+		file.setText("file : " +chooser.getSelectedFile().getName());
 
 		try {
 			gshell.evaluate(selectedFile);
@@ -254,6 +236,25 @@ public class MainTool extends JFrame {
 			}
 		});
 		treeScrollPane.setViewportView(tree);
+
+		HashMap definition = analysis.getDefinition();
+
+		if(definition.containsKey("name")) {
+			JTextPane appName = new JTextPane();
+			appName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+			appName.setEditable(false);
+			appName.setText("app name : " + definition.get("name").toString());
+			app_Panel.add(appName);
+		}
+
+		if(definition.containsKey("description")){
+			JTextPane description = new JTextPane();
+			//description.setBackground(Color.decode("#FF0000"));
+			description.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+			description.setEditable(false);
+			description.setText("app description : "+definition.get("description").toString());
+			app_Panel.add(description);
+		}
 
 		error = analysis.errorReport();
 		setError(error);

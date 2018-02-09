@@ -1,6 +1,8 @@
 package AST
 
+import node.Input
 import node.Method
+import node.Subscribe
 
 /**
  * Created by b_newyork on 2017-09-05.
@@ -63,9 +65,9 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         setInstalled(false)
 
 
-        if ("run".equals(methodName)){ //first
+        if ("run".equals(methodName)){
             if(!makeingDynamicPre)
-                setMakingPreference(true)
+                setMakingPreference(true) //first
         }
 
         if(!makeingDynamicPre)
@@ -87,6 +89,19 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 }
         }
 
+        if(super.error){
+            HashMap inputMap = super.inputDevice_List
+            ArrayList subList = super.subscribeList
+            subList.each{ Subscribe sub ->
+                if(inputMap.containsKey(sub.input)) {
+                    inputMap.remove(sub.input)
+                    //Input input = inputMap.get(sub.input)
+                    //input.setUsed(true)
+                    //inputMap.replace(sub.input, input)
+                }
+            }
+        }
+
         visitConstructorOrMethod(node, false);
 
         if(!makeingDynamicPre) { //first
@@ -103,13 +118,19 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 addDynamicPageList(node, dynamicPage)
             }
         }
-
-
-
     }
 
-    public void makeDynamicPage(boolean t){
+    public void setDynamicPage(boolean t){
         makeingDynamicPre = t
+    }
+
+    public void setInput(boolean t){
+        setError(t)
+    }
+
+
+    HashMap getUnused_inputDev_List() {
+        return super.getInputDevice_List()
     }
 
     @Override
@@ -125,6 +146,11 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     @Override
     ArrayList getSubscribeList() {
         return super.getSubscribeList()
+    }
+
+    @Override
+    HashMap getDefinition() {
+        return super.getDefinition()
     }
 
     public boolean isMultiPage(){

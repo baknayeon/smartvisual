@@ -21,17 +21,11 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
 /**
  * Created by b_newyork on 2017-09-01.
  */
-class Helper {
+final class Helper {
 
-    String methodCall= ""
-    Map allCommands
+    public static Map allCommands = new HashMap()
 
-    public Helper(){
-        allCommands = new HashMap()
-        loadCapRef()
-    }
-
-    private def loadCapRef() {
+    static def loadCapRef() {
 
         def capsAsPerSamsungFile = "./" + "Capabilities.csv"
         def file = new File(capsAsPerSamsungFile)
@@ -54,7 +48,7 @@ class Helper {
         }
     }
 
-    private boolean isItRightCapability(Subscribe sub, Input input){
+    static boolean isItRightCapability(Subscribe sub, Input input){
 
         String sub_capVal = sub.getCap_val()
         String input_cap = input.getCapability()
@@ -69,7 +63,7 @@ class Helper {
         return false
     }
 
-    private boolean isItRightHandler(Subscribe sub, ArrayList methodList){
+    static boolean isItRightHandler(Subscribe sub, ArrayList methodList){
 
         for(methodName in methodList){
             if(methodName.equals(sub.getHandler().toString()))
@@ -78,7 +72,7 @@ class Helper {
         return false
     }
 
-    boolean isDynamicPage(ArrayList pageArgList){
+    static boolean isDynamicPage(ArrayList pageArgList){
 
         if( pageArgList.size() == 1)
             return true
@@ -87,7 +81,7 @@ class Helper {
 
     }
 
-    boolean checkSameInputOrNot(ArrayList preferenList, Input newInput){
+    static boolean checkSameInputOrNot(ArrayList preferenList, Input newInput){
 
         for(entry in preferenList)
             if(entry instanceof Input){
@@ -108,7 +102,7 @@ class Helper {
         return true
     }
 
-    boolean checkSameSubscribeOrNot(ArrayList subscribeList, Subscribe newSubscribe){
+    static boolean checkSameSubscribeOrNot(ArrayList subscribeList, Subscribe newSubscribe){
 
         for(entry in subscribeList){
             if(entry instanceof Subscribe){
