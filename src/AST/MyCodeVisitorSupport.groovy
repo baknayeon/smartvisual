@@ -34,7 +34,6 @@ import org.codehaus.groovy.ast.expr.MapEntryExpression
 import org.codehaus.groovy.ast.expr.MapExpression
 import org.codehaus.groovy.ast.expr.MethodCallExpression
 import org.codehaus.groovy.ast.expr.MethodPointerExpression
-import org.codehaus.groovy.ast.expr.NamedArgumentListExpression
 import org.codehaus.groovy.ast.expr.NotExpression
 import org.codehaus.groovy.ast.expr.PostfixExpression
 import org.codehaus.groovy.ast.expr.PrefixExpression
@@ -71,10 +70,12 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     ArrayList dynamicMethodList = new ArrayList()
     ArrayList subMethodList = new ArrayList()
 
-    boolean makingPreference = false
-    boolean makingDynamic = false
+    boolean preference = false
+    boolean dynamicPre = false
+    boolean sub = false
+    boolean SmartDev = false
+
     boolean error = false
-    boolean installed = false
     boolean dummy = false
 
     int Level
@@ -83,14 +84,14 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
     public void visitBlockStatement(BlockStatement block) {
 
-        if(makingDynamic)
+        if(dynamicPre)
             Level ++
 
         for (Statement statement : block.getStatements()) {
             statement.visit(this);
         }
 
-        if(makingDynamic)
+        if(dynamicPre)
             Level--
 
     }
@@ -110,8 +111,8 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
         }
     }
 
-    public void setMakingDynamic(boolean t){
-        makingDynamic = t
+    public void setDynamicPre(boolean t){
+        dynamicPre = t
         Level = -1
     }
 
@@ -132,7 +133,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
             methodCall = call.getMethodAsString()
 
 
-        if (makingPreference) {
+        if (preference) {
             if (methodCall.equals("definition")){
                 def arg = ((java.util.ArrayList)((TupleExpression)call.arguments).expressions).get(0)
                 if(arg in MapExpression) {
@@ -176,16 +177,21 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
             } else if (methodCall.equals("section")) {
                 preferenceList.add(new Section(args))
+            } else if (isitinput(args)) {
+                Input input = new Input(args)
+                if (Helper.checkSameInputOrNot(preferenceList, input)) {
+                    preferenceList.add(input)
+                    if(input.device)
+                        inputDevice_List.put(input.name ,input)
+                }
             }
-        } else if (makingDynamic) {
+
+        } else if (dynamicPre) {
 
             if (methodCall.equals("dynamicPage")) {
                 addList(new Page(args, "dynamicPage"))
             } else if (methodCall.equals("input")) {
-                Input input = new Input(args)
-                addList(input)
-                if(input.device)
-                    inputDevice_List.put(input.name ,input)
+                addinput(args)
 
             } else if (methodCall.equals("label")) {
                 addList(new Label(args))
@@ -193,6 +199,8 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 addList(new Href(args))
             } else if (methodCall.equals("section")) {
                 addList(new Section(args))
+            }else if(isitinput(args)) {
+                addinput(args)
             } else {
                 for (String dynamicNode : dynamicMethodList) {
                     if (methodCall.equals(dynamicNode)) {
@@ -207,12 +215,30 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                             break
                         }
                     }
+
+                if (isitinput(args)) {
+                    addinput(args)
+                }
             }
+        }
+        if (!dynamicPre && methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand")) {
+
+            if (args.size() > 0) {
+                Subscribe subscribe = new Subscribe(args)
+                if (Helper.checkSameSubscribeOrNot(subscribeList, subscribe)) {
+                    subscribeList.add(subscribe)
+                }
+            }
+        }
+
+        if(SmartDev){
+
+
         }else if(error){
             if(call.objectExpression in VariableExpression) {
                 String method_object = ((VariableExpression)call.objectExpression).variable
-               if(!method_object.equals("this") && !method_object.equals("log")){
-                   String input_dev = method_object
+                if(!method_object.equals("this") && !method_object.equals("log")){
+                    String input_dev = method_object
                     if(inputDevice_List.containsKey(input_dev)){
 
                         inputDevice_List.remove(input_dev)
@@ -220,26 +246,9 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                         //input.used = true
                         //inputDevice_List.replace(input_dev, input)
                     }
-               }
-            }
-        }else {
-
-            if (methodCall.equals("input") || methodCall.equals("href") || methodCall.equals("label")) {
-                dummy = true
-            }
-
-        }
-
-        if (installed)
-            if (methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand")) {
-
-                if (args.size() > 0) {
-                    Subscribe subscribe = new Subscribe(args)
-                    if (Helper.checkSameSubscribeOrNot(subscribeList, subscribe)) {
-                        subscribeList.add(subscribe)
-                    }
                 }
             }
+        }
 
 
         call.getObjectExpression().visit(this);
@@ -247,10 +256,49 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
         call.getArguments().visit(this);
     }
 
+    private boolean isitinput(def args) {
+        if(args.size() == 2){
+            if(args.get(1) instanceof ConstantExpression) {
+                def cap = args.get(1).value.toString()
+                if(cap.contains("capability.") || cap.contains("mode")
+                        || cap.contains("time") || cap.contains("email")
+                        || cap.contains("enum") || cap.contains("number")
+                        || cap.contains("password") || cap.contains("phone")
+                        || cap.contains("time") || cap.contains("text")
+                ){
+                   return true
+                }
+            }
+        }
+        if(args.size() >= 3){
+            if(args.get(2) instanceof ConstantExpression) {
+                def cap = args.get(2).value
+                if(cap.contains("capability.") || cap.contains("mode")
+                        || cap.contains("time") || cap.contains("email")
+                        || cap.contains("enum") || cap.contains("number")
+                        || cap.contains("password") || cap.contains("phone")
+                        || cap.contains("time") || cap.contains("text")
+                ){
+                    return true
+                }
+            }
+
+        }
+
+        return false
+
+    }
+
+    private void addinput(def args){
+        Input input = new Input(args)
+        addList(input)
+        if(input.device)
+            inputDevice_List.put(input.name ,input)
+    }
 
     private void addList(def state){
 
-        if(makingDynamic){
+        if(dynamicPre){
             dynamicStack.push(Level)
             dynamicPage.add(state)
         }

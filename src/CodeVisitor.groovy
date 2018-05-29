@@ -22,8 +22,6 @@ import javax.swing.*
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
 
-
-
     MakeTree makeTreetree
     DetectingError detectingError
 
@@ -31,7 +29,7 @@ class CodeVisitor extends CompilationCustomizer{
     ArrayList preferenceList
     ArrayList subscribeList
     ArrayList dynamicPageList
-    ArrayList methodList
+    HashMap methodList
     HashMap unused_inputDev_List
 
 
@@ -53,11 +51,12 @@ class CodeVisitor extends CompilationCustomizer{
     void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
         Helper.loadCapRef()
 
-
         SmartThingAppCodeVisitor codeVisitor = new SmartThingAppCodeVisitor()
         codeVisitor.setSetting(settingList)
 
+        codeVisitor.setMakingPre(true)
         classNode.visitContents(codeVisitor)
+        codeVisitor.setMakingPre(false)
 
         preferenceList = codeVisitor.getPreferenceList()
         subscribeList = codeVisitor.getSubscribeList()
@@ -74,7 +73,7 @@ class CodeVisitor extends CompilationCustomizer{
             dynamicPageList = codeVisitor.getDynamicPageList()
         }
 
-        codeVisitor.setInput(true)
+        /*codeVisitor.setInput(true)
         classNode.visitContents(codeVisitor)
         unused_inputDev_List = codeVisitor.getUnused_inputDev_List()
         unused_inputDev_List.eachWithIndex{ def entry, int i ->
@@ -83,10 +82,10 @@ class CodeVisitor extends CompilationCustomizer{
             log.append("\tname: "+input.name)
             log.append("\tdevice: "+input.device)
             log.append("\tcap: "+input.capability)
-        }
+        }*/
 
-        detectingError = new DetectingError(preferenceList, subscribeList,  methodList)
-        detectingError.subscribe_error()
+        //detectingError = new DetectingError(preferenceList, subscribeList,  methodList.keySet().toArray())
+        //detectingError.subscribe_error()
 
     }
 
@@ -112,12 +111,16 @@ class CodeVisitor extends CompilationCustomizer{
 
     class SmartThingAppCodeVisitor extends MyClassCodeVisitorSupport {
 
-        public void setInput(boolean b){
+        void setInput(boolean b){
             super.setInput(b)
         }
 
-        public void setDynamicPage(boolean b){
+        void setDynamicPage(boolean b){
             super.setDynamicPage(b)
+        }
+
+        void setMakingPre(boolean b) {
+            super.setMakeingPre(b)
         }
 
         @Override
@@ -161,14 +164,14 @@ class CodeVisitor extends CompilationCustomizer{
         }
 
         @Override
-        ArrayList getMethodList() {
-            ArrayList list = super.getMethodList()
-            list.remove("main")
-            list.remove("run")
-            list.remove("installed")
-            list.remove("updated")
+        HashMap getMethodList() {
+            HashMap methods = super.getMethodlist()
+            methods.remove("main")
+            methods.remove("run")
+            methods.remove("sub")
+            methods.remove("updated")
 
-            return list
+            return methods
         }
 
         @Override

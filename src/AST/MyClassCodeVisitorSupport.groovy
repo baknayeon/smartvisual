@@ -1,6 +1,5 @@
 package AST
 
-import node.Input
 import node.Method
 import node.Subscribe
 
@@ -47,49 +46,50 @@ import org.codehaus.groovy.syntax.SyntaxException
 
 public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport implements GroovyClassVisitor {
 
+    boolean makeingPre
     boolean makeingDynamicPre
     boolean dynamicPage
-    ArrayList methodList
+    HashMap methodList
 
     public MyClassCodeVisitorSupport(){
+        makeingPre = false
         makeingDynamicPre = false
         dynamicPage = false
-        methodList = new ArrayList()
+        methodList = new HashMap()
     }
 
     public void visitMethod(MethodNode node) {
         String methodName = node.name
 
-        setMakingPreference(false)
-        setMakingDynamic(false)
-        setInstalled(false)
+        setPreference(false)
+        setDynamicPre(false)
+        setSmartDev(false)
 
-
-        if ("run".equals(methodName)){
-            if(!makeingDynamicPre)
-                setMakingPreference(true) //first
+        if(makeingPre) { //first
+            if ("run".equals(methodName)) {
+                setPreference(true)
+            } else if (!"main".equals(methodName) && !"updated".equals(methodName)){
+                setSmartDev(true)
+            }
         }
-
-        if(!makeingDynamicPre)
-            setInstalled(true)
 
         if(makeingDynamicPre) {//second
 
             for(String dynamicName : getDynamicMethodList())
                 if (methodName.contains(dynamicName)) { // GString 어떻게 하지?
-                    setMakingDynamic(true)
+                    setDynamicPre(true)
                     dynamicPage = true
                     break;
                 }else
                     dynamicPage = false
             for(String method : getSubMethodList())
                 if (methodName.contains(method)) { // GString 어떻게 하지?
-                    setMakingDynamic(true)
+                    setDynamicPre(true)
                     break;
                 }
         }
 
-        if(super.error){
+        /*if(super.error){
             HashMap inputMap = super.inputDevice_List
             ArrayList subList = super.subscribeList
             subList.each{ Subscribe sub ->
@@ -100,26 +100,28 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                     //inputMap.replace(sub.input, input)
                 }
             }
-        }
+        }*/
 
         visitConstructorOrMethod(node, false);
 
-        if(!makeingDynamicPre) { //first
+       /* if(makeingPre) { //first
             if (getDummy()) {
                 dynamicNameList(node.name)
                 setDummy(false)
             }
-
-            methodList.add(methodName)
-        }
+            methodList.put(methodName, new Method(node))
+        }*/
 
         if(makeingDynamicPre) { //second
-            if(getMakingDynamic()) {
+            if(getDynamicPre()) {
                 addDynamicPageList(node, dynamicPage)
             }
         }
     }
 
+    public def getMethodlist(){
+        return methodList
+    }
     public void setDynamicPage(boolean t){
         makeingDynamicPre = t
     }

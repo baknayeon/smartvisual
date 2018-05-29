@@ -1,5 +1,6 @@
 package node
 
+import org.codehaus.groovy.ast.MethodNode
 import org.codehaus.groovy.ast.expr.ClosureExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.GStringExpression
@@ -30,6 +31,12 @@ class Method {
     public Method(String methodName, def parameter){
         this.methodName = methodName
         this.parameter = parameter
+
+    }
+    public Method(MethodNode node){
+        this.methodName = node.name
+        this.parameter = node.parameters
+        this.code = node.code
 
     }
 
