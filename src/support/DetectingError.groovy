@@ -11,23 +11,14 @@ class DetectingError {
 
     private ArrayList preferenceList
     private ArrayList subscribeList
-    private ArrayList methodList
+    private HashMap methodList
 
     ArrayList errorList
 
-    public DetectingError(ArrayList pre, ArrayList sub, ArrayList method) {
+    public DetectingError(ArrayList pre, ArrayList sub, HashMap method) {
         preferenceList = pre
         subscribeList = sub
         methodList = method
-    }
-
-    public void run(){
-        subscribe_error()
-    }
-
-    public void unused_input(){
-
-
     }
 
     public void subscribe_error(){

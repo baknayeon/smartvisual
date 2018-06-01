@@ -7,7 +7,9 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by b_newyork on 2017-09-13.
@@ -16,10 +18,12 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
     ArrayList dynamicPageList = new ArrayList();
     ArrayList subscribeList = new ArrayList();
+    HashMap actionMap = new HashMap();
 
-    TreeCellRenderer(ArrayList dynamicPageList, ArrayList subscribeList) {
+    TreeCellRenderer(ArrayList dynamicPageList, ArrayList subscribeList, HashMap actionMap) {
         this.dynamicPageList = dynamicPageList;
         this.subscribeList = subscribeList;
+        this.actionMap = actionMap;
     }
 
     TreeCellRenderer(ArrayList wrongSubscribeList) {
@@ -68,7 +72,6 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
     private String setImageUrl(DefaultMutableTreeNode Object) {
         String ObjectName = Object.getUserObject().toString().toLowerCase();
-
         String iconFolder = "./icon";
         String imageUrl = "null";
 
@@ -94,8 +97,10 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
                     imageUrl = iconFolder + "/infor.png";
             }*/
         }
-        if(isItSubscribe(ObjectName))
+        if(isItSubscribe(Object))
             imageUrl = iconFolder + "/handler.png";
+        else if (isItActions(Object))
+            imageUrl = iconFolder + "/actions.png";
         return imageUrl;
     }
 
@@ -112,16 +117,20 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         if(isItDynamicPage(ObjectName))
             return true;
 
-        if(isItSubscribe(ObjectName))
+        if(isItSubscribe(Object))
             return true;
 
+        if(isItActions(Object))
+            return true;
 
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
         if(parent != null) {
             String parentObject = parent.getUserObject().toString().toLowerCase();
             if (parentObject.startsWith("input"))
                 return true;
-            else if (isItSubscribe(parentObject))
+            else if (isItSubscribe(parent))
+                return true;
+            else if (isItActions(parent))
                 return true;
         }
 
@@ -145,18 +154,35 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         return false;
     }
 
-    private boolean isItSubscribe(String ObjectName){
+    private boolean isItSubscribe(DefaultMutableTreeNode Object){
+        String ObjectName = Object.getUserObject().toString().toLowerCase();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
+        String parentName = parent!=null?parent.getUserObject().toString().toLowerCase():"";
 
         if(subscribeList != null) {
             int size = subscribeList.size();
             for (int i = 0; i < size; i++) {
                 Subscribe method = (Subscribe) subscribeList.get(i);
                 String Handler = method.handler.toLowerCase();
-                if (ObjectName.equals(Handler))
+                String deviceName = "input "+method.input.toLowerCase();
+                if (ObjectName.equals(Handler) && parentName.equals(deviceName))
                     return true;
             }
         }
         return false;
     }
+    private boolean isItActions(DefaultMutableTreeNode Object){
+        String ObjectName = Object.getUserObject().toString();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
+        String[] parentName = parent!=null?parent.getUserObject().toString().toLowerCase().split(" "): new String[1];
+        String device_name = parentName.length > 1 ? parentName[1]:null;
 
+        if(actionMap.containsKey(device_name)){
+            HashMap methods = (HashMap)actionMap.get(device_name);
+            if(methods.containsKey(ObjectName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

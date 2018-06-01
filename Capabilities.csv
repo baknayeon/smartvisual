@@ -7,7 +7,7 @@ Button,capability.button,button,
 Carbon Monoxide Detector,capability.carbonMonoxideDetector,carbonMonoxide,
 Color Control,capability.colorControl,hue saturation color,setHue setSaturation setColor
 Configuration,capability.configuration,,configure
-Contact Sensor,capability.contactSensor,contact,open close
+Contact Sensor,capability.contactSensor,contact,open closed
 Door Control,capability.doorControl,door,open close
 Energy Meter,capability.energyMeter,energy,
 Illuminance Measurement,capability.illuminanceMeasurement,illuminance,

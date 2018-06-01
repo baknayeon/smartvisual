@@ -1,4 +1,4 @@
-package support;
+package Setting;
 
 import javax.swing.*;
 import java.util.ArrayList;

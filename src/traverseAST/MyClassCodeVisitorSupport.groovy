@@ -1,7 +1,6 @@
-package AST
+package traverseAST
 
 import node.Method
-import node.Subscribe
 
 /**
  * Created by b_newyork on 2017-09-05.
@@ -49,68 +48,48 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     boolean makeingPre
     boolean makeingDynamicPre
     boolean dynamicPage
-    HashMap methodList
+    HashMap commonMethodList
 
     public MyClassCodeVisitorSupport(){
         makeingPre = false
         makeingDynamicPre = false
         dynamicPage = false
-        methodList = new HashMap()
+        commonMethodList = new HashMap()
     }
 
     public void visitMethod(MethodNode node) {
-        String methodName = node.name
+        String  methodName = node.name
 
         setPreference(false)
         setDynamicPre(false)
-        setSmartDev(false)
+        setActionsinMethod(null)
 
         if(makeingPre) { //first
             if ("run".equals(methodName)) {
                 setPreference(true)
-            } else if (!"main".equals(methodName) && !"updated".equals(methodName)){
-                setSmartDev(true)
+            }else if (!"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
+                setActionsinMethod(methodName)
+                commonMethodList.put(methodName, new Method(node))
             }
         }
 
         if(makeingDynamicPre) {//second
 
-            for(String dynamicName : getDynamicMethodList())
-                if (methodName.contains(dynamicName)) { // GString 어떻게 하지?
-                    setDynamicPre(true)
-                    dynamicPage = true
-                    break;
-                }else
-                    dynamicPage = false
-            for(String method : getSubMethodList())
+            if(getDynamicMethodMap().containsKey(methodName)){
+                setDynamicPre(true)
+                dynamicPage = true
+            }else
+                dynamicPage = false
+
+            for(String method : getDynamicSubMethodList())
                 if (methodName.contains(method)) { // GString 어떻게 하지?
                     setDynamicPre(true)
                     break;
                 }
         }
 
-        /*if(super.error){
-            HashMap inputMap = super.inputDevice_List
-            ArrayList subList = super.subscribeList
-            subList.each{ Subscribe sub ->
-                if(inputMap.containsKey(sub.input)) {
-                    inputMap.remove(sub.input)
-                    //Input input = inputMap.get(sub.input)
-                    //input.setUsed(true)
-                    //inputMap.replace(sub.input, input)
-                }
-            }
-        }*/
-
         visitConstructorOrMethod(node, false);
 
-       /* if(makeingPre) { //first
-            if (getDummy()) {
-                dynamicNameList(node.name)
-                setDummy(false)
-            }
-            methodList.put(methodName, new Method(node))
-        }*/
 
         if(makeingDynamicPre) { //second
             if(getDynamicPre()) {
@@ -119,21 +98,14 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         }
     }
 
-    public def getMethodlist(){
-        return methodList
-    }
     public void setDynamicPage(boolean t){
         makeingDynamicPre = t
     }
 
-    public void setInput(boolean t){
-        setError(t)
+    HashMap getActionsMethodMap() {
+        return super.ActionsMethodMap
     }
 
-
-    HashMap getUnused_inputDev_List() {
-        return super.getInputDevice_List()
-    }
 
     @Override
     ArrayList<Method> getDynamicPageList() {
@@ -160,7 +132,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     }
 
     public boolean isDynamicPage(){
-        if(getDynamicMethodList().size() >0)
+        if(getDynamicMethodMap().size() >0)
             return true
         else
             return false

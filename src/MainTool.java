@@ -27,25 +27,22 @@ import javax.swing.text.StyleContext;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import javafx.application.Application;
+
+
 public class MainTool extends JFrame {
 
 	private SettingBoxList settingBoxList;
-	private JFileChooser chooser;
-	private JScrollPane input_info_ScrollPane, input_follw_ScrollPane;
-	private JPanel errorJPanel, appInfo_Panel;
+	private JPanel appInfo_Panel, errorJPanel, matricPanel;
 	private JScrollPane treeScrollPane ;
 
-	JTabbedPane tabbedPane;
+	JFileChooser chooser;
+	JLabel file, appName, description;
 
-	JTextPane file;
-	JTextPane appName;
-	JTextPane description;
+	int WIDTH = 800;
+	int HEIGHT = 650;
+	int HEIGHT_info = 100;
 
-	int WIDTH = 650;
-	int HEIGHT = 500;
-
-	int WIDTH_input = 300;
-	int HEIGHT_input = 400;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -101,32 +98,36 @@ public class MainTool extends JFrame {
 		setContentPane(mainPane);
 
 		appInfo_Panel = new JPanel();
-		input_info_ScrollPane = new JScrollPane();
-		input_follw_ScrollPane = new JScrollPane();
-		treeScrollPane = new JScrollPane();
+		matricPanel = new JPanel();
 		errorJPanel = new JPanel();
+		treeScrollPane = new JScrollPane();
 
-		appInfo_Panel.setPreferredSize(new Dimension(WIDTH, 120));
+		appInfo_Panel.setPreferredSize(new Dimension(WIDTH, HEIGHT_info));
 		appInfo_Panel.setLayout(new BoxLayout(appInfo_Panel, BoxLayout.PAGE_AXIS));
-		appInfo_Panel.setBorder(new EmptyBorder(3 , 10 , 3 , 10));
+		appInfo_Panel.setBorder(new EmptyBorder(3 , 10 , 10 , 10));
 		mainPane.add("North", appInfo_Panel);
 
-		JTextPane textPane = new JTextPane();
-		textPane.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 15));
-		textPane.setEditable(false);
+		file = new JLabel();
+		appName = new JLabel();
+		description = new JLabel();
+		JLabel textPane = new JLabel();
+		textPane.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 17));
 		textPane.setText("SmartApp Info");
 		appInfo_Panel.add(textPane);
+		appInfo_Panel.add(file);
+		appInfo_Panel.add(appName);
+		appInfo_Panel.add(description);
 
-		JPanel inputPanel = new JPanel();
-		inputPanel.setBorder(BorderFactory.createEmptyBorder(20 , 5 , 0 , 0));
-		inputPanel.setLayout(new GridLayout(2,1));
-		inputPanel.setPreferredSize(new Dimension(WIDTH_input,HEIGHT_input));
-		inputPanel.add(input_info_ScrollPane);
-		inputPanel.add(input_follw_ScrollPane);
-		mainPane.add("East", inputPanel);
+		matricPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		matricPanel.setLayout(new FlowLayout());
+		matricPanel.setPreferredSize(new Dimension(WIDTH/2-20, HEIGHT - HEIGHT_info - 20));
 
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		matricPanel.add(new JLabel("Counting Chart"));
+		//mainPane.add("East", matricPanel);
+
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		//tabbedPane.setPreferredSize(new Dimension(200, HEIGHT - HEIGHT_info - 20));
 		treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
@@ -135,9 +136,6 @@ public class MainTool extends JFrame {
 
 		settingBoxList = new SettingBoxList();
 
-		file = new JTextPane();
-		appName = new JTextPane();
-		description = new JTextPane();
 	}
 
 
@@ -189,6 +187,7 @@ public class MainTool extends JFrame {
 	}
 
 	class OpenFileActionListener implements ActionListener {
+
 
 		public OpenFileActionListener() {
 			chooser = new JFileChooser();
@@ -261,7 +260,7 @@ public class MainTool extends JFrame {
 							String hrefName = href.split(" ")[1];
 
 							if (pageName.equals(hrefName)) {
-								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList());
+								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList(), analysis.getActionList());
 							}
 						}
 					}
@@ -270,23 +269,18 @@ public class MainTool extends JFrame {
 		});
 
 		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-		file.setEditable(false);
 		file.setText("file : " +chooser.getSelectedFile().getName());
-		appInfo_Panel.add(file);
 
 		if(definition.containsKey("name")) {
 			appName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-			appName.setEditable(false);
 			appName.setText("app name : " + definition.get("name").toString());
-			appInfo_Panel.add(appName);
-		}
 
+		}
 		if(definition.containsKey("description")){
 			//description.setBackground(Color.decode("#FF0000"));
 			description.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-			description.setEditable(false);
 			description.setText("app description : "+definition.get("description").toString());
-			appInfo_Panel.add(description);
+
 		}
 
 		treeScrollPane.setViewportView(tree);

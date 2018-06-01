@@ -1,4 +1,4 @@
-package AST
+package traverseAST
 
 import node.Method
 import node.Href
@@ -49,38 +49,33 @@ import org.codehaus.groovy.ast.expr.UnaryPlusExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.*
 import org.codehaus.groovy.classgen.BytecodeExpression
-import support.SettingBoxList
+import Setting.SettingBoxList
 import support.Helper
 
 public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
     ArrayList preferenceList = new ArrayList()
     ArrayList subscribeList = new ArrayList()
-
     HashMap definition = new HashMap<>();
-    HashMap inputDevice_List = new HashMap()
+
+    HashMap dynamicMethodMap = new HashMap<>();
+    HashMap ActionsMethodMap = new HashMap()
 
 
     boolean multiPage
+    SettingBoxList setting
+
+    boolean preference = false
+    boolean dynamicSubMethod = false
+    boolean dynamicPre = false
+    String actionsinMethod = null
 
     ArrayList<Method> dynamicPageList =  new ArrayList<Method>()
     private Stack dynamicStack = new Stack()
     private ArrayList dynamicPage = new ArrayList()
-
-    ArrayList dynamicMethodList = new ArrayList()
-    ArrayList subMethodList = new ArrayList()
-
-    boolean preference = false
-    boolean dynamicPre = false
-    boolean sub = false
-    boolean SmartDev = false
-
-    boolean error = false
-    boolean dummy = false
+    ArrayList DynamicSubMethodList = new ArrayList()
 
     int Level
-
-    SettingBoxList setting
 
     public void visitBlockStatement(BlockStatement block) {
 
@@ -116,16 +111,11 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
         Level = -1
     }
 
-    public void dynamicNameList(String name){
-        if(!dynamicMethodList.contains(name))
-            subMethodList.add(name)
-    }
 
     public void visitMethodCallExpression(MethodCallExpression call) {
 
 
         String methodCall
-        //def args = call.arguments
         def args = (java.util.ArrayList) call.arguments.expressions
         if (call.getMethodAsString() == null)
             methodCall = call.getText()
@@ -156,7 +146,8 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 //ArrayList pageArgList = (java.util.ArrayList) call.arguments.expressions
 
                 if (Helper.isDynamicPage(args)) {
-                    dynamicMethodList.add(new Page(args, "dynamicPage").getName())
+                    def dynamicPage = new Page(args, "dynamicPage")
+                    dynamicMethodMap.put(dynamicPage.getName(), dynamicPage)
                     preferenceList.add(new Page(args, "dynamicPage"))
                 } else {
                     preferenceList.add(new Page(args, "page"))
@@ -166,8 +157,6 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 Input input = new Input(args)
                 if (Helper.checkSameInputOrNot(preferenceList, input)) {
                     preferenceList.add(input)
-                    if(input.device)
-                        inputDevice_List.put(input.name ,input)
                 }
             } else if (methodCall.equals("label")) {
                 preferenceList.add(new Label(args))
@@ -181,18 +170,45 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 Input input = new Input(args)
                 if (Helper.checkSameInputOrNot(preferenceList, input)) {
                     preferenceList.add(input)
-                    if(input.device)
-                        inputDevice_List.put(input.name ,input)
                 }
             }
 
-        } else if (dynamicPre) {
+        }  else if(actionsinMethod){
+
+            def method_Variable = call.objectExpression
+            if(method_Variable instanceof VariableExpression && method_Variable.variable != "this") {
+                def commomd = methodCall
+                def device = method_Variable.variable
+                HashMap methodsMap1 = ActionsMethodMap.get(device)?:null;
+                if(methodsMap1){
+                    if(methodsMap1.containsKey(actionsinMethod)) {
+                        ArrayList method_list= methodsMap1.get(actionsinMethod)
+                        def methodCount = method_list[0] + 1
+                        HashSet set =method_list[1]
+                        set.add(commomd)
+
+                        methodsMap1.put(actionsinMethod, [methodCount , set])
+                    }else{
+                        HashSet newset = new HashSet();
+                        newset.add(commomd)
+                        methodsMap1.put(actionsinMethod, [1 , newset])
+                    }
+                }else {
+                    HashMap methodsMap2 = new HashMap()
+                    HashSet newset = new HashSet();
+                    newset.add(commomd)
+                    methodsMap2.put(actionsinMethod, [1 , newset])
+                    ActionsMethodMap.put(device, methodsMap2)
+                }
+
+            }
+        }else if (dynamicPre) {
 
             if (methodCall.equals("dynamicPage")) {
                 addList(new Page(args, "dynamicPage"))
             } else if (methodCall.equals("input")) {
                 addinput(args)
-
+                dynamicSubMethod = true
             } else if (methodCall.equals("label")) {
                 addList(new Label(args))
             } else if (methodCall.equals("href")) {
@@ -201,26 +217,33 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 addList(new Section(args))
             }else if(isitinput(args)) {
                 addinput(args)
-            } else {
-                for (String dynamicNode : dynamicMethodList) {
-                    if (methodCall.equals(dynamicNode)) {
-                        addList(new Page(dynamicNode, args, "methodCall"))
-                        break
-                    }
-                }
+            }else {
+                if(dynamicMethodMap.containsKey(methodCall))
+                    addList(new Page(methodCall, args, "methodCall"))
+
                 if (setting.showMethod())
-                    for (String node : subMethodList) {
-                        if (methodCall.equals(node)) {
-                            addList(new Method(node, args))
-                            break
-                        }
-                    }
+                    if(DynamicSubMethodList.contains(methodCall))
+                            addList(new Method(methodCall))
+
+
+                def method_Variable = call.objectExpression
+                if (method_Variable instanceof VariableExpression && method_Variable.variable != "this" && methodCall instanceof ConstantExpression) {
+
+
+                }
 
                 if (isitinput(args)) {
                     addinput(args)
                 }
             }
         }
+        else if(preference == false && dynamicPre ==false)
+          if (methodCall.equals("input")) {
+            DynamicSubMethodList.add(actionsinMethod)
+        }
+
+
+
         if (!dynamicPre && methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand")) {
 
             if (args.size() > 0) {
@@ -231,30 +254,13 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
             }
         }
 
-        if(SmartDev){
-
-
-        }else if(error){
-            if(call.objectExpression in VariableExpression) {
-                String method_object = ((VariableExpression)call.objectExpression).variable
-                if(!method_object.equals("this") && !method_object.equals("log")){
-                    String input_dev = method_object
-                    if(inputDevice_List.containsKey(input_dev)){
-
-                        inputDevice_List.remove(input_dev)
-                        //Input input = inputDevice_List.get(input_dev)
-                        //input.used = true
-                        //inputDevice_List.replace(input_dev, input)
-                    }
-                }
-            }
-        }
-
-
         call.getObjectExpression().visit(this);
         call.getMethod().visit(this);
         call.getArguments().visit(this);
+
+
     }
+    private boolean isitCo
 
     private boolean isitinput(def args) {
         if(args.size() == 2){
@@ -292,8 +298,6 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     private void addinput(def args){
         Input input = new Input(args)
         addList(input)
-        if(input.device)
-            inputDevice_List.put(input.name ,input)
     }
 
     private void addList(def state){
@@ -525,6 +529,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     }
 
     public void visitVariableExpression(VariableExpression expression) {
+
     }
 
     public void visitDeclarationExpression(DeclarationExpression expression) {

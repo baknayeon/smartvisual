@@ -10,6 +10,8 @@ class Capability {
     String device
     ArrayList cap_val
 
+
+
     public Capability() {
         cap_val = new ArrayList()
         device = ""

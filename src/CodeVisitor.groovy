@@ -1,10 +1,8 @@
 /**
  * Created by b_newyork on 2017-08-07.
  */
-
-import node.Input
 import support.DetectingError
-import AST.MyClassCodeVisitorSupport
+import traverseAST.MyClassCodeVisitorSupport
 import node.Method
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
@@ -13,11 +11,12 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.control.customizers.CompilationCustomizer
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import support.Helper
-import support.Logger
-import support.SettingBoxList
+
+import Setting.SettingBoxList
 import support.TreeCellRenderer
 
 import javax.swing.*
+import java.lang.reflect.Array
 
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
@@ -29,21 +28,21 @@ class CodeVisitor extends CompilationCustomizer{
     ArrayList preferenceList
     ArrayList subscribeList
     ArrayList dynamicPageList
-    HashMap methodList
-    HashMap unused_inputDev_List
+    HashMap comMethodList
+    HashMap actionList
 
 
     SettingBoxList settingList
     boolean multiPage
 
-    Logger log
+
 
     public CodeVisitor(SettingBoxList boxList) {
         super(CompilePhase.SEMANTIC_ANALYSIS)
 
         settingList = boxList
         multiPage = false
-        log = new Logger("." + "/" + "unusedInput.txt");
+
 
     }
 
@@ -61,11 +60,10 @@ class CodeVisitor extends CompilationCustomizer{
         preferenceList = codeVisitor.getPreferenceList()
         subscribeList = codeVisitor.getSubscribeList()
         multiPage = codeVisitor.getMultiPage()
-        methodList = codeVisitor.getMethodList()
+        comMethodList = codeVisitor.getCommonMethodList()
         definition = codeVisitor.getDefinition()
+        actionList = codeVisitor.getActionsMethodMap()
 
-        log.append("============================")
-        log.append(definition.get("name").toString())
 
         if(codeVisitor.isDynamicPage() && settingList.showDynamic()){
             codeVisitor.setDynamicPage(true)
@@ -73,19 +71,9 @@ class CodeVisitor extends CompilationCustomizer{
             dynamicPageList = codeVisitor.getDynamicPageList()
         }
 
-        /*codeVisitor.setInput(true)
-        classNode.visitContents(codeVisitor)
-        unused_inputDev_List = codeVisitor.getUnused_inputDev_List()
-        unused_inputDev_List.eachWithIndex{ def entry, int i ->
-            log.append("#"+ i+" "+"unused dev")
-            Input input = entry.getValue()
-            log.append("\tname: "+input.name)
-            log.append("\tdevice: "+input.device)
-            log.append("\tcap: "+input.capability)
-        }*/
 
-        //detectingError = new DetectingError(preferenceList, subscribeList,  methodList.keySet().toArray())
-        //detectingError.subscribe_error()
+        detectingError = new DetectingError(preferenceList, subscribeList, comMethodList)
+        detectingError.subscribe_error()
 
     }
 
@@ -98,10 +86,11 @@ class CodeVisitor extends CompilationCustomizer{
         makeTreetree =  new MakeTree()
         makeTreetree.setPreferList(preferenceList)
         makeTreetree.setSubscribeList(subscribeList)
+        makeTreetree.setActionList(actionList)
         makeTreetree.setDynamicPageList(dynamicPageList)
 
         JTree jtree = new JTree(makeTreetree.getPage())
-        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList))
+        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList, actionList))
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
         jtree.putClientProperty("JTree.lineStyle", "None")
@@ -111,9 +100,6 @@ class CodeVisitor extends CompilationCustomizer{
 
     class SmartThingAppCodeVisitor extends MyClassCodeVisitorSupport {
 
-        void setInput(boolean b){
-            super.setInput(b)
-        }
 
         void setDynamicPage(boolean b){
             super.setDynamicPage(b)
@@ -121,11 +107,6 @@ class CodeVisitor extends CompilationCustomizer{
 
         void setMakingPre(boolean b) {
             super.setMakeingPre(b)
-        }
-
-        @Override
-        HashMap getInputDevice_List() {
-            return super.getInputDevice_List()
         }
 
         @Override
@@ -161,17 +142,6 @@ class CodeVisitor extends CompilationCustomizer{
         @Override
         void setSetting(SettingBoxList setting) {
             super.setSetting(setting)
-        }
-
-        @Override
-        HashMap getMethodList() {
-            HashMap methods = super.getMethodlist()
-            methods.remove("main")
-            methods.remove("run")
-            methods.remove("sub")
-            methods.remove("updated")
-
-            return methods
         }
 
         @Override

@@ -12,6 +12,7 @@ import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.MapExpression
 
 import javax.swing.tree.DefaultMutableTreeNode
+import java.lang.reflect.Array
 
 class MakeTree {
 
@@ -22,6 +23,7 @@ class MakeTree {
     ArrayList preferList
     ArrayList subscribeList
     ArrayList dynamicPageList
+    HashMap actionList
 
 
     public DefaultMutableTreeNode getPage(){
@@ -163,6 +165,7 @@ class MakeTree {
         }
 
         makeHandler(node, input.getName())
+        makeActionsinMethod(node, input.getName())
     }
 
     public void makeHandler(DefaultMutableTreeNode node, String name){
@@ -185,6 +188,23 @@ class MakeTree {
         }
     }
 
+    public void makeActionsinMethod(DefaultMutableTreeNode node,  String device){
+
+        HashMap MethodMap = actionList.get(device)
+        if(MethodMap){
+
+            for( String method : MethodMap.keySet()){
+                def actions = new DefaultMutableTreeNode(method)
+                ArrayList commonds = MethodMap.get(method)
+                HashSet set = commonds[1]
+                for( def commond : set){
+                   actions.add(new DefaultMutableTreeNode(device +"."+commond+"()"))
+                }
+                node.add(actions)
+            }
+        }
+    }
+    
     DefaultMutableTreeNode makeDynamicPage(String dynamicPageName){
 
         for(Method dynamicMethod in dynamicPageList){

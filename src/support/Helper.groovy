@@ -63,13 +63,11 @@ final class Helper {
         return false
     }
 
-    static boolean isItRightHandler(Subscribe sub, ArrayList methodList){
+    static boolean isItRightHandler(Subscribe sub, HashMap methodMap){
 
-        for(methodName in methodList){
-            if(methodName.equals(sub.getHandler().toString()))
-                return true
-        }
-        return false
+        String handlerMethod = sub.getHandler().toString()
+
+        return methodMap.containsKey(handlerMethod)
     }
 
     static boolean isDynamicPage(ArrayList pageArgList){
