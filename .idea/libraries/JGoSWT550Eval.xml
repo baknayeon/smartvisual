@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="JGoSWT550Eval">
+    <CLASSES>
+      <root url="file://$USER_HOME$/JGoSWT550Eval" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$USER_HOME$/JGoSWT550Eval/docs" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="file://$USER_HOME$/JGoSWT550Eval" />
+    </NATIVE>
+    <SOURCES>
+      <root url="file://$USER_HOME$/JGoSWT550Eval" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/JGoSWT550Eval" recursive="false" />
+  </library>
+</component>

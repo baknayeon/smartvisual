@@ -102,10 +102,15 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         makeingDynamicPre = t
     }
 
-    HashMap getActionsMethodMap() {
-        return super.ActionsMethodMap
+    @Override
+    HashMap getActionsCommandMap() {
+        return super.getActionsCommandMap()
     }
 
+    @Override
+    HashMap getActionsMethodMap() {
+        return super.getActionsMethodMap()
+    }
 
     @Override
     ArrayList<Method> getDynamicPageList() {

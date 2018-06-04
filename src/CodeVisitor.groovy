@@ -16,7 +16,6 @@ import Setting.SettingBoxList
 import support.TreeCellRenderer
 
 import javax.swing.*
-import java.lang.reflect.Array
 
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
@@ -29,21 +28,20 @@ class CodeVisitor extends CompilationCustomizer{
     ArrayList subscribeList
     ArrayList dynamicPageList
     HashMap comMethodList
-    HashMap actionList
 
+    HashMap actiondev_methodMap
+    HashMap calli2callerMap
+    ArrayList  actionFlowsList = new ArrayList()
+    HashMap actionDev_methodFlowsMap = new HashMap()
 
     SettingBoxList settingList
     boolean multiPage
-
-
 
     public CodeVisitor(SettingBoxList boxList) {
         super(CompilePhase.SEMANTIC_ANALYSIS)
 
         settingList = boxList
         multiPage = false
-
-
     }
 
     @Override
@@ -62,7 +60,22 @@ class CodeVisitor extends CompilationCustomizer{
         multiPage = codeVisitor.getMultiPage()
         comMethodList = codeVisitor.getCommonMethodList()
         definition = codeVisitor.getDefinition()
-        actionList = codeVisitor.getActionsMethodMap()
+        actiondev_methodMap = codeVisitor.getActionsCommandMap()
+        calli2callerMap = codeVisitor.getActionsMethodMap()
+
+        for(String device : actiondev_methodMap.keySet()){
+            def actionComandMap =  ((HashMap)actiondev_methodMap.get(device)).keySet()
+            ArrayList flows = new ArrayList()
+
+            for(String start : actionComandMap){ //deivce를 부르는 method
+
+                actionFlow(start, new ArrayList())
+                flows.addAll(actionFlowsList)
+                actionFlowsList.clear()
+
+            }
+            actionDev_methodFlowsMap.put(device, flows)
+        }
 
 
         if(codeVisitor.isDynamicPage() && settingList.showDynamic()){
@@ -77,6 +90,23 @@ class CodeVisitor extends CompilationCustomizer{
 
     }
 
+    public void actionFlow(String startingMethod, ArrayList flow){
+        String method = startingMethod
+        flow.add(method)
+
+        if(calli2callerMap.containsKey(method)){
+            ArrayList list = ((HashSet)calli2callerMap.get(method)).toArray()
+            for( String m  : list) {
+                actionFlow(m, flow)
+                flow.remove(flow.size()-1)
+            }
+        }else {
+            actionFlowsList.addAll(flow)
+        }
+
+        return
+    }
+
     public ArrayList errorReport(){
         return detectingError.getErrorList()
     }
@@ -86,11 +116,11 @@ class CodeVisitor extends CompilationCustomizer{
         makeTreetree =  new MakeTree()
         makeTreetree.setPreferList(preferenceList)
         makeTreetree.setSubscribeList(subscribeList)
-        makeTreetree.setActionList(actionList)
+        makeTreetree.setActionList(actiondev_methodMap)
         makeTreetree.setDynamicPageList(dynamicPageList)
 
         JTree jtree = new JTree(makeTreetree.getPage())
-        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList, actionList))
+        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList, actiondev_methodMap))
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
         jtree.putClientProperty("JTree.lineStyle", "None")

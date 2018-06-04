@@ -1,3 +1,4 @@
+import com.nwoods.jgo.layout.JGoTreeAutoLayout;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingMethodException;
 import node.ErrorSubscribe;
@@ -26,8 +27,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import javafx.application.Application;
 
 
 public class MainTool extends JFrame {
@@ -121,7 +120,7 @@ public class MainTool extends JFrame {
 		matricPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		matricPanel.setLayout(new FlowLayout());
 		matricPanel.setPreferredSize(new Dimension(WIDTH/2-20, HEIGHT - HEIGHT_info - 20));
-
+		JGoTreeAutoLayout hi = new JGoTreeAutoLayout();
 		matricPanel.add(new JLabel("Counting Chart"));
 		//mainPane.add("East", matricPanel);
 
@@ -260,7 +259,7 @@ public class MainTool extends JFrame {
 							String hrefName = href.split(" ")[1];
 
 							if (pageName.equals(hrefName)) {
-								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList(), analysis.getActionList());
+								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList(), analysis.getActiondev_methodMap());
 							}
 						}
 					}

@@ -59,8 +59,8 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     HashMap definition = new HashMap<>();
 
     HashMap dynamicMethodMap = new HashMap<>();
+    HashMap ActionsCommandMap = new HashMap()
     HashMap ActionsMethodMap = new HashMap()
-
 
     boolean multiPage
     SettingBoxList setting
@@ -77,17 +77,79 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
     int Level
 
+    private void actionMap(methodcallExpression){
+
+        if (methodcallExpression.objectExpression.variable != "this" && methodcallExpression.objectExpression.variable != "log") { //deveice command call
+            def device = methodcallExpression.objectExpression.variable
+            def commomd = methodcallExpression.method.value
+
+            HashMap methodsMap1 = ActionsCommandMap.get(device) ?: null;
+
+            if (methodsMap1) {
+                if (methodsMap1.containsKey(actionsinMethod)) {
+                    ArrayList method_list = methodsMap1.get(actionsinMethod)
+                    def methodCount = method_list[0] + 1
+                    HashSet set = method_list[1]
+                    set.add(commomd)
+
+                    methodsMap1.put(actionsinMethod, [methodCount, set])
+                } else {
+                    HashSet newset = new HashSet();
+                    newset.add(commomd)
+                    methodsMap1.put(actionsinMethod, [1, newset])
+                }
+            } else {
+                HashMap methodsMap2 = new HashMap()
+                HashSet newset = new HashSet();
+                newset.add(commomd)
+                methodsMap2.put(actionsinMethod, [1, newset])
+                ActionsCommandMap.put(device, methodsMap2)
+            }
+
+        } else if (methodcallExpression.objectExpression.variable == "this") {  //method call
+            def method = methodcallExpression.method.value
+            if (method == "runIn") {
+                method = methodcallExpression.arguments.getExpressions().get(1).variable
+            }
+            HashSet hashSet = ActionsMethodMap.get(method) ?: null
+            if (hashSet) {
+                hashSet.add(actionsinMethod)
+
+            } else {
+                HashSet newset = new HashSet();
+                newset.add(actionsinMethod)
+                ActionsMethodMap.put(method, newset)
+            }
+
+        }
+    }
     public void visitBlockStatement(BlockStatement block) {
 
         if(dynamicPre)
             Level ++
 
+
         for (Statement statement : block.getStatements()) {
+            if(actionsinMethod){
+                if(statement in ExpressionStatement) {
+                    def methodcallExpression = statement.expression
+                    if (methodcallExpression instanceof MethodCallExpression) {
+                        if (methodcallExpression.objectExpression instanceof VariableExpression
+                         && methodcallExpression.method instanceof ConstantExpression)
+                            actionMap(methodcallExpression)
+
+                    }
+
+                }
+            }
+
             statement.visit(this);
         }
 
+
         if(dynamicPre)
             Level--
+
 
     }
 
@@ -173,35 +235,6 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 }
             }
 
-        }  else if(actionsinMethod){
-
-            def method_Variable = call.objectExpression
-            if(method_Variable instanceof VariableExpression && method_Variable.variable != "this") {
-                def commomd = methodCall
-                def device = method_Variable.variable
-                HashMap methodsMap1 = ActionsMethodMap.get(device)?:null;
-                if(methodsMap1){
-                    if(methodsMap1.containsKey(actionsinMethod)) {
-                        ArrayList method_list= methodsMap1.get(actionsinMethod)
-                        def methodCount = method_list[0] + 1
-                        HashSet set =method_list[1]
-                        set.add(commomd)
-
-                        methodsMap1.put(actionsinMethod, [methodCount , set])
-                    }else{
-                        HashSet newset = new HashSet();
-                        newset.add(commomd)
-                        methodsMap1.put(actionsinMethod, [1 , newset])
-                    }
-                }else {
-                    HashMap methodsMap2 = new HashMap()
-                    HashSet newset = new HashSet();
-                    newset.add(commomd)
-                    methodsMap2.put(actionsinMethod, [1 , newset])
-                    ActionsMethodMap.put(device, methodsMap2)
-                }
-
-            }
         }else if (dynamicPre) {
 
             if (methodCall.equals("dynamicPage")) {
@@ -260,7 +293,6 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
 
     }
-    private boolean isitCo
 
     private boolean isitinput(def args) {
         if(args.size() == 2){
