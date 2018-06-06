@@ -1,6 +1,8 @@
 /**
  * Created by b_newyork on 2017-08-07.
  */
+
+import node.Subscribe
 import support.DetectingError
 import traverseAST.MyClassCodeVisitorSupport
 import node.Method
@@ -29,10 +31,10 @@ class CodeVisitor extends CompilationCustomizer{
     ArrayList dynamicPageList
     HashMap comMethodList
 
-    HashMap actiondev_methodMap
+    HashMap action_methodssMap
     HashMap calli2callerMap
-    ArrayList  actionFlowsList = new ArrayList()
-    HashMap actionDev_methodFlowsMap = new HashMap()
+    ArrayList<ArrayList>  actionFlowsList = new ArrayList<ArrayList>()
+    HashMap action_methodFlowsssMap = new HashMap()
 
     SettingBoxList settingList
     boolean multiPage
@@ -60,23 +62,8 @@ class CodeVisitor extends CompilationCustomizer{
         multiPage = codeVisitor.getMultiPage()
         comMethodList = codeVisitor.getCommonMethodList()
         definition = codeVisitor.getDefinition()
-        actiondev_methodMap = codeVisitor.getActionsCommandMap()
+        action_methodssMap = codeVisitor.getActionsCommandMap()
         calli2callerMap = codeVisitor.getActionsMethodMap()
-
-        for(String device : actiondev_methodMap.keySet()){
-            def actionComandMap =  ((HashMap)actiondev_methodMap.get(device)).keySet()
-            ArrayList flows = new ArrayList()
-
-            for(String start : actionComandMap){ //deivce를 부르는 method
-
-                actionFlow(start, new ArrayList())
-                flows.addAll(actionFlowsList)
-                actionFlowsList.clear()
-
-            }
-            actionDev_methodFlowsMap.put(device, flows)
-        }
-
 
         if(codeVisitor.isDynamicPage() && settingList.showDynamic()){
             codeVisitor.setDynamicPage(true)
@@ -88,27 +75,58 @@ class CodeVisitor extends CompilationCustomizer{
         detectingError = new DetectingError(preferenceList, subscribeList, comMethodList)
         detectingError.subscribe_error()
 
+
+        generating_actions_methodFlows()
+
+    }
+
+    void generating_actions_methodFlows(){
+        for(String device : action_methodssMap.keySet()){
+            def actionComandMethodList =  ((HashMap)action_methodssMap.get(device)).keySet()
+            ArrayList actionComandList=  ((HashMap)action_methodssMap.get(device)).values()
+            actionComandMethodList.eachWithIndex{ String start , int i -> //deivce를 부르는 method
+                ArrayList flow = new ArrayList()
+                String Command = ((HashSet)((ArrayList)actionComandList.get(i)).get(1)).toArray()[0]//((String)((HashSet)((ArrayList)actionComandList.get(i)).get(1)).toArray()[0]).value[0]
+                flow.add(Command)
+                actionFlow(start, flow)
+            }
+            action_methodFlowsssMap.put(device, actionFlowsList.clone())
+            actionFlowsList.clear()
+        }
     }
 
     public void actionFlow(String startingMethod, ArrayList flow){
         String method = startingMethod
-        flow.add(method)
 
         if(calli2callerMap.containsKey(method)){
+            flow.add(method)
             ArrayList list = ((HashSet)calli2callerMap.get(method)).toArray()
             for( String m  : list) {
                 actionFlow(m, flow)
                 flow.remove(flow.size()-1)
             }
         }else {
-            actionFlowsList.addAll(flow)
+            def result = false
+            for( Subscribe entry : subscribeList){
+                if(entry.handler.equals(method)){
+                    result = true;
+                    break;
+                }
+            }
+            if(result){
+                flow.add(method)
+                actionFlowsList.add(flow.clone())
+            }else{
+                detectingError.addMethodError(method)
+
+            }
         }
 
         return
     }
 
     public ArrayList errorReport(){
-        return detectingError.getErrorList()
+        return detectingError.getSubErrorList()
     }
 
     public JTree getPreferenceTree(){
@@ -116,11 +134,26 @@ class CodeVisitor extends CompilationCustomizer{
         makeTreetree =  new MakeTree()
         makeTreetree.setPreferList(preferenceList)
         makeTreetree.setSubscribeList(subscribeList)
-        makeTreetree.setActionList(actiondev_methodMap)
+        makeTreetree.setAction_methodssMap(action_methodssMap)
         makeTreetree.setDynamicPageList(dynamicPageList)
 
         JTree jtree = new JTree(makeTreetree.getPage())
-        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList, actiondev_methodMap))
+        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList, action_methodssMap))
+        jtree.setRootVisible(false)
+        jtree.setShowsRootHandles(true)
+        jtree.putClientProperty("JTree.lineStyle", "None")
+
+        return jtree
+    }
+    public JTree getActionTree(){
+
+        if(makeTreetree == null) {
+            makeTreetree = new MakeTree()
+            makeTreetree.setAction_methodssMap(action_methodssMap)
+        }
+
+        JTree jtree = new JTree(makeTreetree.getAction(action_methodFlowsssMap))
+        jtree.setCellRenderer(new TreeCellRenderer(action_methodFlowsssMap))
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
         jtree.putClientProperty("JTree.lineStyle", "None")

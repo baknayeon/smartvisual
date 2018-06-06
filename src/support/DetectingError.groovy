@@ -13,16 +13,21 @@ class DetectingError {
     private ArrayList subscribeList
     private HashMap methodList
 
-    ArrayList errorList
+    ArrayList subErrorList
+    ArrayList methodErrorList
 
     public DetectingError(ArrayList pre, ArrayList sub, HashMap method) {
         preferenceList = pre
         subscribeList = sub
         methodList = method
+        methodErrorList = new ArrayList()
     }
 
+    public void addMethodError(error){
+        methodErrorList.addAll(error)
+    }
     public void subscribe_error(){
-        errorList = new ArrayList<>()
+        subErrorList = new ArrayList<>()
         //Helper helper = new Helper()
 
         subscribeList.each { Subscribe sub ->
@@ -77,7 +82,7 @@ class DetectingError {
             //make ErrorSubscribe
             if(!i || !c || !h){
                 ErrorSubscribe e = new ErrorSubscribe(i, c, h, sub)
-                errorList.add(e)
+                subErrorList.add(e)
             }
         }
     }

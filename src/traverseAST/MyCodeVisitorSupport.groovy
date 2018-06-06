@@ -81,7 +81,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
         if (methodcallExpression.objectExpression.variable != "this" && methodcallExpression.objectExpression.variable != "log") { //deveice command call
             def device = methodcallExpression.objectExpression.variable
-            def commomd = methodcallExpression.method.value
+            String commomd = methodcallExpression.method.value
 
             HashMap methodsMap1 = ActionsCommandMap.get(device) ?: null;
 
@@ -277,7 +277,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
 
 
-        if (!dynamicPre && methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand")) {
+        if (!dynamicPre && methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand") || methodCall.equals("schedule")) {
 
             if (args.size() > 0) {
                 Subscribe subscribe = new Subscribe(args)

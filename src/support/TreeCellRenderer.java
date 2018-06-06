@@ -6,8 +6,8 @@ import node.Subscribe;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,14 +16,19 @@ import java.util.HashMap;
  */
 public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
-    ArrayList dynamicPageList = new ArrayList();
-    ArrayList subscribeList = new ArrayList();
-    HashMap actionMap = new HashMap();
+    ArrayList dynamicPageList;
+    ArrayList subscribeList;
+    HashMap actionMap;
+    HashMap action_methodFlowsssMap;
 
     TreeCellRenderer(ArrayList dynamicPageList, ArrayList subscribeList, HashMap actionMap) {
         this.dynamicPageList = dynamicPageList;
         this.subscribeList = subscribeList;
         this.actionMap = actionMap;
+    }
+
+    TreeCellRenderer(HashMap action_methodFlowsssMap) {
+        this.action_methodFlowsssMap = action_methodFlowsssMap;
     }
 
     TreeCellRenderer(ArrayList wrongSubscribeList) {
@@ -37,13 +42,18 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         JLabel label= new JLabel();
         DefaultMutableTreeNode Object = ((DefaultMutableTreeNode) value);
         String ObjectName = Object.getUserObject().toString();
+        String imageUrl = "";
 
-        if (isPreference(Object))
-            label.setForeground(Color.black);
-        else
-            label.setForeground(Color.gray);
+        if(action_methodFlowsssMap != null){
+            imageUrl = setActionImageUrl(Object);
 
-        String imageUrl = setImageUrl(Object);
+        }else if(dynamicPageList != null || subscribeList != null ||  actionMap != null) {
+            if (isPreference(Object))
+                label.setForeground(Color.black);
+            else
+                label.setForeground(Color.gray);
+             imageUrl = setPreImageUrl(Object);
+        }
 
         try {
             if (imageUrl.equals("null")) {
@@ -70,7 +80,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
     }
 
 
-    private String setImageUrl(DefaultMutableTreeNode Object) {
+    private String setPreImageUrl(DefaultMutableTreeNode Object) {
         String ObjectName = Object.getUserObject().toString().toLowerCase();
         String iconFolder = "./icon";
         String imageUrl = "null";
@@ -101,6 +111,30 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             imageUrl = iconFolder + "/handler.png";
         else if (isItActions(Object))
             imageUrl = iconFolder + "/actions.png";
+        return imageUrl;
+    }
+
+    private String setActionImageUrl(DefaultMutableTreeNode Object) {
+        String ObjectName = Object.getUserObject().toString();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
+        String parentName = parent!=null?parent.getUserObject().toString():"";
+        int childCount =  Object.getChildCount();
+
+        String iconFolder = "./icon";
+        String imageUrl = "";
+
+        if ("Action".equals(parentName)) {
+            imageUrl = iconFolder + "/input.png";
+        }else if(childCount == 0){
+            DefaultMutableTreeNode me = ((DefaultMutableTreeNode)parent.getLastChild());
+            String myName = me.getUserObject().toString();
+            if(myName.equals(ObjectName)) {
+                imageUrl = iconFolder + "/point_end.png";
+
+            }else
+                imageUrl = iconFolder + "/point.png";
+        }
+
         return imageUrl;
     }
 

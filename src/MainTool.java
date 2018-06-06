@@ -32,8 +32,8 @@ import javax.swing.tree.TreeNode;
 public class MainTool extends JFrame {
 
 	private SettingBoxList settingBoxList;
-	private JPanel appInfo_Panel, errorJPanel, matricPanel;
-	private JScrollPane treeScrollPane ;
+	private JPanel appInfo_Panel, errorJPanel ;
+	private JScrollPane treeScrollPane, actionsTree ;
 
 	JFileChooser chooser;
 	JLabel file, appName, description;
@@ -97,7 +97,8 @@ public class MainTool extends JFrame {
 		setContentPane(mainPane);
 
 		appInfo_Panel = new JPanel();
-		matricPanel = new JPanel();
+		JPanel actionsPanel = new JPanel();
+		actionsTree= new JScrollPane();
 		errorJPanel = new JPanel();
 		treeScrollPane = new JScrollPane();
 
@@ -117,16 +118,15 @@ public class MainTool extends JFrame {
 		appInfo_Panel.add(appName);
 		appInfo_Panel.add(description);
 
-		matricPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
-		matricPanel.setLayout(new FlowLayout());
-		matricPanel.setPreferredSize(new Dimension(WIDTH/2-20, HEIGHT - HEIGHT_info - 20));
-		JGoTreeAutoLayout hi = new JGoTreeAutoLayout();
-		matricPanel.add(new JLabel("Counting Chart"));
-		//mainPane.add("East", matricPanel);
+		actionsPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
+		actionsPanel.setPreferredSize(new Dimension(WIDTH/2-10, HEIGHT - HEIGHT_info - 20));
+		actionsPanel.add(new JLabel("Counting Chart"));
+		actionsPanel.add(actionsTree);
+		mainPane.add("East", actionsPanel);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
-		//tabbedPane.setPreferredSize(new Dimension(200, HEIGHT - HEIGHT_info - 20));
 		treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
@@ -216,7 +216,7 @@ public class MainTool extends JFrame {
 		ArrayList error;
 		HashMap definition;
 		CodeVisitor analysis;
-		JTree tree;
+		JTree tree, actions_tree;
 
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -242,6 +242,7 @@ public class MainTool extends JFrame {
 		tree = analysis.getPreferenceTree();
 		definition = analysis.getDefinition();
 		error = analysis.errorReport();
+		actions_tree = analysis.getActionTree();
 
 		tree.addMouseListener(new MouseAdapter() {
 
@@ -259,7 +260,7 @@ public class MainTool extends JFrame {
 							String hrefName = href.split(" ")[1];
 
 							if (pageName.equals(hrefName)) {
-								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList(), analysis.getActiondev_methodMap());
+								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList(), analysis.getAction_methodssMap());
 							}
 						}
 					}
@@ -283,6 +284,7 @@ public class MainTool extends JFrame {
 		}
 
 		treeScrollPane.setViewportView(tree);
+		actionsTree.setViewportView(actions_tree);
 		setError(error);
 	}
 

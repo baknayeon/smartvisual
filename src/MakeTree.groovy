@@ -12,7 +12,6 @@ import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.MapExpression
 
 import javax.swing.tree.DefaultMutableTreeNode
-import java.lang.reflect.Array
 
 class MakeTree {
 
@@ -23,8 +22,30 @@ class MakeTree {
     ArrayList preferList
     ArrayList subscribeList
     ArrayList dynamicPageList
-    HashMap actionList
+    HashMap action_methodssMap
 
+    public DefaultMutableTreeNode getAction(HashMap action_methodFlowsssMap ){
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Action")
+        if(action_methodFlowsssMap){
+            for(String device : action_methodssMap.keySet()) {
+                DefaultMutableTreeNode deviceNode = new DefaultMutableTreeNode(device)
+               ArrayList methodFlows =  action_methodFlowsssMap.get(device)
+                for(ArrayList methodFlow : methodFlows){
+                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(device+"."+methodFlow.get(0))
+
+                    for(int i = 1 ; i< methodFlow.size(); i++){
+                        methodFlowNode.add(new DefaultMutableTreeNode(methodFlow.get(i)))
+
+                    }
+                    deviceNode.add(methodFlowNode)
+                }
+                root.add(deviceNode)
+
+            }
+        }
+
+        return root
+    }
 
     public DefaultMutableTreeNode getPage(){
 
@@ -190,7 +211,7 @@ class MakeTree {
 
     public void makeActionsinMethod(DefaultMutableTreeNode node,  String device){
 
-        HashMap MethodMap = actionList.get(device)
+        HashMap MethodMap = action_methodssMap.get(device)
         if(MethodMap){
 
             for( String method : MethodMap.keySet()){
