@@ -45,8 +45,7 @@ import org.codehaus.groovy.syntax.SyntaxException
 
 public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport implements GroovyClassVisitor {
 
-    boolean makeingPre
-    boolean makeingDynamicPre
+    boolean makeingPre, makeingDynamicPre, makeingActionsChaining
     boolean dynamicPage
     HashMap commonMethodList
 
@@ -62,17 +61,24 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
 
         setPreference(false)
         setDynamicPre(false)
-        setActionsinMethod(null)
+        setActionsinMethod(methodName)
+        setActionsMethodChaning(false)
+        setSubscribe(false)
 
-        if(makeingPre) { //first
+        if(makeingPre) { //Subscribe
+            setSubscribe(true)
             if ("run".equals(methodName)) {
                 setPreference(true)
             }else if (!"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
-                setActionsinMethod(methodName)
                 commonMethodList.put(methodName, new Method(node))
             }
         }
 
+        if(makeingActionsChaining){
+            if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
+                setActionsMethodChaning(true)
+            }
+        }
         if(makeingDynamicPre) {//second
 
             if(getDynamicMethodMap().containsKey(methodName)){
@@ -97,6 +103,9 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             }
         }
     }
+    public void setActionsChaining(boolean t){
+        makeingActionsChaining = t
+    }
 
     public void setDynamicPage(boolean t){
         makeingDynamicPre = t
@@ -108,8 +117,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     }
 
     @Override
-    HashMap getActionsMethodMap() {
-        return super.getActionsMethodMap()
+    HashMap getCalli2callerMap() {
+        return super.getCalli2callerMap()
     }
 
     @Override

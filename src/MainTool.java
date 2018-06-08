@@ -121,7 +121,7 @@ public class MainTool extends JFrame {
 		actionsPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
 		actionsPanel.setPreferredSize(new Dimension(WIDTH/2-10, HEIGHT - HEIGHT_info - 20));
-		actionsPanel.add(new JLabel("Counting Chart"));
+		actionsPanel.add(new JLabel(" "));
 		actionsPanel.add(actionsTree);
 		mainPane.add("East", actionsPanel);
 
@@ -130,7 +130,7 @@ public class MainTool extends JFrame {
 		treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
-		tabbedPane.addTab("subscribe error", null, errorJPanel, null);
+		tabbedPane.addTab("Subscribe error", null, errorJPanel, null);
 		mainPane.add("Center", tabbedPane);
 
 		settingBoxList = new SettingBoxList();
@@ -327,7 +327,7 @@ public class MainTool extends JFrame {
 			JTextPaneList panleList = (JTextPaneList)errorList.get(i);
 
 			JTextPane subOpen = new JTextPane();
-			subOpen.setText("subscribe(");
+			subOpen.setText("Subscribe(");
 			subOpen.setEditable(false);
 
 			JTextPane subClose = new JTextPane();

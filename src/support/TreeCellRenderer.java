@@ -1,5 +1,6 @@
 package support;
 
+import node.DeviceAction;
 import node.Method;
 import node.Subscribe;
 
@@ -81,6 +82,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
 
     private String setPreImageUrl(DefaultMutableTreeNode Object) {
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
         String ObjectName = Object.getUserObject().toString().toLowerCase();
         String iconFolder = "./icon";
         String imageUrl = "null";
@@ -109,8 +111,10 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         }
         if(isItSubscribe(Object))
             imageUrl = iconFolder + "/handler.png";
+        else if (isItSubscribe(parent))
+            imageUrl = iconFolder + "/point_end.png";
         else if (isItActions(Object))
-            imageUrl = iconFolder + "/actions.png";
+            imageUrl = iconFolder + "/action.png";
         return imageUrl;
     }
 
@@ -189,34 +193,29 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
     }
 
     private boolean isItSubscribe(DefaultMutableTreeNode Object){
-        String ObjectName = Object.getUserObject().toString().toLowerCase();
-        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
-        String parentName = parent!=null?parent.getUserObject().toString().toLowerCase():"";
+        if(Object != null) {
+            String ObjectName = Object.getUserObject().toString().toLowerCase();
+            DefaultMutableTreeNode parent = (DefaultMutableTreeNode) Object.getParent();
+            String parentName = parent != null ? parent.getUserObject().toString().toLowerCase() : "";
 
-        if(subscribeList != null) {
-            int size = subscribeList.size();
-            for (int i = 0; i < size; i++) {
-                Subscribe method = (Subscribe) subscribeList.get(i);
-                String Handler = method.handler.toLowerCase();
-                String deviceName = "input "+method.input.toLowerCase();
-                if (ObjectName.equals(Handler) && parentName.equals(deviceName))
-                    return true;
+            if (subscribeList != null) {
+                int size = subscribeList.size();
+                for (int i = 0; i < size; i++) {
+                    Subscribe method = (Subscribe) subscribeList.get(i);
+                    String Handler = method.capability.toLowerCase();
+                    String deviceName = "input " + method.input.toLowerCase();
+                    if (ObjectName.equals(Handler) && parentName.equals(deviceName))
+                        return true;
+                }
             }
         }
         return false;
     }
     private boolean isItActions(DefaultMutableTreeNode Object){
         String ObjectName = Object.getUserObject().toString();
-        DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();
-        String[] parentName = parent!=null?parent.getUserObject().toString().toLowerCase().split(" "): new String[1];
-        String device_name = parentName.length > 1 ? parentName[1]:null;
-
-        if(actionMap.containsKey(device_name)){
-            HashMap methods = (HashMap)actionMap.get(device_name);
-            if(methods.containsKey(ObjectName)) {
-                return true;
-            }
-        }
-        return false;
+        if(ObjectName.contains("()"))
+            return true;
+        else
+            return false;
     }
 }

@@ -2,6 +2,8 @@
  * Created by b_newyork on 2017-08-07.
  */
 
+
+import node.DeviceAction
 import node.Subscribe
 import support.DetectingError
 import traverseAST.MyClassCodeVisitorSupport
@@ -33,8 +35,7 @@ class CodeVisitor extends CompilationCustomizer{
 
     HashMap action_methodssMap
     HashMap calli2callerMap
-    ArrayList<ArrayList>  actionFlowsList = new ArrayList<ArrayList>()
-    HashMap action_methodFlowsssMap = new HashMap()
+    ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
 
     SettingBoxList settingList
     boolean multiPage
@@ -53,28 +54,29 @@ class CodeVisitor extends CompilationCustomizer{
         SmartThingAppCodeVisitor codeVisitor = new SmartThingAppCodeVisitor()
         codeVisitor.setSetting(settingList)
 
-        codeVisitor.setMakingPre(true)
+        //codeVisitor.setMakingPre(true)
         classNode.visitContents(codeVisitor)
-        codeVisitor.setMakingPre(false)
+        //codeVisitor.setMakingPre(false)
 
-        preferenceList = codeVisitor.getPreferenceList()
-        subscribeList = codeVisitor.getSubscribeList()
-        multiPage = codeVisitor.getMultiPage()
-        comMethodList = codeVisitor.getCommonMethodList()
-        definition = codeVisitor.getDefinition()
-        action_methodssMap = codeVisitor.getActionsCommandMap()
-        calli2callerMap = codeVisitor.getActionsMethodMap()
+        //preferenceList = codeVisitor.getPreferenceList()
+        //subscribeList = codeVisitor.getSubscribeList()
+        //comMethodList = codeVisitor.getCommonMethodList()
+        //definition = codeVisitor.getDefinition()
+        //calli2callerMap = codeVisitor.getCalli2callerMap()
 
-        if(codeVisitor.isDynamicPage() && settingList.showDynamic()){
-            codeVisitor.setDynamicPage(true)
-            classNode.visitContents(codeVisitor)
-            dynamicPageList = codeVisitor.getDynamicPageList()
-        }
+        //multiPage = codeVisitor.getMultiPage()
 
+
+        //if(codeVisitor.isDynamicPage() && settingList.showDynamic())
+            //codeVisitor.setDynamicPage(true)
+        //codeVisitor.setActionsChaining(true)
+        classNode.visitContents(codeVisitor)
+
+        //action_methodssMap = codeVisitor.getActionsCommandMap()
+        //dynamicPageList = codeVisitor.getDynamicPageList()
 
         detectingError = new DetectingError(preferenceList, subscribeList, comMethodList)
         detectingError.subscribe_error()
-
 
         generating_actions_methodFlows()
 
@@ -82,16 +84,16 @@ class CodeVisitor extends CompilationCustomizer{
 
     void generating_actions_methodFlows(){
         for(String device : action_methodssMap.keySet()){
-            def actionComandMethodList =  ((HashMap)action_methodssMap.get(device)).keySet()
-            ArrayList actionComandList=  ((HashMap)action_methodssMap.get(device)).values()
-            actionComandMethodList.eachWithIndex{ String start , int i -> //deivce를 부르는 method
-                ArrayList flow = new ArrayList()
-                String Command = ((HashSet)((ArrayList)actionComandList.get(i)).get(1)).toArray()[0]//((String)((HashSet)((ArrayList)actionComandList.get(i)).get(1)).toArray()[0]).value[0]
-                flow.add(Command)
-                actionFlow(start, flow)
+            DeviceAction commandList = action_methodssMap.get(device)
+            for(String command : commandList.getCommads()){
+                ArrayList methods =  commandList.getMethodByCommad(command)
+                for(String method : methods){
+                    actionFlow(method,  new ArrayList())
+                }
+                commandList.setMethodFlow(command, FlowsList.clone())
+                FlowsList.clear()
             }
-            action_methodFlowsssMap.put(device, actionFlowsList.clone())
-            actionFlowsList.clear()
+
         }
     }
 
@@ -115,7 +117,7 @@ class CodeVisitor extends CompilationCustomizer{
             }
             if(result){
                 flow.add(method)
-                actionFlowsList.add(flow.clone())
+                FlowsList.add(flow.clone())
             }else{
                 detectingError.addMethodError(method)
 
@@ -149,11 +151,10 @@ class CodeVisitor extends CompilationCustomizer{
 
         if(makeTreetree == null) {
             makeTreetree = new MakeTree()
-            makeTreetree.setAction_methodssMap(action_methodssMap)
         }
 
-        JTree jtree = new JTree(makeTreetree.getAction(action_methodFlowsssMap))
-        jtree.setCellRenderer(new TreeCellRenderer(action_methodFlowsssMap))
+        JTree jtree = new JTree(makeTreetree.getAction(action_methodssMap))
+        jtree.setCellRenderer(new TreeCellRenderer(action_methodssMap))
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
         jtree.putClientProperty("JTree.lineStyle", "None")
@@ -163,6 +164,11 @@ class CodeVisitor extends CompilationCustomizer{
 
     class SmartThingAppCodeVisitor extends MyClassCodeVisitorSupport {
 
+
+
+        void setActionsChaining(boolean b){
+            super.setActionsChaining(b)
+        }
 
         void setDynamicPage(boolean b){
             super.setDynamicPage(b)

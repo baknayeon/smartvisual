@@ -1,3 +1,4 @@
+import node.DeviceAction
 import node.Method
 import node.Href
 import node.Input
@@ -24,25 +25,29 @@ class MakeTree {
     ArrayList dynamicPageList
     HashMap action_methodssMap
 
-    public DefaultMutableTreeNode getAction(HashMap action_methodFlowsssMap ){
+    public DefaultMutableTreeNode getAction(HashMap action_methodssMap){
+        this.action_methodssMap = action_methodssMap
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Action")
-        if(action_methodFlowsssMap){
-            for(String device : action_methodssMap.keySet()) {
-                DefaultMutableTreeNode deviceNode = new DefaultMutableTreeNode(device)
-               ArrayList methodFlows =  action_methodFlowsssMap.get(device)
-                for(ArrayList methodFlow : methodFlows){
-                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(device+"."+methodFlow.get(0))
 
-                    for(int i = 1 ; i< methodFlow.size(); i++){
-                        methodFlowNode.add(new DefaultMutableTreeNode(methodFlow.get(i)))
+        for(String device : action_methodssMap.keySet()) {
+            DefaultMutableTreeNode deviceNode = new DefaultMutableTreeNode(device)
+            DeviceAction methodFlows =  action_methodssMap.get(device)
 
-                    }
+
+            for(String commads :  methodFlows.getCommads()){
+                ArrayList methodFlow = methodFlows.getMethodFlow(commads)
+
+                for(ArrayList methodsList : methodFlow) {
+                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(device + "." + commads + "()")
+                    for (String method : methodsList)
+                        methodFlowNode.add(new DefaultMutableTreeNode(method))
                     deviceNode.add(methodFlowNode)
                 }
-                root.add(deviceNode)
-
             }
+            root.add(deviceNode)
+
         }
+
 
         return root
     }
@@ -200,8 +205,8 @@ class MakeTree {
                     String subInput = sub.getInput()
                     if (subInput.equals(name)) {
                           //sub.setMatched(true)
-                        def handler = new DefaultMutableTreeNode(sub.getHandler())
-                        handler.add(new DefaultMutableTreeNode(sub.getCapability()))
+                        def handler = new DefaultMutableTreeNode(sub.getCapability())
+                        handler.add(new DefaultMutableTreeNode(sub.getHandler()))
                         node.add(handler)
                     }
                 }
@@ -209,20 +214,11 @@ class MakeTree {
         }
     }
 
-    public void makeActionsinMethod(DefaultMutableTreeNode node,  String device){
+    public void makeActionsinMethod(DefaultMutableTreeNode node, String device){
 
-        HashMap MethodMap = action_methodssMap.get(device)
-        if(MethodMap){
-
-            for( String method : MethodMap.keySet()){
-                def actions = new DefaultMutableTreeNode(method)
-                ArrayList commonds = MethodMap.get(method)
-                HashSet set = commonds[1]
-                for( def commond : set){
-                   actions.add(new DefaultMutableTreeNode(device +"."+commond+"()"))
-                }
-                node.add(actions)
-            }
+        if(action_methodssMap.containsKey(device)) {
+            DeviceAction MethodMap = action_methodssMap.get(device)
+            MethodMap.getActionNode(node, device)
         }
     }
     

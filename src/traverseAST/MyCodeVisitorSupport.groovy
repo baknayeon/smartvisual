@@ -1,5 +1,6 @@
 package traverseAST
 
+import node.DeviceAction
 import node.Method
 import node.Href
 import node.Input
@@ -60,12 +61,15 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
     HashMap dynamicMethodMap = new HashMap<>();
     HashMap ActionsCommandMap = new HashMap()
-    HashMap ActionsMethodMap = new HashMap()
+    HashMap calli2callerMap = new HashMap()
 
+    HashMap inputList = new ArrayList()
     boolean multiPage
+    boolean actionsMethodChaning
     SettingBoxList setting
 
     boolean preference = false
+    boolean Subscribe = false
     boolean dynamicSubMethod = false
     boolean dynamicPre = false
     String actionsinMethod = null
@@ -79,46 +83,56 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
     private void actionMap(methodcallExpression){
 
-        if (methodcallExpression.objectExpression.variable != "this" && methodcallExpression.objectExpression.variable != "log") { //deveice command call
-            def device = methodcallExpression.objectExpression.variable
+        String obj = methodcallExpression.objectExpression.variable
+        if (inputList.containsKey(obj)) {
+            //deveice command call
+            String device = obj //+"."+methodcallExpression.methodMap.value
+
             String commomd = methodcallExpression.method.value
+            if(commomd.equals("each") || commomd.equals("eachWithIndex")){
+                if(methodcallExpression.arguments)
+                    if(methodcallExpression.arguments.expressions && methodcallExpression.arguments.expressions.size > 0) {
+                        def colure = methodcallExpression.arguments.expressions.get(0)
+                        if (colure in ClosureExpression){
+                            if(colure.parameters && colure.parameters[0]){
+                                def parameter = colure.parameters[0].name
+                                inputList.put(parameter, device)
+                            }
+                        }
 
-            HashMap methodsMap1 = ActionsCommandMap.get(device) ?: null;
-
-            if (methodsMap1) {
-                if (methodsMap1.containsKey(actionsinMethod)) {
-                    ArrayList method_list = methodsMap1.get(actionsinMethod)
-                    def methodCount = method_list[0] + 1
-                    HashSet set = method_list[1]
-                    set.add(commomd)
-
-                    methodsMap1.put(actionsinMethod, [methodCount, set])
-                } else {
-                    HashSet newset = new HashSet();
-                    newset.add(commomd)
-                    methodsMap1.put(actionsinMethod, [1, newset])
+                    }
+            }else {
+                def eachDevice = inputList.get(obj)
+                if(inputList.containsKey(eachDevice)){
+                    device = eachDevice
                 }
-            } else {
-                HashMap methodsMap2 = new HashMap()
-                HashSet newset = new HashSet();
-                newset.add(commomd)
-                methodsMap2.put(actionsinMethod, [1, newset])
-                ActionsCommandMap.put(device, methodsMap2)
+                if (ActionsCommandMap.containsKey(device)) {
+                    DeviceAction methodsMap1 = ActionsCommandMap.get(device) ?: null;
+                    methodsMap1.add(commomd, actionsinMethod)
+                } else {
+                    DeviceAction methodsMap1 = new DeviceAction()
+                    methodsMap1.add(commomd, actionsinMethod)
+                    ActionsCommandMap.put(device, methodsMap1)
+                }
             }
 
-        } else if (methodcallExpression.objectExpression.variable == "this") {  //method call
+        } else if (obj== "this") {  //methodMap call
             def method = methodcallExpression.method.value
             if (method == "runIn") {
-                method = methodcallExpression.arguments.getExpressions().get(1).variable
+                method = methodcallExpression.arguments.getExpressions().get(1)
+                if(method in ConstantExpression)
+                    method = method.value;
+                else if(method in VariableExpression)
+                    method = method.variable;
             }
-            HashSet hashSet = ActionsMethodMap.get(method) ?: null
+            HashSet hashSet = calli2callerMap.get(method) ?: null
             if (hashSet) {
-                hashSet.add(actionsinMethod)
+                hashSet.addAll(actionsinMethod)
 
             } else {
                 HashSet newset = new HashSet();
-                newset.add(actionsinMethod)
-                ActionsMethodMap.put(method, newset)
+                newset.addAll(actionsinMethod)
+                calli2callerMap.put(method, newset)
             }
 
         }
@@ -130,7 +144,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
 
         for (Statement statement : block.getStatements()) {
-            if(actionsinMethod){
+            if(actionsMethodChaning){
                 if(statement in ExpressionStatement) {
                     def methodcallExpression = statement.expression
                     if (methodcallExpression instanceof MethodCallExpression) {
@@ -219,6 +233,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 Input input = new Input(args)
                 if (Helper.checkSameInputOrNot(preferenceList, input)) {
                     preferenceList.add(input)
+                    inputList.put(input.getName() ,input)
                 }
             } else if (methodCall.equals("label")) {
                 preferenceList.add(new Label(args))
@@ -232,6 +247,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 Input input = new Input(args)
                 if (Helper.checkSameInputOrNot(preferenceList, input)) {
                     preferenceList.add(input)
+                    inputList.put(input.getName() ,input)
                 }
             }
 
@@ -270,14 +286,14 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
                 }
             }
         }
-        else if(preference == false && dynamicPre ==false)
+        else if(Subscribe == false && preference == false && dynamicPre == false)
           if (methodCall.equals("input")) {
             DynamicSubMethodList.add(actionsinMethod)
         }
 
 
 
-        if (!dynamicPre && methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand") || methodCall.equals("schedule")) {
+        if ( Subscribe && (methodCall.equals("first") || methodCall.equals("subscribeToCommand") || methodCall.equals("schedule"))) {
 
             if (args.size() > 0) {
                 Subscribe subscribe = new Subscribe(args)
@@ -330,6 +346,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     private void addinput(def args){
         Input input = new Input(args)
         addList(input)
+        inputList.put(input.getName() ,input)
     }
 
     private void addList(def state){
