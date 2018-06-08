@@ -2,6 +2,7 @@ package support
 
 import node.ErrorSubscribe
 import node.Input
+import node.SmartApp
 import node.Subscribe
 
 /**
@@ -16,10 +17,10 @@ class DetectingError {
     ArrayList subErrorList
     ArrayList methodErrorList
 
-    public DetectingError(ArrayList pre, ArrayList sub, HashMap method) {
-        preferenceList = pre
-        subscribeList = sub
-        methodList = method
+    public DetectingError(SmartApp smartAppInfo) {
+        preferenceList = smartAppInfo.getPreferenceList()
+        subscribeList = smartAppInfo.getSubscribeList()
+        //methodList = smartAppInfo.get
         methodErrorList = new ArrayList()
     }
 

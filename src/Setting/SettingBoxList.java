@@ -16,6 +16,7 @@ public class SettingBoxList {
         jCheckBoxArrayList.add(new JCheckBox("show If condition",true));
         jCheckBoxArrayList.add(new JCheckBox("show While condition",true));
         jCheckBoxArrayList.add(new JCheckBox("show input option value",true));
+        jCheckBoxArrayList.add(new JCheckBox("show for",true));
     }
 
     public int size(){
@@ -37,7 +38,9 @@ public class SettingBoxList {
     public void set(int i,JCheckBox newBox){
         jCheckBoxArrayList.set(i, newBox);
     }
-
+    public boolean showFor() {
+        return jCheckBoxArrayList.get(0).isSelected();
+    }
     public boolean showDynamic(){
         return jCheckBoxArrayList.get(0).isSelected();
     }

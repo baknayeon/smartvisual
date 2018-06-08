@@ -1,5 +1,7 @@
 package support;
 
+import node.SmartApp;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -11,13 +13,13 @@ import java.util.HashMap;
  */
 public class DialogHref extends JDialog {
 
-    public DialogHref(DefaultMutableTreeNode target, ArrayList dynamicList, ArrayList subscribeList, HashMap actionList) {
+    public DialogHref(DefaultMutableTreeNode target, SmartApp smartApp) {
         String pageName = target.getUserObject().toString();
 
         JTree jTree = new JTree(target);
         jTree.setRootVisible(false);
         jTree.setShowsRootHandles(true);
-        jTree.setCellRenderer(new TreeCellRenderer(dynamicList, subscribeList, actionList));
+        jTree.setCellRenderer(new TreeCellRenderer(smartApp, "page"));
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setViewportView(jTree);

@@ -1,6 +1,15 @@
 package traverseAST
 
+import Setting.SettingBoxList
+import node.DeviceAction
+import node.Href
+import node.Input
+import node.Label
 import node.Method
+import node.Page
+import node.Section
+import node.SmartApp
+import node.Subscribe
 
 /**
  * Created by b_newyork on 2017-09-05.
@@ -20,8 +29,15 @@ import org.codehaus.groovy.ast.ModuleNode
 import org.codehaus.groovy.ast.PackageNode
 import org.codehaus.groovy.ast.Parameter
 import org.codehaus.groovy.ast.PropertyNode
+import org.codehaus.groovy.ast.expr.ClosureExpression
+import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.DeclarationExpression;
-import org.codehaus.groovy.ast.expr.Expression;
+import org.codehaus.groovy.ast.expr.Expression
+import org.codehaus.groovy.ast.expr.MapEntryExpression
+import org.codehaus.groovy.ast.expr.MapExpression
+import org.codehaus.groovy.ast.expr.MethodCallExpression
+import org.codehaus.groovy.ast.expr.TupleExpression
+import org.codehaus.groovy.ast.expr.VariableExpression;
 import org.codehaus.groovy.ast.stmt.AssertStatement;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.BreakStatement;
@@ -42,116 +58,294 @@ import org.codehaus.groovy.ast.stmt.WhileStatement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException
+import support.Helper
 
 public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport implements GroovyClassVisitor {
 
-    boolean makeingPre, makeingDynamicPre, makeingActionsChaining
-    boolean dynamicPage
-    HashMap commonMethodList
+    boolean first, second
+    String methodName = null
 
-    public MyClassCodeVisitorSupport(){
-        makeingPre = false
-        makeingDynamicPre = false
-        dynamicPage = false
-        commonMethodList = new HashMap()
-    }
+    SmartApp smartApp = new SmartApp()
+    SettingBoxList setting
+
+    boolean preference = false
+
+    boolean actionsMethod =false
+
+    ///ArrayList DynamicSubMethodList = new ArrayList()
+
 
     public void visitMethod(MethodNode node) {
-        String  methodName = node.name
+        methodName = node.name
 
-        setPreference(false)
-        setDynamicPre(false)
-        setActionsinMethod(methodName)
-        setActionsMethodChaning(false)
-        setSubscribe(false)
-
-        if(makeingPre) { //Subscribe
-            setSubscribe(true)
+        if(first) {
             if ("run".equals(methodName)) {
-                setPreference(true)
-            }else if (!"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
-                commonMethodList.put(methodName, new Method(node))
+                preference = true
             }
-        }
-
-        if(makeingActionsChaining){
+        }else if(second){
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
-                setActionsMethodChaning(true)
+                actionsMethod = true
             }
-        }
-        if(makeingDynamicPre) {//second
-
-            if(getDynamicMethodMap().containsKey(methodName)){
-                setDynamicPre(true)
-                dynamicPage = true
-            }else
-                dynamicPage = false
-
-            for(String method : getDynamicSubMethodList())
-                if (methodName.contains(method)) { // GString 어떻게 하지?
-                    setDynamicPre(true)
-                    break;
-                }
+            if(smartApp.isitDynamicPage(methodName)){
+                dynamicPre = true
+            }
         }
 
         visitConstructorOrMethod(node, false);
 
 
-        if(makeingDynamicPre) { //second
-            if(getDynamicPre()) {
-                addDynamicPageList(node, dynamicPage)
+        if(first) {
+            if ("run".equals(methodName)) {
+                preference = false
+            }
+        }
+        else if(second) { //second
+            if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
+                actionsMethod = false
+            }
+            if(dynamicPre) {
+                addDynamicThings(node)
+                dynamicPre = false
             }
         }
     }
-    public void setActionsChaining(boolean t){
-        makeingActionsChaining = t
+
+    SmartApp getSmartApp() {
+        return smartApp
     }
 
-    public void setDynamicPage(boolean t){
-        makeingDynamicPre = t
-    }
-
-    @Override
-    HashMap getActionsCommandMap() {
-        return super.getActionsCommandMap()
+    public void setSetting(SettingBoxList box) {
+        this.setting = box
+        super.setting = box
     }
 
     @Override
-    HashMap getCalli2callerMap() {
-        return super.getCalli2callerMap()
-    }
+    void visitMethodCallExpression(MethodCallExpression call) {
 
-    @Override
-    ArrayList<Method> getDynamicPageList() {
-        return super.getDynamicPageList()
-    }
+        String methodCall
 
-    @Override
-    ArrayList getPreferenceList() {
-        return super.getPreferenceList()
-    }
-
-    @Override
-    ArrayList getSubscribeList() {
-        return super.getSubscribeList()
-    }
-
-    @Override
-    HashMap getDefinition() {
-        return super.getDefinition()
-    }
-
-    public boolean isMultiPage(){
-        return super.multiPage
-    }
-
-    public boolean isDynamicPage(){
-        if(getDynamicMethodMap().size() >0)
-            return true
+        ArrayList args = (java.util.ArrayList) call.arguments.expressions
+        if (call.getMethodAsString() == null)
+            methodCall = call.getText()
         else
-            return false
+            methodCall = call.getMethodAsString()
+
+        // first
+        if (first ) {
+            if(methodCall.equals("subscribe") || methodCall.equals("subscribeToCommand") || methodCall.equals("schedule")){
+                if (args.size() > 0) {
+                    Subscribe subscribe = new Subscribe(args)
+                    smartApp.addSubscribeList(subscribe)
+
+                }
+            }else if( methodCall.equals("sendPush") || methodCall.equals("sendPushMessage") ||
+                    methodCall.equals("sendNotification") || methodCall.equals("sendNotificationEvent") || methodCall.equals("sendNotificationToContacts")){
+
+                for(def arg in args){
+                    if(arg in VariableExpression){
+                        smartApp.addSendMethd(arg.variable, methodCall)
+                    }
+                }
+
+
+            }else if( methodCall.equals("sendSms") || methodCall.equals("sendSmsMessage")){
+                if(args.size() == 2){
+                    def phone = args[0]
+                    def message = args[1]
+                    smartApp.addSendMethd(phone, message, methodCall)
+                }
+
+            }
+        }
+        if (preference) {
+            if (methodCall.equals("definition")){
+                def arg = ((java.util.ArrayList)((TupleExpression)call.arguments).expressions).get(0)
+                if(arg in MapExpression) {
+                    ((MapExpression)arg).mapEntryExpressions.each { def entry ->
+
+                        def key = ((MapEntryExpression) entry).keyExpression
+                        def var = ((MapEntryExpression) entry).valueExpression
+                        if(key in ConstantExpression && var in ConstantExpression) {
+                            key = ((ConstantExpression)key).getText()
+                            var = ((ConstantExpression)var).getText()
+                            smartApp.definition.put(key, var)
+                        }
+
+                    }
+                }
+            }else if (methodCall.equals("preferences")) {
+                smartApp.preferenceList.add(methodCall)
+            } else if (methodCall.equals("page")) {
+                if (Helper.isDynamicPage(args)) {
+                    def dynamicPage = new Page(args, "dynamicPage")
+                    smartApp.dynamicMethodMap.put(dynamicPage.getName(), dynamicPage)
+                    smartApp.preferenceList.add(new Page(args, "dynamicPage"))
+                } else {
+                    smartApp.preferenceList.add(new Page(args, "page"))
+                }
+
+            } else if (methodCall.equals("input")) {
+                Input input = new Input(args)
+                smartApp.preferenceList.add(input)
+                smartApp.inputList.put(input.getName() ,input)
+
+            } else if (methodCall.equals("label")) {
+                smartApp.preferenceList.add(new Label(args))
+
+            } else if (methodCall.equals("href")) {
+                smartApp.preferenceList.add(new Href(args))
+
+            } else if (methodCall.equals("section")) {
+                smartApp.preferenceList.add(new Section(args))
+            }
+        }else if (dynamicPre) {
+
+            if (methodCall.equals("dynamicPage")) {
+                addList(new Page(args, "dynamicPage"))
+            } else if (methodCall.equals("label")) {
+                addList(new Label(args))
+            } else if (methodCall.equals("href")) {
+                addList(new Href(args))
+            } else if (methodCall.equals("section")) {
+                addList(new Section(args))
+            }else if (methodCall.equals("input")) {
+                addinput(args)
+               // dynamicSubMethod = true
+            } /*else if(isitinput(args)) {
+                addinput(args)
+            } else {
+                if( smartApp.dynamicMethodMap.containsKey(methodCall))
+                    addList(new Page(methodCall, args, "methodCall"))
+
+                if (setting.showMethod())
+                    if(DynamicSubMethodList.contains(methodCall))
+                        addList(new Method(methodCall))
+
+                if (isitinput(args)) {
+                    addinput(args)
+                }
+            }*/
+        }else if(second && preference == false ){
+            if (methodCall.equals("input")) {
+                smartApp.dynamicInputMap.put(methodName, new Input(args))
+            }
+        }
+
+
+        super.visitMethodCallExpression(call)
     }
 
+    private void addinput(def args){
+        Input input = new Input(args)
+        addList(input)
+        smartApp.inputList.put(input.getName() ,input)
+    }
+
+    public void addDynamicThings(MethodNode node){
+
+        def dynamicPage = getDynamicPage()
+        def dynamicStack = getDynamicStack()
+
+        if(dynamicStack.size() > 0) {
+            String methodName = node.name
+
+            Method method = new Method(dynamicStack, dynamicPage)
+            method.setMethodName(methodName)
+            method.setParameter(node.getParameters())
+
+            smartApp.dynamicPageList.add(method)
+            initDynamic()
+        }
+        dynamicPre = false
+    }
+
+    public void BlockStatement(BlockStatement block) {
+
+        if(dynamicPre)
+            level_up()
+
+        for (Statement statement : block.getStatements()) {
+            if(actionsMethod){
+                if(statement in ExpressionStatement) {
+                    def methodcallExpression = statement.expression
+                    if (methodcallExpression instanceof MethodCallExpression) {
+                        if (methodcallExpression.objectExpression instanceof VariableExpression
+                                && methodcallExpression.method instanceof ConstantExpression)
+                            actionMap(methodcallExpression)
+
+                    }
+
+                }
+            }
+
+            statement.visit(this);
+        }
+
+        if(dynamicPre)
+            level_down()
+    }
+
+    private void actionMap(methodcallExpression){
+
+        String obj = methodcallExpression.objectExpression.variable
+        if (smartApp.inputList.containsKey(obj)) {
+            //deveice command call
+            String device = obj //+"."+methodcallExpression.methodMap.value
+
+            String commomd = methodcallExpression.method.value
+            if(commomd.equals("each") || commomd.equals("eachWithIndex")){
+                if(methodcallExpression.arguments)
+                    if(methodcallExpression.arguments.expressions && methodcallExpression.arguments.expressions.size > 0) {
+                        def colure = methodcallExpression.arguments.expressions.get(0)
+                        if (colure in ClosureExpression){
+                            if(colure.parameters && colure.parameters[0]){
+                                def parameter = colure.parameters[0].name
+                                smartApp.inputList.put(parameter, device)
+                            }
+                        }
+
+                    }
+            }else {
+                def eachDevice = smartApp.inputList.get(obj)
+                if(smartApp.inputList.containsKey(eachDevice)){
+                    device = eachDevice
+                }
+                if (smartApp.ActionsCommandMap.containsKey(device)) {
+                    DeviceAction methodsMap1 = smartApp.ActionsCommandMap.get(device) ?: null;
+                    methodsMap1.add(commomd, methodName)
+                } else {
+                    DeviceAction methodsMap1 = new DeviceAction()
+                    methodsMap1.add(commomd, methodName)
+                    smartApp.ActionsCommandMap.put(device, methodsMap1)
+                }
+            }
+
+        } else if (obj== "this") {  //methodMap call
+            def method = methodcallExpression.method.value
+            if (method == "runIn") {
+                method = methodcallExpression.arguments.getExpressions().get(1)
+                if(method in ConstantExpression)
+                    method = method.value;
+                else if(method in VariableExpression)
+                    method = method.variable;
+            }
+            HashSet hashSet = smartApp.calli2callerMap.get(method) ?: null
+            if (hashSet) {
+                hashSet.addAll(methodName)
+
+            } else {
+                HashSet newset = new HashSet();
+                newset.addAll(methodName)
+                smartApp.calli2callerMap.put(method, newset)
+            }
+
+        }
+    }
+
+    public void visitBlockStatement(BlockStatement block) {
+        visitStatement(block);
+        BlockStatement(block);
+    }
 
     public void visitClass(ClassNode node) {
         visitAnnotations(node);
@@ -207,6 +401,18 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         }
     }
 
+    protected void addError(String msg, ASTNode expr) {
+        SourceUnit source = getSourceUnit();
+        source.getErrorCollector().addErrorAndContinue(
+                new SyntaxErrorMessage(new SyntaxException(msg + '\n', expr.getLineNumber(), expr.getColumnNumber(), expr.getLastLineNumber(), expr.getLastColumnNumber()), source)
+        );
+    }
+
+    protected abstract SourceUnit getSourceUnit();
+
+    protected void visitStatement(Statement statement) {}
+
+
     protected void visitClassCodeContainer(Statement code) {
         if (code != null) code.visit(this);
     }
@@ -248,25 +454,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         if (init != null) init.visit(this);
     }
 
-    protected void addError(String msg, ASTNode expr) {
-        SourceUnit source = getSourceUnit();
-        source.getErrorCollector().addErrorAndContinue(
-                new SyntaxErrorMessage(new SyntaxException(msg + '\n', expr.getLineNumber(), expr.getColumnNumber(), expr.getLastLineNumber(), expr.getLastColumnNumber()), source)
-        );
-    }
-
-    protected abstract SourceUnit getSourceUnit();
-
-    protected void visitStatement(Statement statement) {
-    }
-
-    public void visitBlockStatement(BlockStatement block) {
-      //  println "visitBlockStatement"
-        visitStatement(block);
-        super.visitBlockStatement(block);
-    }
     public void visitExpressionStatement(ExpressionStatement statement) {
-       // println "visitExpressionStatement"
         visitStatement(statement);
         super.visitExpressionStatement(statement);
     }
@@ -307,7 +495,6 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     }
 
     public void visitIfElse(IfStatement ifElse) {
-        //println "visitIfElse"
         visitStatement(ifElse);
         super.visitIfElse(ifElse);
     }

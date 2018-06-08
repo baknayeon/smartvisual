@@ -20,13 +20,18 @@ public class Subscribe {
         int size = methodArgList.size();
 
         if(size == 2){
-            this.input = handingArgs(methodArgList.get(0))
-            this.capability = "default"
-            this.handler = handingArgs(methodArgList.get(1))
+            def one = methodArgList.get(0)
+            def second = methodArgList.get(1)
+            this.input = handingArgs(one)
+            this.capability = ""
+            this.handler = handingArgs(second)
         }else if(size >= 3) {
-            this.input = handingArgs(methodArgList.get(0))
-            this.capability = handingArgs(methodArgList.get(1))
-            this.handler = handingArgs(methodArgList.get(2))
+            def one = methodArgList.get(0)
+            def second = methodArgList.get(1)
+            def third = methodArgList.get(2)
+            this.input = handingArgs(one)
+            this.capability = handingArgs(second)
+            this.handler = handingArgs(third)
             if(capability.contains(".")){
                 cap_val = capability.tokenize(".").get(1)
             }
@@ -61,6 +66,9 @@ public class Subscribe {
         return arg.verbatimText.toString()
     }
 
+    private def handingArgs(def arg){
+        return "null"
+    }
     public String getInput(){
         return input
     }

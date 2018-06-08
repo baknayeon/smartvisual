@@ -2,6 +2,7 @@ package support;
 
 import node.DeviceAction;
 import node.Method;
+import node.SmartApp;
 import node.Subscribe;
 
 import javax.swing.*;
@@ -17,24 +18,19 @@ import java.util.HashMap;
  */
 public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
+
     ArrayList dynamicPageList;
     ArrayList subscribeList;
-    HashMap actionMap;
     HashMap action_methodFlowsssMap;
+    String i = null;
 
-    TreeCellRenderer(ArrayList dynamicPageList, ArrayList subscribeList, HashMap actionMap) {
-        this.dynamicPageList = dynamicPageList;
-        this.subscribeList = subscribeList;
-        this.actionMap = actionMap;
+    TreeCellRenderer(SmartApp smartApp, String i) {
+        this.dynamicPageList = smartApp.getDynamicPageList();
+        this.subscribeList = smartApp.getSubscribeList();
+        this.action_methodFlowsssMap = smartApp.getActionsCommandMap();
+        this.i = i.toLowerCase();
     }
 
-    TreeCellRenderer(HashMap action_methodFlowsssMap) {
-        this.action_methodFlowsssMap = action_methodFlowsssMap;
-    }
-
-    TreeCellRenderer(ArrayList wrongSubscribeList) {
-        subscribeList = wrongSubscribeList;
-    }
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean exp, boolean leaf, int row, boolean hasFocus) {
@@ -42,14 +38,15 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
         JLabel label= new JLabel();
         DefaultMutableTreeNode Object = ((DefaultMutableTreeNode) value);
+        DefaultMutableTreeNode parent = ((DefaultMutableTreeNode) Object.getParent());
         String ObjectName = Object.getUserObject().toString();
         String imageUrl = "";
 
-        if(action_methodFlowsssMap != null){
+        if(i.equals("action")){
             imageUrl = setActionImageUrl(Object);
 
-        }else if(dynamicPageList != null || subscribeList != null ||  actionMap != null) {
-            if (isPreference(Object))
+        }else if(i.equals("page")){
+            if (isPreference(Object) )
                 label.setForeground(Color.black);
             else
                 label.setForeground(Color.gray);
@@ -129,7 +126,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
         if ("Action".equals(parentName)) {
             imageUrl = iconFolder + "/input.png";
-        }else if(childCount == 0){
+        }else if(childCount == 0 && parent != null){
             DefaultMutableTreeNode me = ((DefaultMutableTreeNode)parent.getLastChild());
             String myName = me.getUserObject().toString();
             if(myName.equals(ObjectName)) {
@@ -202,10 +199,14 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
                 int size = subscribeList.size();
                 for (int i = 0; i < size; i++) {
                     Subscribe method = (Subscribe) subscribeList.get(i);
-                    String Handler = method.capability.toLowerCase();
-                    String deviceName = "input " + method.input.toLowerCase();
-                    if (ObjectName.equals(Handler) && parentName.equals(deviceName))
+                    String capability = method.capability.toLowerCase();
+                    String handler = method.handler.toLowerCase();
+                    String inputeviceName = "input " + method.input.toLowerCase();
+                    if (ObjectName.equals(capability) && parentName.equals(inputeviceName))
                         return true;
+                    else if(parentName.equals("location") || parentName.equals("app") )
+                        if(ObjectName.equals(handler))
+                            return true;
                 }
             }
         }

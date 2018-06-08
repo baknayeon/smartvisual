@@ -4,6 +4,7 @@
 
 
 import node.DeviceAction
+import node.SmartApp
 import node.Subscribe
 import support.DetectingError
 import traverseAST.MyClassCodeVisitorSupport
@@ -26,19 +27,13 @@ class CodeVisitor extends CompilationCustomizer{
 
     MakeTree makeTreetree
     DetectingError detectingError
-
-    HashMap definition
-    ArrayList preferenceList
-    ArrayList subscribeList
-    ArrayList dynamicPageList
-    HashMap comMethodList
-
-    HashMap action_methodssMap
-    HashMap calli2callerMap
+    SmartApp smartAppInfo
     ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
 
     SettingBoxList settingList
     boolean multiPage
+
+
 
     public CodeVisitor(SettingBoxList boxList) {
         super(CompilePhase.SEMANTIC_ANALYSIS)
@@ -54,35 +49,26 @@ class CodeVisitor extends CompilationCustomizer{
         SmartThingAppCodeVisitor codeVisitor = new SmartThingAppCodeVisitor()
         codeVisitor.setSetting(settingList)
 
-        //codeVisitor.setMakingPre(true)
+        codeVisitor.setFirst(true)
         classNode.visitContents(codeVisitor)
-        //codeVisitor.setMakingPre(false)
+        codeVisitor.setFirst(false)
 
-        //preferenceList = codeVisitor.getPreferenceList()
-        //subscribeList = codeVisitor.getSubscribeList()
-        //comMethodList = codeVisitor.getCommonMethodList()
-        //definition = codeVisitor.getDefinition()
-        //calli2callerMap = codeVisitor.getCalli2callerMap()
-
-        //multiPage = codeVisitor.getMultiPage()
-
-
-        //if(codeVisitor.isDynamicPage() && settingList.showDynamic())
-            //codeVisitor.setDynamicPage(true)
-        //codeVisitor.setActionsChaining(true)
+        codeVisitor.setSecond(true)
         classNode.visitContents(codeVisitor)
+        smartAppInfo = codeVisitor.getSmartApp()
+        codeVisitor.setSecond(false)
 
-        //action_methodssMap = codeVisitor.getActionsCommandMap()
-        //dynamicPageList = codeVisitor.getDynamicPageList()
 
-        detectingError = new DetectingError(preferenceList, subscribeList, comMethodList)
-        detectingError.subscribe_error()
+        makeTreetree = new MakeTree(smartAppInfo)
+        detectingError = new DetectingError(smartAppInfo)
+        //detectingError.subscribe_error()
 
         generating_actions_methodFlows()
 
     }
 
     void generating_actions_methodFlows(){
+        def action_methodssMap = smartAppInfo.getActionsCommandMap()
         for(String device : action_methodssMap.keySet()){
             DeviceAction commandList = action_methodssMap.get(device)
             for(String command : commandList.getCommads()){
@@ -99,13 +85,16 @@ class CodeVisitor extends CompilationCustomizer{
 
     public void actionFlow(String startingMethod, ArrayList flow){
         String method = startingMethod
+        def calli2callerMap = smartAppInfo.getCalli2callerMap()
+        def subscribeList = smartAppInfo.getSubscribeList()
 
         if(calli2callerMap.containsKey(method)){
             flow.add(method)
             ArrayList list = ((HashSet)calli2callerMap.get(method)).toArray()
             for( String m  : list) {
                 actionFlow(m, flow)
-                flow.remove(flow.size()-1)
+                if(flow.size() > 0)
+                    flow.remove(flow.size()-1)
             }
         }else {
             def result = false
@@ -119,7 +108,7 @@ class CodeVisitor extends CompilationCustomizer{
                 flow.add(method)
                 FlowsList.add(flow.clone())
             }else{
-                detectingError.addMethodError(method)
+                //detectingError.addMethodError(method)
 
             }
         }
@@ -133,14 +122,8 @@ class CodeVisitor extends CompilationCustomizer{
 
     public JTree getPreferenceTree(){
 
-        makeTreetree =  new MakeTree()
-        makeTreetree.setPreferList(preferenceList)
-        makeTreetree.setSubscribeList(subscribeList)
-        makeTreetree.setAction_methodssMap(action_methodssMap)
-        makeTreetree.setDynamicPageList(dynamicPageList)
-
         JTree jtree = new JTree(makeTreetree.getPage())
-        jtree.setCellRenderer(new TreeCellRenderer(dynamicPageList, subscribeList, action_methodssMap))
+        jtree.setCellRenderer(new TreeCellRenderer(smartAppInfo, "page") )
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
         jtree.putClientProperty("JTree.lineStyle", "None")
@@ -149,12 +132,9 @@ class CodeVisitor extends CompilationCustomizer{
     }
     public JTree getActionTree(){
 
-        if(makeTreetree == null) {
-            makeTreetree = new MakeTree()
-        }
 
-        JTree jtree = new JTree(makeTreetree.getAction(action_methodssMap))
-        jtree.setCellRenderer(new TreeCellRenderer(action_methodssMap))
+        JTree jtree = new JTree(makeTreetree.getAction())
+        jtree.setCellRenderer(new TreeCellRenderer(smartAppInfo,"action"))
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
         jtree.putClientProperty("JTree.lineStyle", "None")
@@ -164,38 +144,23 @@ class CodeVisitor extends CompilationCustomizer{
 
     class SmartThingAppCodeVisitor extends MyClassCodeVisitorSupport {
 
-
-
-        void setActionsChaining(boolean b){
-            super.setActionsChaining(b)
-        }
-
-        void setDynamicPage(boolean b){
-            super.setDynamicPage(b)
-        }
-
-        void setMakingPre(boolean b) {
-            super.setMakeingPre(b)
+        @Override
+        SmartApp getSmartApp() {
+            return super.getSmartApp()
         }
 
         @Override
-        ArrayList getPreferenceList() {
-            return super.getPreferenceList()
+        void setFirst(boolean first) {
+            super.setFirst(first)
         }
 
         @Override
-        ArrayList getSubscribeList() {
-            return super.getSubscribeList()
+        void setSecond(boolean second) {
+            super.setSecond(second)
         }
-
         @Override
-        ArrayList<Method> getDynamicPageList() {
-            return super.getDynamicPageList()
-        }
-
-        @Override
-        boolean isMultiPage() {
-            return super.isMultiPage()
+        void setSetting(SettingBoxList setting) {
+            super.setSetting(setting)
         }
 
         @Override
@@ -203,20 +168,6 @@ class CodeVisitor extends CompilationCustomizer{
             return null
         }
 
-        @Override
-        boolean isDynamicPage() {
-            return super.isDynamicPage()
-        }
-
-        @Override
-        void setSetting(SettingBoxList setting) {
-            super.setSetting(setting)
-        }
-
-        @Override
-        HashMap getDefinition() {
-            return super.getDefinition()
-        }
     }
 }
 

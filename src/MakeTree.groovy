@@ -5,6 +5,7 @@ import node.Input
 import node.Label
 import node.Page
 import node.Section
+import node.SmartApp
 import node.Subscribe
 
 import org.codehaus.groovy.ast.ClassNode
@@ -25,14 +26,19 @@ class MakeTree {
     ArrayList dynamicPageList
     HashMap action_methodssMap
 
-    public DefaultMutableTreeNode getAction(HashMap action_methodssMap){
-        this.action_methodssMap = action_methodssMap
+    public MakeTree(SmartApp smartApp){
+        preferList = smartApp.getPreferenceList()
+        subscribeList = smartApp.getSubscribeList()
+        dynamicPageList = smartApp.getDynamicPageList()
+        action_methodssMap = smartApp.getActionsCommandMap()
+    }
+
+    public DefaultMutableTreeNode getAction(){
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Action")
 
         for(String device : action_methodssMap.keySet()) {
             DefaultMutableTreeNode deviceNode = new DefaultMutableTreeNode(device)
             DeviceAction methodFlows =  action_methodssMap.get(device)
-
 
             for(String commads :  methodFlows.getCommads()){
                 ArrayList methodFlow = methodFlows.getMethodFlow(commads)
@@ -205,9 +211,16 @@ class MakeTree {
                     String subInput = sub.getInput()
                     if (subInput.equals(name)) {
                           //sub.setMatched(true)
-                        def handler = new DefaultMutableTreeNode(sub.getCapability())
-                        handler.add(new DefaultMutableTreeNode(sub.getHandler()))
-                        node.add(handler)
+                        if(sub.getCapability().equals("")){
+                            def handler = new DefaultMutableTreeNode(sub.getHandler())
+                            node.add(handler)
+                        }else{
+                            def handler = new DefaultMutableTreeNode(sub.getCapability())
+                            handler.add(new DefaultMutableTreeNode(sub.getHandler()))
+                            node.add(handler)
+                        }
+
+
                     }
                 }
             }

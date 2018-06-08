@@ -2,6 +2,7 @@ import com.nwoods.jgo.layout.JGoTreeAutoLayout;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingMethodException;
 import node.ErrorSubscribe;
+import node.SmartApp;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import Setting.SettingBoxList;
@@ -217,6 +218,7 @@ public class MainTool extends JFrame {
 		HashMap definition;
 		CodeVisitor analysis;
 		JTree tree, actions_tree;
+		SmartApp smartApp;
 
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -240,9 +242,10 @@ public class MainTool extends JFrame {
 		}
 
 		tree = analysis.getPreferenceTree();
-		definition = analysis.getDefinition();
-		error = analysis.errorReport();
 		actions_tree = analysis.getActionTree();
+		smartApp = analysis.getSmartAppInfo();
+		definition = analysis.getSmartAppInfo().getDefinition();
+		error = analysis.errorReport();
 
 		tree.addMouseListener(new MouseAdapter() {
 
@@ -260,7 +263,7 @@ public class MainTool extends JFrame {
 							String hrefName = href.split(" ")[1];
 
 							if (pageName.equals(hrefName)) {
-								new DialogHref(dynamicNode, analysis.getDynamicPageList(), analysis.getSubscribeList(), analysis.getAction_methodssMap());
+								new DialogHref(dynamicNode, smartApp);
 							}
 						}
 					}
@@ -285,7 +288,7 @@ public class MainTool extends JFrame {
 
 		treeScrollPane.setViewportView(tree);
 		actionsTree.setViewportView(actions_tree);
-		setError(error);
+		//setError(error);
 	}
 
 	public void setError(ArrayList error){
