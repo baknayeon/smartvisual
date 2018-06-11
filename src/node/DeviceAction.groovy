@@ -79,8 +79,8 @@ class DeviceAction {
             for(String command : commandset){
                 methodNode = new DefaultMutableTreeNode(devName +"."+command+"()")
                 methodNode.add(new DefaultMutableTreeNode(method))
+                inputNode.add(methodNode)
             }
-            inputNode.add(methodNode)
         }
 
 

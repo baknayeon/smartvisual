@@ -1,12 +1,12 @@
 import node.DeviceAction
 import node.Method
-import node.Href
-import node.Input
-import node.Label
-import node.Page
-import node.Section
+import preferenceNode.Href
+import preferenceNode.Input
+import preferenceNode.Label
+import preferenceNode.Page
+import preferenceNode.Section
 import node.SmartApp
-import node.Subscribe
+import preferenceNode.Subscribe
 
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.Parameter
@@ -25,12 +25,14 @@ class MakeTree {
     ArrayList subscribeList
     ArrayList dynamicPageList
     HashMap action_methodssMap
+    HashMap sendMethodMap
 
     public MakeTree(SmartApp smartApp){
         preferList = smartApp.getPreferenceList()
         subscribeList = smartApp.getSubscribeList()
         dynamicPageList = smartApp.getDynamicPageList()
         action_methodssMap = smartApp.getActionsCommandMap()
+        sendMethodMap = smartApp.getSendMethodMap()
     }
 
     public DefaultMutableTreeNode getAction(){
@@ -187,7 +189,7 @@ class MakeTree {
 
         node.add(new DefaultMutableTreeNode(input.getCapability()))
 
-        ArrayList option = input.getOption();
+        ArrayList option = input.getOptionInput();
         option.each{ def entry ->
             if(entry in Input){
                 def sbuInput = new DefaultMutableTreeNode("input")
@@ -198,15 +200,15 @@ class MakeTree {
 
         makeHandler(node, input.getName())
         makeActionsinMethod(node, input.getName())
+        makeSendMethod(node, input.getName())
     }
 
     public void makeHandler(DefaultMutableTreeNode node, String name){
 
         int i =0
         if(!name.equals("")) {
-
             //여러 핸들러 등록가능
-            subscribeList.each{ Subscribe sub ->
+            for(Subscribe sub : subscribeList){
                 if(!sub.getError()) {
                     String subInput = sub.getInput()
                     if (subInput.equals(name)) {
@@ -232,6 +234,16 @@ class MakeTree {
         if(action_methodssMap.containsKey(device)) {
             DeviceAction MethodMap = action_methodssMap.get(device)
             MethodMap.getActionNode(node, device)
+        }
+    }
+
+    public void makeSendMethod(DefaultMutableTreeNode node, String device){
+        HashMap inputMap = sendMethodMap.values()
+        if(inputMap.containsKey(device)) {
+            HashSet methodSet = inputMap.get(device)
+            for(String method : methodSet){
+                node.add(new DefaultMutableTreeNode(method+"()"))
+            }
         }
     }
     
@@ -355,7 +367,7 @@ class MakeTree {
 
     private def setNode(Section section, DefaultMutableTreeNode node){
 
-        node.setUserObject(new DefaultMutableTreeNode("section "+section.getTitle()))
+        node.setUserObject(new DefaultMutableTreeNode('section "'+section.getTitle()+'"'))
 
         return node
     }

@@ -5,18 +5,16 @@
 
 import node.DeviceAction
 import node.SmartApp
-import node.Subscribe
+import preferenceNode.Subscribe
+import support.CapHelper
 import support.DetectingError
 import traverseAST.MyClassCodeVisitorSupport
-import node.Method
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
 import org.codehaus.groovy.control.CompilePhase
 import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.control.customizers.CompilationCustomizer
 import org.codehaus.groovy.transform.GroovyASTTransformation
-import support.Helper
-
 import Setting.SettingBoxList
 import support.TreeCellRenderer
 
@@ -24,28 +22,21 @@ import javax.swing.*
 
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
-
     MakeTree makeTreetree
     DetectingError detectingError
     SmartApp smartAppInfo
     ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
-
     SettingBoxList settingList
-    boolean multiPage
-
-
 
     public CodeVisitor(SettingBoxList boxList) {
         super(CompilePhase.SEMANTIC_ANALYSIS)
-
         settingList = boxList
-        multiPage = false
     }
 
     @Override
     void call(SourceUnit source, GeneratorContext context, ClassNode classNode) {
-        Helper.loadCapRef()
 
+        CapHelper.loadCapRef()
         SmartThingAppCodeVisitor codeVisitor = new SmartThingAppCodeVisitor()
         codeVisitor.setSetting(settingList)
 
@@ -58,10 +49,9 @@ class CodeVisitor extends CompilationCustomizer{
         smartAppInfo = codeVisitor.getSmartApp()
         codeVisitor.setSecond(false)
 
-
         makeTreetree = new MakeTree(smartAppInfo)
         detectingError = new DetectingError(smartAppInfo)
-        //detectingError.subscribe_error()
+        detectingError.subscribe_error()
 
         generating_actions_methodFlows()
 
@@ -79,7 +69,6 @@ class CodeVisitor extends CompilationCustomizer{
                 commandList.setMethodFlow(command, FlowsList.clone())
                 FlowsList.clear()
             }
-
         }
     }
 
@@ -108,7 +97,7 @@ class CodeVisitor extends CompilationCustomizer{
                 flow.add(method)
                 FlowsList.add(flow.clone())
             }else{
-                //detectingError.addMethodError(method)
+                detectingError.addMethodError(method)
 
             }
         }
@@ -131,7 +120,6 @@ class CodeVisitor extends CompilationCustomizer{
         return jtree
     }
     public JTree getActionTree(){
-
 
         JTree jtree = new JTree(makeTreetree.getAction())
         jtree.setCellRenderer(new TreeCellRenderer(smartAppInfo,"action"))

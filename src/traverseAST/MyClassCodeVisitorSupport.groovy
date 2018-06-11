@@ -2,14 +2,14 @@ package traverseAST
 
 import Setting.SettingBoxList
 import node.DeviceAction
-import node.Href
-import node.Input
-import node.Label
+import preferenceNode.Href
+import preferenceNode.Input
+import preferenceNode.Label
 import node.Method
-import node.Page
-import node.Section
+import preferenceNode.Page
+import preferenceNode.Section
 import node.SmartApp
-import node.Subscribe
+import preferenceNode.Subscribe
 
 /**
  * Created by b_newyork on 2017-09-05.
@@ -58,7 +58,6 @@ import org.codehaus.groovy.ast.stmt.WhileStatement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException
-import support.Helper
 
 public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport implements GroovyClassVisitor {
 
@@ -81,6 +80,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         if(first) {
             if ("run".equals(methodName)) {
                 preference = true
+            }else {
+                smartApp.methodMap.put(methodName,node)
             }
         }else if(second){
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
@@ -98,6 +99,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             if ("run".equals(methodName)) {
                 preference = false
             }
+            smartApp.pushSendMethod(methodName)
         }
         else if(second) { //second
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
@@ -142,9 +144,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                     methodCall.equals("sendNotification") || methodCall.equals("sendNotificationEvent") || methodCall.equals("sendNotificationToContacts")){
 
                 for(def arg in args){
-                    if(arg in VariableExpression){
-                        smartApp.addSendMethd(arg.variable, methodCall)
-                    }
+                    smartApp.collectSendMethd(arg, methodCall)
+
                 }
 
 
@@ -152,7 +153,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 if(args.size() == 2){
                     def phone = args[0]
                     def message = args[1]
-                    smartApp.addSendMethd(phone, message, methodCall)
+                    smartApp.collectSendMethd(phone, message, methodCall)
                 }
 
             }
@@ -176,7 +177,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             }else if (methodCall.equals("preferences")) {
                 smartApp.preferenceList.add(methodCall)
             } else if (methodCall.equals("page")) {
-                if (Helper.isDynamicPage(args)) {
+                if (smartApp.isDynamicPage(args)) {
                     def dynamicPage = new Page(args, "dynamicPage")
                     smartApp.dynamicMethodMap.put(dynamicPage.getName(), dynamicPage)
                     smartApp.preferenceList.add(new Page(args, "dynamicPage"))
@@ -187,7 +188,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             } else if (methodCall.equals("input")) {
                 Input input = new Input(args)
                 smartApp.preferenceList.add(input)
-                smartApp.inputList.put(input.getName() ,input)
+                smartApp.inputMap.put(input.getName() ,input)
 
             } else if (methodCall.equals("label")) {
                 smartApp.preferenceList.add(new Label(args))
@@ -238,7 +239,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     private void addinput(def args){
         Input input = new Input(args)
         addList(input)
-        smartApp.inputList.put(input.getName() ,input)
+        smartApp.inputMap.put(input.getName() ,input)
     }
 
     public void addDynamicThings(MethodNode node){
@@ -288,7 +289,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     private void actionMap(methodcallExpression){
 
         String obj = methodcallExpression.objectExpression.variable
-        if (smartApp.inputList.containsKey(obj)) {
+        if (smartApp.inputMap.containsKey(obj)) {
             //deveice command call
             String device = obj //+"."+methodcallExpression.methodMap.value
 
@@ -300,14 +301,14 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                         if (colure in ClosureExpression){
                             if(colure.parameters && colure.parameters[0]){
                                 def parameter = colure.parameters[0].name
-                                smartApp.inputList.put(parameter, device)
+                                smartApp.inputMap.put(parameter, device)
                             }
                         }
 
                     }
             }else {
-                def eachDevice = smartApp.inputList.get(obj)
-                if(smartApp.inputList.containsKey(eachDevice)){
+                def eachDevice = smartApp.inputMap.get(obj)
+                if(smartApp.inputMap.containsKey(eachDevice)){
                     device = eachDevice
                 }
                 if (smartApp.ActionsCommandMap.containsKey(device)) {
@@ -321,12 +322,14 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             }
 
         } else if (obj== "this") {  //methodMap call
+
             def method = methodcallExpression.method.value
+
             if (method == "runIn") {
                 method = methodcallExpression.arguments.getExpressions().get(1)
-                if(method in ConstantExpression)
+                if (method in ConstantExpression)
                     method = method.value;
-                else if(method in VariableExpression)
+                else if (method in VariableExpression)
                     method = method.variable;
             }
             HashSet hashSet = smartApp.calli2callerMap.get(method) ?: null
@@ -338,7 +341,6 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 newset.addAll(methodName)
                 smartApp.calli2callerMap.put(method, newset)
             }
-
         }
     }
 

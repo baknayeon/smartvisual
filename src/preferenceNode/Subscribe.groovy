@@ -1,4 +1,4 @@
-package node
+package preferenceNode
 
 import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.GStringExpression

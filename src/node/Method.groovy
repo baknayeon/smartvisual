@@ -70,7 +70,6 @@ class Method {
 
                 }else if(valExpr instanceof ListExpression){
                     def arrayList = (java.util.ArrayList) ((ListExpression) valExpr).expressions
-                    setOption(arrayList)
                 }
             }
         }
@@ -91,7 +90,6 @@ class Method {
     private void handingInputArgs(NamedArgumentListExpression arg){
 
         def arrayList = (NamedArgumentListExpression) arg
-        setOption(arrayList)
     }
 
 

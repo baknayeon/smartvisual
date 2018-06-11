@@ -1,14 +1,12 @@
 package support;
 
-import node.DeviceAction;
 import node.Method;
 import node.SmartApp;
-import node.Subscribe;
+import preferenceNode.Subscribe;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,13 +16,14 @@ import java.util.HashMap;
  */
 public class TreeCellRenderer extends DefaultTreeCellRenderer {
 
-
+    SmartApp smartApp;
     ArrayList dynamicPageList;
     ArrayList subscribeList;
     HashMap action_methodFlowsssMap;
     String i = null;
 
     TreeCellRenderer(SmartApp smartApp, String i) {
+        this.smartApp = smartApp;
         this.dynamicPageList = smartApp.getDynamicPageList();
         this.subscribeList = smartApp.getSubscribeList();
         this.action_methodFlowsssMap = smartApp.getActionsCommandMap();
@@ -45,12 +44,28 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         if(i.equals("action")){
             imageUrl = setActionImageUrl(Object);
 
-        }else if(i.equals("page")){
-            if (isPreference(Object) )
-                label.setForeground(Color.black);
-            else
-                label.setForeground(Color.gray);
-             imageUrl = setPreImageUrl(Object);
+        }else if(i.equals("page")) {
+            int num = whartKindofDev(ObjectName);
+            Font f = label.getFont();
+            switch (num) {
+                case 1:  //event
+                    label.setForeground(Color.decode("#3eb2af"));
+                    break;
+                case 2: //action
+                    label.setForeground(Color.decode("#e5ba0d"));
+                    break;
+                case 3: //both
+                    label.setForeground(Color.decode("#653077"));
+                    break;
+                default: //another
+                    if (isPreference(Object))
+                        label.setForeground(Color.black);
+                    else
+                        label.setForeground(Color.gray);
+                    imageUrl = setPreImageUrl(Object);
+                    break;
+            }
+
         }
 
         try {
@@ -77,6 +92,19 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         return label;
     }
 
+    private int whartKindofDev(String inputName){
+        if(inputName.contains("input") && inputName.split(" ").length > 1) {
+            String device = inputName.split(" ")[1];
+            if (smartApp.isitActionDevice(device) && smartApp.isitEventDevice(device)) {
+                return 3;
+            } else if (smartApp.isitActionDevice(device)) {
+                return 2;
+            } else if (smartApp.isitEventDevice(device)) {
+                return 1;
+            }
+        }
+        return 0;
+    }
 
     private String setPreImageUrl(DefaultMutableTreeNode Object) {
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode)Object.getParent();

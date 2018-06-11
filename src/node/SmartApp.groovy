@@ -1,6 +1,10 @@
 package node
 
+import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
+import preferenceNode.Capability
+import preferenceNode.Input
+import preferenceNode.Subscribe
 
 /**
  * Created by b_newyork on 2018-06-08.
@@ -11,9 +15,13 @@ class SmartApp {
     HashMap definition = new HashMap<>();
     ArrayList preferenceList = new ArrayList()
     ArrayList subscribeList = new ArrayList()
-    HashMap inputList = new ArrayList()
+    HashMap inputMap = new HashMap()
+    HashMap methodMap = new HashMap()
     HashMap dynamicMethodMap = new HashMap<>();
+    //first action
     HashMap sendMethodMap = new HashMap<>();
+
+    private HashMap sendList = new HashMap<>();
 
 
     //second action
@@ -25,33 +33,67 @@ class SmartApp {
     ArrayList<Method> dynamicPageList =  new ArrayList<Method>()
     HashMap dynamicInputMap = new HashMap()
 
-    public void addSendMethd(VariableExpression arg, String method){
-        sendMethodMap.put()
+    public SmartApp(){
     }
 
-    public void addSendMethd(def phone, def message, String method){
-        sendMethodMap.put()
-    }
-    boolean isItRightCapability(Subscribe sub, Input input){
-
-        String sub_capVal = sub.getCap_val()
-        String input_cap = input.getCapability()
-        Capability cap = allCommands[input_cap]
-
-        if(cap !=null){
-            if(cap.checkVal(sub_capVal))
+    public boolean isitEventDevice(String name){
+        for(Subscribe sub : subscribeList){
+            if(sub.getInput().equals(name))
                 return true
-            else
-                return false
         }
         return false
     }
 
-    boolean isItRightHandler(Subscribe sub, HashMap methodMap){
+    public boolean isitActionDevice(String name){
+       if(ActionsCommandMap.containsKey(name))
+                return true
+        return false
+    }
 
-        String handlerMethod = sub.getHandler().toString()
+    public void collectSendMethd(def message, String sendMethod){
+        if(message in VariableExpression) {
+            message = ((VariableExpression) message).variable
+            if(sendList.containsKey(message)) {
+                HashSet newSet = sendList.get(message)
+                newSet.add(sendMethod)
+            }else{
+                HashSet newSet = new HashSet()
+                newSet.add(sendMethod)
+                sendList.put(message, newSet);
+            }
+        }
+    }
 
-        return methodMap.containsKey(handlerMethod)
+    public void collectSendMethd(def phone, def message, String sendMethod){
+        if(phone in VariableExpression) {
+            phone = ((VariableExpression) phone).variable
+            if(sendList.containsKey(phone)){
+                HashSet newSet = sendList.get(phone)
+                newSet.add(sendMethod)
+            }else{
+                HashSet newSet = new HashSet()
+                newSet.add(sendMethod)
+                sendList.put(phone, newSet);
+            }
+        }
+        if(message in VariableExpression) {
+            message = ((VariableExpression) message).variable
+            if(sendList.containsKey(message)) {
+                HashSet newSet = sendList.get(message)
+                newSet.add(sendMethod)
+            }else{
+                HashSet newSet = new HashSet()
+                newSet.add(sendMethod)
+                sendList.put(message, newSet);
+            }
+        }
+    }
+
+    public void pushSendMethod(String methodName){
+        if(sendList.size() >0 ) {
+            sendMethodMap.put(methodName, sendList)
+            sendList = new HashSet<>()
+        }
     }
 
     boolean isDynamicPage(ArrayList pageArgList){
@@ -60,7 +102,6 @@ class SmartApp {
             return true
         else
             return false
-
     }
 
     boolean isitDynamicPage(String method){
@@ -72,7 +113,7 @@ class SmartApp {
         for(entry in preferenceList)
             if(entry instanceof Input){
                 Input input = entry
-                ArrayList list = input.getOption();
+                ArrayList list = input.getOptionInput();
 
                 if (input.getName().equals(newInput.getName()))
                     return false
@@ -91,41 +132,14 @@ class SmartApp {
     boolean addSubscribeList(Subscribe newSubscribe){
 
         for(entry in subscribeList){
-            if(entry instanceof Subscribe){
-                Subscribe subscribe = entry
-                if (subscribe.getInput().equals(newSubscribe.getInput()))
-                    if (subscribe.getHandler().equals(newSubscribe.getHandler()))
-                        if (subscribe.getCapability().equals(newSubscribe.getCapability()))
-                            return
-            }
+            Subscribe subscribe = entry
+            if (subscribe.getInput().equals(newSubscribe.getInput()))
+                if (subscribe.getHandler().equals(newSubscribe.getHandler()))
+                    if (subscribe.getCapability().equals(newSubscribe.getCapability()))
+                        return
         }
-
         subscribeList.add(newSubscribe)
     }
 
 
-    public static Map allCommands = new HashMap()
-
-    def loadCapRef() {
-
-        def capsAsPerSamsungFile = "./" + "Capabilities.csv"
-        def file = new File(capsAsPerSamsungFile)
-
-        file.splitEachLine(",") { fields ->
-
-            Capability cap =  new Capability()
-
-            String Cap = fields[1]?.toString()
-            cap.setCapability(Cap)
-
-            String dev = fields[2]?.toString()
-            cap.setDevice(dev)
-
-            fields[3]?.split(" ")?.each {
-                cap.cap_val.add(it.toString())
-            }
-
-            allCommands[Cap] =  cap
-        }
-    }
 }

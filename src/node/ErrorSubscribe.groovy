@@ -1,5 +1,7 @@
 package node
 
+import preferenceNode.Subscribe
+
 /**
  * Created by b_newyork on 2017-12-05.
  */

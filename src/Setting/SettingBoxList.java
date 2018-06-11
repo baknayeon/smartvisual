@@ -15,7 +15,7 @@ public class SettingBoxList {
         jCheckBoxArrayList.add(new JCheckBox("show method",true));
         jCheckBoxArrayList.add(new JCheckBox("show If condition",true));
         jCheckBoxArrayList.add(new JCheckBox("show While condition",true));
-        jCheckBoxArrayList.add(new JCheckBox("show input option value",true));
+        jCheckBoxArrayList.add(new JCheckBox("show input optionInput value",true));
         jCheckBoxArrayList.add(new JCheckBox("show for",true));
     }
 

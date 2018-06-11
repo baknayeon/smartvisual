@@ -1,4 +1,4 @@
-package node
+package preferenceNode
 
 import org.codehaus.groovy.ast.expr.ClosureExpression
 import org.codehaus.groovy.ast.expr.ConstantExpression
@@ -8,70 +8,57 @@ import org.codehaus.groovy.ast.expr.MapExpression
 import org.codehaus.groovy.ast.expr.MethodCallExpression
 import org.codehaus.groovy.ast.expr.NamedArgumentListExpression
 import org.codehaus.groovy.ast.expr.PropertyExpression
-import org.codehaus.groovy.ast.expr.TernaryExpression
-import org.codehaus.groovy.ast.expr.TupleExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.ExpressionStatement
-import support.Helper
 
 /**
  * Created by b_newyork on 2017-09-11.
  */
-class Input {
+class Href {
 
-    String name
+    String page
     String capability
-    String device
     ArrayList option
 
-    Boolean used = false
 
-    public Input(){
-    }
-
-    public Input(def args){
+    public Href(def args){
         option = new ArrayList()
         args.each { arg ->
             handingArgs(arg)
         }
+        //println("\t"+ page+" " +capability)
     }
 
-    void setCapability(String capability) {
-        if(capability.contains("capability")){
-            Capability cap = Helper.allCommands.get(capability)
-            if(cap) {
-                this.device = cap.device
-            }
-        }
-        this.capability = capability
+    void setOption(def option){
+        this.option.add(option)
     }
 
     private void handingArgs(ConstantExpression arg){
         def text = arg.getText()
-        if(getName() == null)
-            setName(text)
+        if(getPage() == null)
+            setPage(text)
         else setCapability(text)
     }
 
     private void handingArgs(PropertyExpression arg){
         def text = ((PropertyExpression) arg).getText()
-        if(getName() == null)
-            setName(text)
+        if(getPage() == null)
+            setPage(text)
         else setCapability(text)
     }
 
     private void handingArgs(VariableExpression argvex){
         def text = argvex.getName()
-        if(getName() == null)
-            setName(text)
+        if(getPage() == null)
+            setPage(text)
         else setCapability(text)
     }
 
     private void handingArgs(GStringExpression arg){
         def text = arg.verbatimText.toString()
-        if(getName() == null)
-            setName(text)
+        if(getPage() == null)
+            setPage(text)
         else setCapability(text)
     }
 
@@ -85,11 +72,10 @@ class Input {
             if (keyExpr instanceof ConstantExpression) {
                 def keytxt = ((ConstantExpression) keyExpr).getText()
 
-                def sub = new ArrayList();
                 if(valExpr instanceof ConstantExpression){
                     def valtxt = ((ConstantExpression) valExpr).getText()
-                    if (keytxt.equals("name")){
-                        setName(valtxt)
+                    if (keytxt.equals("page")){
+                        setPage(valtxt)
                     }else if(keytxt.equals("type")) {
                         setCapability(valtxt)
                     } else {
@@ -99,8 +85,8 @@ class Input {
                 }else if(valExpr instanceof GStringExpression){
                     def valtxt = ((ConstantExpression)((java.util.ArrayList)((GStringExpression)valExpr).strings).get(0)).value
 
-                    if (keytxt.equals("name")){
-                        setName(valtxt)
+                    if (keytxt.equals("page")){
+                        setPage(valtxt)
                     }else if(keytxt.equals("type")) {
                         setCapability(valtxt)
                     } else {
@@ -113,7 +99,6 @@ class Input {
             }
         }
     }
-
     private void handingInputArgs(NamedArgumentListExpression arg){
 
         def arrayList = (NamedArgumentListExpression) arg

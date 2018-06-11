@@ -1,9 +1,10 @@
 package support
 
 import node.ErrorSubscribe
-import node.Input
+import preferenceNode.Capability
+import preferenceNode.Input
 import node.SmartApp
-import node.Subscribe
+import preferenceNode.Subscribe
 
 /**
  * Created by b_newyork on 2017-12-05.
@@ -12,15 +13,16 @@ class DetectingError {
 
     private ArrayList preferenceList
     private ArrayList subscribeList
-    private HashMap methodList
+    private HashMap methodMap
 
     ArrayList subErrorList
     ArrayList methodErrorList
 
     public DetectingError(SmartApp smartAppInfo) {
+
         preferenceList = smartAppInfo.getPreferenceList()
         subscribeList = smartAppInfo.getSubscribeList()
-        //methodList = smartAppInfo.get
+        methodMap = smartAppInfo.getMethodMap()
         methodErrorList = new ArrayList()
     }
 
@@ -29,9 +31,8 @@ class DetectingError {
     }
     public void subscribe_error(){
         subErrorList = new ArrayList<>()
-        //Helper helper = new Helper()
 
-        subscribeList.each { Subscribe sub ->
+        for(Subscribe sub : subscribeList){
 
             String sub_input = sub.getInput()
             String sub_cap = sub.getCapability()
@@ -45,47 +46,61 @@ class DetectingError {
                 if(sub_cap.equals("default") ||
                         sub_cap.equals("position") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
                         c = true // capability of location, app
-                else
-                    sub.setError(true)
             }else{
-                int index  = 0
-                while(index < preferenceList.size()){
-                    def list = preferenceList.get(index)
-
+                for(def list : preferenceList){
                     if(list in Input){
-
                         // input
-                        String Input_input = ((Input)list).getName()
+                        Input input = list
+                        String Input_input = input.getName()
                         if(sub_input.equals(Input_input)){
                             i = true
+                            if (isItRightCapability(sub, input)) {
+                                c = true
+                            }
                             break
                         }
                     }
-                    index++
                 }
-                if(i){
-                    // capability
-                    Input input = preferenceList.get(index)
-                    if (Helper.isItRightCapability(sub, input)) {
-                        c = true
-                    }else
-                        sub.setError(true)
-                }else
-                    sub.setError(true)
             }
 
             // handler
-            if(Helper.isItRightHandler(sub, methodList)) {
+            if(isItRightHandler(sub, methodMap)) {
                 h = true
-            }else
-                sub.setError(true)
+            }
+
 
             //make ErrorSubscribe
             if(!i || !c || !h){
+                sub.setError(true)
                 ErrorSubscribe e = new ErrorSubscribe(i, c, h, sub)
                 subErrorList.add(e)
             }
         }
     }
+
+
+    boolean isItRightCapability(Subscribe sub, Input input){
+
+        String sub_capVal = sub.getCap_val()
+        String input_cap = input.getCapability()
+        Capability cap = CapHelper.getCap(input_cap)
+
+        if(cap !=null){
+            if(cap.checkVal(sub_capVal))
+                return true
+            else
+                return false
+        }
+        return false
+    }
+
+    boolean isItRightHandler(Subscribe sub, HashMap methodMap){
+
+        String handlerMethod = sub.getHandler().toString()
+
+        return methodMap.containsKey(handlerMethod)
+    }
+
+
 }
 

@@ -1,15 +1,4 @@
 package traverseAST
-
-import node.DeviceAction
-import node.Method
-import node.Href
-import node.Input
-import node.Label
-import node.Page
-import node.Section
-import node.SmartApp
-import node.Subscribe
-
 /**
  * Created by b_newyork on 2017-09-05.
  */
@@ -52,7 +41,6 @@ import org.codehaus.groovy.ast.expr.VariableExpression
 import org.codehaus.groovy.ast.stmt.*
 import org.codehaus.groovy.classgen.BytecodeExpression
 import Setting.SettingBoxList
-import support.Helper
 
 public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
