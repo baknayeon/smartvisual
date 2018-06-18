@@ -1,24 +1,42 @@
-import com.nwoods.jgo.layout.JGoTreeAutoLayout;
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingMethodException;
+
+import javafx.scene.chart.Axis;
+import javafx.scene.chart.BarChart;
 import node.ErrorSubscribe;
 import node.SmartApp;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import Setting.SettingBoxList;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RectangleInsets;
 import support.DialogHref;
 import Setting.DialogSetting;
+import support.Logger;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.net.URL;
+import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -30,16 +48,18 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 
-public class MainTool extends JFrame {
+public class MainTool extends JFrame{
 
 	private SettingBoxList settingBoxList;
 	private JPanel appInfo_Panel, errorJPanel ;
 	private JScrollPane treeScrollPane, actionsTree ;
+	private DefaultCategoryDataset barDataset;
+	Logger log;
 
 	JFileChooser chooser;
 	JLabel file, appName, description;
 
-	int WIDTH = 800;
+	int WIDTH = 400;
 	int HEIGHT = 650;
 	int HEIGHT_info = 100;
 
@@ -93,17 +113,18 @@ public class MainTool extends JFrame {
 
 		JPanel mainPane = new JPanel();
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		mainPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		//mainPane.setPreferredSize(new Dimension(WIDTH*3, HEIGHT));
 		mainPane.setLayout(new BorderLayout());
 		setContentPane(mainPane);
 
 		appInfo_Panel = new JPanel();
 		JPanel actionsPanel = new JPanel();
+		JPanel chartJPanel = new JPanel();
 		actionsTree= new JScrollPane();
 		errorJPanel = new JPanel();
 		treeScrollPane = new JScrollPane();
 
-		appInfo_Panel.setPreferredSize(new Dimension(WIDTH, HEIGHT_info));
+		appInfo_Panel.setPreferredSize(new Dimension(WIDTH*3, HEIGHT_info));
 		appInfo_Panel.setLayout(new BoxLayout(appInfo_Panel, BoxLayout.PAGE_AXIS));
 		appInfo_Panel.setBorder(new EmptyBorder(3 , 10 , 10 , 10));
 		mainPane.add("North", appInfo_Panel);
@@ -119,25 +140,71 @@ public class MainTool extends JFrame {
 		appInfo_Panel.add(appName);
 		appInfo_Panel.add(description);
 
-		actionsPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		actionsPanel.setBorder(BorderFactory.createEmptyBorder(7 , 3, 3 , 3));
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
-		actionsPanel.setPreferredSize(new Dimension(WIDTH/2-10, HEIGHT - HEIGHT_info - 20));
-		actionsPanel.add(new JLabel(" "));
+		actionsPanel.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
+		JLabel Service = new JLabel("Service flow");
+		Service.setBounds(0,5,10,10);
+		Service.setSize(10,10);
+		actionsPanel.add(Service);
 		actionsPanel.add(actionsTree);
-		mainPane.add("East", actionsPanel);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
-		treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
-		errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		tabbedPane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
+		//treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		//errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
 		tabbedPane.addTab("Subscribe error", null, errorJPanel, null);
-		mainPane.add("Center", tabbedPane);
+
+		actionsTree.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		barDataset = new DefaultCategoryDataset();
+		barDataset.setValue(null, "smartApp", "input device");
+		barDataset.setValue(null, "smartApp", "event device");
+		barDataset.setValue(null, "smartApp", "action device");
+		barDataset.setValue(null, "smartApp", "input");
+		barDataset.setValue(null, "smartApp", "event handler method");
+		barDataset.setValue(null, "smartApp", "action command");
+		barDataset.setValue(null, "smartApp", "action methodFlow");
+		barDataset.setValue(null, "smartApp", "action in event handler");
+		barDataset.setValue(null, "smartApp", "send method");
+		barDataset.setValue(null, "smartApp", "dynamicPage");
+
+		JFreeChart chart = ChartFactory.createBarChart(null, null, null, barDataset, PlotOrientation.HORIZONTAL, false, false, false);
+		chart.setBackgroundPaint(new Color(238,238,238));
+
+		CategoryPlot cplot = (CategoryPlot)chart.getPlot();
+		cplot.setBackgroundPaint(SystemColor.white);//change background color
+		((BarRenderer)cplot.getRenderer()).setBarPainter(new StandardBarPainter());
+		BarRenderer r = (BarRenderer)chart.getCategoryPlot().getRenderer();
+		r.setSeriesPaint(0, SystemColor.inactiveCaption);
+		NumberAxis rangeAxis = (NumberAxis) cplot.getRangeAxis();
+		rangeAxis.setVisible(false);
+		cplot.getRenderer().setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+		cplot.getRenderer().setBaseItemLabelsVisible(true);
+
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setVisible(true);
+		chartPanel.setBorder(BorderFactory.createEmptyBorder(5 , 0, 0 , 0));
+
+		chartJPanel.setPreferredSize(new Dimension(WIDTH+200, HEIGHT - HEIGHT_info - 20));
+		chartJPanel.setBorder(BorderFactory.createEmptyBorder(5 , 3, 3 , 3));
+		chartJPanel.setLayout(new BoxLayout(chartJPanel, BoxLayout.PAGE_AXIS));
+
+		JLabel Evaluate = new JLabel("Evaluate");
+		Evaluate.setBounds(0,2,10,10);
+		Evaluate.setSize(10,10);
+		chartJPanel.add(Evaluate);
+		chartJPanel.add(chartPanel);
+
+		mainPane.add("West", tabbedPane);
+		mainPane.add("Center", actionsPanel);
+		mainPane.add("East", chartJPanel);
 
 		settingBoxList = new SettingBoxList();
-
 	}
-
 
 	class OpenSettingActionListener implements ActionListener {
 
@@ -180,6 +247,8 @@ public class MainTool extends JFrame {
 
 				analysis.getPreferenceTree();
 				analysis.errorReport();
+				SmartApp smartApp = analysis.getSmartAppInfo();
+				generateFile(smartApp, tempFile.getName());
 			}
 
 
@@ -220,8 +289,6 @@ public class MainTool extends JFrame {
 		JTree tree, actions_tree;
 		SmartApp smartApp;
 
-		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
 		analysis = new CodeVisitor(settingBoxList);
 		CompilerConfiguration cc = new CompilerConfiguration(CompilerConfiguration.DEFAULT);
 		cc.addCompilationCustomizers(analysis);
@@ -241,10 +308,10 @@ public class MainTool extends JFrame {
 
 		}
 
+		definition = analysis.getSmartAppInfo().getDefinition();
 		tree = analysis.getPreferenceTree();
 		actions_tree = analysis.getActionTree();
 		smartApp = analysis.getSmartAppInfo();
-		definition = analysis.getSmartAppInfo().getDefinition();
 		error = analysis.errorReport();
 
 		tree.addMouseListener(new MouseAdapter() {
@@ -286,9 +353,60 @@ public class MainTool extends JFrame {
 
 		}
 
+
 		treeScrollPane.setViewportView(tree);
 		actionsTree.setViewportView(actions_tree);
-		//setError(error);
+		setError(error);
+		generateFile(smartApp, selectedFile.getName());
+	}
+
+	public void generateFile(SmartApp smartApp, String selectedFile){
+
+		log = new Logger("evaluate.txt");
+		log.append("-----------"+selectedFile+"-----------");
+
+		int input = smartApp.getInputMap().size();
+		int handler = smartApp.getSubscribe().size();
+		int dynamicPage = smartApp.getDynamicMethodMap().size();
+		int actionCommd = smartApp.total_actionCommed();
+		int sendMethod = smartApp.total_sendMethod();
+		int methodFlow = smartApp.total_MethodFlow();
+		int methodFlow_In_handlerMethod = smartApp.total_ActionCommand_In_handlerMethod();
+		ArrayList dev = smartApp.getDevice();
+		int event = (int)dev.get(0);
+		int action = (int)dev.get(1);
+		int data = (int)dev.get(2);
+
+		log.append("input device	: "+String.valueOf(input));
+		log.append("event device : "+String.valueOf(event));
+		log.append("action device : "+String.valueOf(action));
+		log.append("input : "+String.valueOf(data));
+		log.append("event handler method : "+String.valueOf(handler));
+		log.append("action command : "+String.valueOf(actionCommd));
+		log.append("action methodFlow : "+String.valueOf(methodFlow));
+		log.append("command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
+		log.append("send method : "+String.valueOf(sendMethod));
+		log.append("dynamicPage : "+String.valueOf(dynamicPage));
+
+		barDataset.setValue(input, "smartApp", "input device");
+		barDataset.setValue(event, "smartApp", "event device");
+		barDataset.setValue(action, "smartApp", "action device");
+		barDataset.setValue(data, "smartApp", "input");
+		barDataset.setValue(handler, "smartApp", "event handler method");
+		barDataset.setValue(actionCommd, "smartApp", "action command");
+		barDataset.setValue(methodFlow, "smartApp", "action methodFlow");
+		barDataset.setValue(methodFlow_In_handlerMethod, "smartApp", "action in event handler");
+		barDataset.setValue(sendMethod, "smartApp", "send method");
+		barDataset.setValue(dynamicPage, "smartApp", "dynamicPage");
+
+		/*try {
+			Robot robot = new Robot();
+			BufferedImage bi=robot.createScreenCapture(new Rectangle(100, 100, 1000, 600));
+			ImageIO.write(bi, "gif", new File("C:\\Users\\b_newyork\\git\\SmartThings_VisualizationTool\\"+selectedFile+".gif"));
+
+		} catch (AWTException |IOException e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	public void setError(ArrayList error){

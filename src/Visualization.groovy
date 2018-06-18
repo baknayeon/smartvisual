@@ -15,7 +15,7 @@ import org.codehaus.groovy.ast.expr.MapExpression
 
 import javax.swing.tree.DefaultMutableTreeNode
 
-class MakeTree {
+class Visualization {
 
     private DefaultMutableTreeNode preferences
 
@@ -27,7 +27,7 @@ class MakeTree {
     HashMap action_methodssMap
     HashMap sendMethodMap
 
-    public MakeTree(SmartApp smartApp){
+    public Visualization(SmartApp smartApp){
         preferList = smartApp.getPreferenceList()
         subscribeList = smartApp.getSubscribeList()
         dynamicPageList = smartApp.getDynamicPageList()
@@ -45,12 +45,21 @@ class MakeTree {
             for(String commads :  methodFlows.getCommads()){
                 ArrayList methodFlow = methodFlows.getMethodFlow(commads)
 
-                for(ArrayList methodsList : methodFlow) {
+                /*for(ArrayList methodsList : methodFlow) {
                     DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(device + "." + commads + "()")
                     for (String method : methodsList)
                         methodFlowNode.add(new DefaultMutableTreeNode(method))
                     deviceNode.add(methodFlowNode)
+                }*/
+                for(ArrayList methodsList : methodFlow) {
+                    ArrayList subList = methodsList.reverse()
+                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(new DefaultMutableTreeNode(device + "." + commads + "()")) //handler
+                    for (String method : subList)
+                        methodFlowNode.add(new DefaultMutableTreeNode(method))
+                    methodFlowNode.add(new DefaultMutableTreeNode(device + "." + commads + "()")) //action
+                    deviceNode.add(methodFlowNode)
                 }
+
             }
             root.add(deviceNode)
 
@@ -133,7 +142,7 @@ class MakeTree {
 
         Section sectionList = preferList.get(preferLevel)
 
-        def section = new DefaultMutableTreeNode("section "+sectionList.title?.toString())
+        def section = new DefaultMutableTreeNode('section \"'+sectionList.title?.toString()+'"')
 
         ++preferLevel
         while ( preferLevel < preferList.size() ){
@@ -242,7 +251,7 @@ class MakeTree {
         if(inputMap.containsKey(device)) {
             HashSet methodSet = inputMap.get(device)
             for(String method : methodSet){
-                node.add(new DefaultMutableTreeNode(method+"()"))
+                node.add(new DefaultMutableTreeNode(method+"("+device+")"))
             }
         }
     }

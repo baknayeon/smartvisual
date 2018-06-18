@@ -1,6 +1,7 @@
 package node
 
 import javax.swing.tree.DefaultMutableTreeNode
+import java.lang.reflect.Array
 
 /**
  * Created by b_newyork on 2018-06-06.
@@ -21,6 +22,16 @@ class DeviceAction {
     public void setMethodFlow(String commad, ArrayList list){
         methodFlowMap.put(commad, list)
     }
+
+    public int getMethodFlowSize(){
+        int num = 0;
+
+        for(ArrayList handlerList :  methodFlowMap.values()){
+            num = num + handlerList.size();
+        }
+        return num
+    }
+
     public ArrayList getMethodFlow(String commad){
         ArrayList list =  methodFlowMap.get(commad)
         return list

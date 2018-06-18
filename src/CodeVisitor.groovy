@@ -22,7 +22,7 @@ import javax.swing.*
 
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
-    MakeTree makeTreetree
+    Visualization tree
     DetectingError detectingError
     SmartApp smartAppInfo
     ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
@@ -44,12 +44,13 @@ class CodeVisitor extends CompilationCustomizer{
         classNode.visitContents(codeVisitor)
         codeVisitor.setFirst(false)
 
+        smartAppInfo = codeVisitor.getSmartApp()
         codeVisitor.setSecond(true)
         classNode.visitContents(codeVisitor)
         smartAppInfo = codeVisitor.getSmartApp()
         codeVisitor.setSecond(false)
 
-        makeTreetree = new MakeTree(smartAppInfo)
+        tree = new Visualization(smartAppInfo)
         detectingError = new DetectingError(smartAppInfo)
         detectingError.subscribe_error()
 
@@ -67,7 +68,7 @@ class CodeVisitor extends CompilationCustomizer{
                     actionFlow(method,  new ArrayList())
                 }
                 commandList.setMethodFlow(command, FlowsList.clone())
-                FlowsList.clear()
+                this.FlowsList.clear()
             }
         }
     }
@@ -95,6 +96,10 @@ class CodeVisitor extends CompilationCustomizer{
             }
             if(result){
                 flow.add(method)
+                //flow = flow.reverse()
+                if(flow.size() == 1){
+                    smartAppInfo.actionCommand_In_handlerMethod()
+                }
                 FlowsList.add(flow.clone())
             }else{
                 detectingError.addMethodError(method)
@@ -111,7 +116,7 @@ class CodeVisitor extends CompilationCustomizer{
 
     public JTree getPreferenceTree(){
 
-        JTree jtree = new JTree(makeTreetree.getPage())
+        JTree jtree = new JTree(tree.getPage())
         jtree.setCellRenderer(new TreeCellRenderer(smartAppInfo, "page") )
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)
@@ -121,7 +126,7 @@ class CodeVisitor extends CompilationCustomizer{
     }
     public JTree getActionTree(){
 
-        JTree jtree = new JTree(makeTreetree.getAction())
+        JTree jtree = new JTree(tree.getAction())
         jtree.setCellRenderer(new TreeCellRenderer(smartAppInfo,"action"))
         jtree.setRootVisible(false)
         jtree.setShowsRootHandles(true)

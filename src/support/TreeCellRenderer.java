@@ -140,6 +140,8 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             imageUrl = iconFolder + "/point_end.png";
         else if (isItActions(Object))
             imageUrl = iconFolder + "/action.png";
+        else if (isItSendMethod(Object))
+            imageUrl = iconFolder + "/send.png";
         return imageUrl;
     }
 
@@ -155,9 +157,15 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         if ("Action".equals(parentName)) {
             imageUrl = iconFolder + "/input.png";
         }else if(childCount == 0 && parent != null){
-            DefaultMutableTreeNode me = ((DefaultMutableTreeNode)parent.getLastChild());
-            String myName = me.getUserObject().toString();
-            if(myName.equals(ObjectName)) {
+            DefaultMutableTreeNode actionNode = ((DefaultMutableTreeNode)parent.getLastChild());
+            String lastNode = actionNode.getUserObject().toString();
+
+            DefaultMutableTreeNode handlerNode = ((DefaultMutableTreeNode)parent.getFirstChild());
+            String firstNode = handlerNode.getUserObject().toString();
+
+            if(lastNode.equals(ObjectName)) {
+                imageUrl = iconFolder + "/action.png";
+            }else if(firstNode.equals(ObjectName)){
                 imageUrl = iconFolder + "/point_end.png";
 
             }else
@@ -246,5 +254,17 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             return true;
         else
             return false;
+    }
+    private boolean isItSendMethod(DefaultMutableTreeNode Object){
+        String ObjectName = Object.getUserObject().toString();
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) Object.getParent();
+        String parentName = parent != null ? parent.getUserObject().toString() : "";
+
+        if(parentName.contains("input") && parentName.split(" ").length > 1) {
+            String device = parentName.split(" ")[1];
+            if(ObjectName.contains("("+device+")"))
+                return true;
+        }
+        return false;
     }
 }

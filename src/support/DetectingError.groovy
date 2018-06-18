@@ -81,12 +81,16 @@ class DetectingError {
 
     boolean isItRightCapability(Subscribe sub, Input input){
 
+        String sub_cap = sub.getCapability()
         String sub_capVal = sub.getCap_val()
+
         String input_cap = input.getCapability()
         Capability cap = CapHelper.getCap(input_cap)
 
         if(cap !=null){
             if(cap.checkVal(sub_capVal))
+                return true
+            else if(cap.device.equals(sub_cap))
                 return true
             else
                 return false

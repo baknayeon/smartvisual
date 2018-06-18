@@ -81,7 +81,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             if ("run".equals(methodName)) {
                 preference = true
             }else {
-                smartApp.methodMap.put(methodName,node)
+                if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName))
+                   smartApp.methodMap.put(methodName,node)
             }
         }else if(second){
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
@@ -228,7 +229,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             }*/
         }else if(second && preference == false ){
             if (methodCall.equals("input")) {
-                smartApp.dynamicInputMap.put(methodName, new Input(args))
+                //smartApp.dynamicInputMap.put(methodName, new Input(args))
             }
         }
 
