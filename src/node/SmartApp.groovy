@@ -119,10 +119,6 @@ class SmartApp {
                 newSet.add(sendMethod)
                 sendList.put(message, newSet);
             }
-        }else{
-            HashSet newSet = new HashSet()
-            newSet.add(sendMethod)
-            sendList.put(message, newSet);
         }
     }
 

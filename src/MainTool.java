@@ -193,7 +193,7 @@ public class MainTool extends JFrame{
 		chartJPanel.setBorder(BorderFactory.createEmptyBorder(5 , 3, 3 , 3));
 		chartJPanel.setLayout(new BoxLayout(chartJPanel, BoxLayout.PAGE_AXIS));
 
-		JLabel Evaluate = new JLabel("Evaluate");
+		JLabel Evaluate = new JLabel("Matrix");
 		Evaluate.setBounds(0,2,10,10);
 		Evaluate.setSize(10,10);
 		chartJPanel.add(Evaluate);
@@ -223,7 +223,7 @@ public class MainTool extends JFrame{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String path="D:\\2_Master\\석사\\smartThgins_template";
+			String path="singlepaper56";
 
 			File dirFile=new File(path);
 			File []fileList=dirFile.listFiles();
@@ -377,16 +377,16 @@ public class MainTool extends JFrame{
 		int action = (int)dev.get(1);
 		int data = (int)dev.get(2);
 
-		log.append("input device	: "+String.valueOf(input));
-		log.append("event device : "+String.valueOf(event));
-		log.append("action device : "+String.valueOf(action));
-		log.append("input : "+String.valueOf(data));
-		log.append("event handler method : "+String.valueOf(handler));
-		log.append("action command : "+String.valueOf(actionCommd));
-		log.append("action methodFlow : "+String.valueOf(methodFlow));
-		log.append("command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
-		log.append("send method : "+String.valueOf(sendMethod));
-		log.append("dynamicPage : "+String.valueOf(dynamicPage));
+		log.append("No. of input device	: "+String.valueOf(input));
+		log.append("No. of event device : "+String.valueOf(event));
+		log.append("No. of action device : "+String.valueOf(action));
+		log.append("No. of input : "+String.valueOf(data));
+		log.append("No. of event handler method : "+String.valueOf(handler));
+		log.append("No. of action command : "+String.valueOf(actionCommd));
+		log.append("No. of action methodFlow : "+String.valueOf(methodFlow));
+		log.append("No. of command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
+		log.append("No. of send method : "+String.valueOf(sendMethod));
+		log.append("No. of dynamicPage : "+String.valueOf(dynamicPage));
 
 		barDataset.setValue(input, "smartApp", "input device");
 		barDataset.setValue(event, "smartApp", "event device");
@@ -448,7 +448,7 @@ public class MainTool extends JFrame{
 			JTextPaneList panleList = (JTextPaneList)errorList.get(i);
 
 			JTextPane subOpen = new JTextPane();
-			subOpen.setText("Subscribe(");
+			subOpen.setText("subscribe(");
 			subOpen.setEditable(false);
 
 			JTextPane subClose = new JTextPane();

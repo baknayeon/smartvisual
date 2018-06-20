@@ -20,7 +20,7 @@ Music Player,capability.musicPlayer,status level trackDescription trackData mute
 Notification,capability.notification,,deviceNotification
 Polling,capability.polling,,poll
 Power Meter,capability.powerMeter,power,
-Presence Sensor,capability.presenceSensor,presence,
+Presence Sensor,capability.presenceSensor,presence,present notpresent
 Refresh,capability.refresh,,refresh
 Relative Humidity Measurement,capability.relativeHumidityMeasurement,humidity,
 Relay Switch,capability.relaySwitch,switch,on off
