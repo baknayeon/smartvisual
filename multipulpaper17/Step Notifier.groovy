@@ -17,7 +17,7 @@ definition(
     name: "Step Notifier",
     namespace: "smartthings",
     author: "SmartThings",
-    description: "Use a step tracker device to track daily step goals and trigger various device actions when your goals are met!",
+    description: "Use a step tracker attribute to track daily step goals and trigger various attribute actions when your goals are met!",
     category: "SmartThings Labs",
 	iconUrl: "https://s3.amazonaws.com/smartapp-icons/Partner/jawbone-up.png",
 	iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Partner/jawbone-up@2x.png"
@@ -39,7 +39,7 @@ def setupNotifications() {
     dynamicPage(name: "setupNotifications", title: "Configure Your Goal Notifications.", install: true, uninstall: true) {	
     
 		section("Select your Jawbone UP") {
-			input "jawbone", "device.jawboneUser", title: "Jawbone UP", required: true, multiple: false
+			input "jawbone", "attribute.jawboneUser", title: "Jawbone UP", required: true, multiple: false
 		}
            
 		section("Notify Me When"){

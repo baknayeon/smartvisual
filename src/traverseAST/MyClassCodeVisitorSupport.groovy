@@ -148,14 +148,14 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                     smartApp.collectSendMethd(arg, methodCall)
 
                 }
-
-
+                smartApp.count_sendMethod()
             }else if( methodCall.equals("sendSms") || methodCall.equals("sendSmsMessage")){
                 if(args.size() == 2){
                     def phone = args[0]
                     def message = args[1]
                     smartApp.collectSendMethd(phone, message, methodCall)
                 }
+                smartApp.count_sendMethod()
 
             }
         }
@@ -292,6 +292,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         String obj = methodcallExpression.objectExpression.variable
         if (smartApp.inputMap.containsKey(obj)) {
             //deveice command call
+            smartApp.count_actionCommand()
             String device = obj //+"."+methodcallExpression.methodMap.value
 
             String commomd = methodcallExpression.method.value
@@ -335,7 +336,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             }
             HashSet hashSet = smartApp.calli2callerMap.get(method) ?: null
             if (hashSet) {
-                hashSet.addAll(methodName)
+                if(!method.equals(methodName)) //recursive
+                    hashSet.addAll(methodName)
 
             } else {
                 HashSet newset = new HashSet();

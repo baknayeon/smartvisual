@@ -344,7 +344,7 @@ def wGetNotification() {
 	def userId = userid()
 	def url = wNotificationBaseUrl()
 	def params = [
-		action: "subscribe"
+		action: "handlerMethod"
 	]
 
 }
@@ -353,7 +353,7 @@ def wGetNotification() {
 def wCreateNotification() {
 	def baseUrl = wNotificationBaseUrl()
 	def urlParams = [
-		action     : "subscribe",
+		action     : "handlerMethod",
 		userid     : userid(),
 		callbackurl: wNotificationCallbackUrl(),
 		oauth_token: oauth_token(),
@@ -752,7 +752,7 @@ def authorizedHtmlBody() {
 	"""
 		<div class="container">
 			<img src="https://s3.amazonaws.com/smartapp-icons/Partner/withings@2x.png" alt="withings icon" />
-			<img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-device-icn%402x.png" alt="connected device icon" />
+			<img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-attribute-icn%402x.png" alt="connected attribute icon" />
 			<img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/st-logo%402x.png" alt="SmartThings logo" />
 			<p>Your Withings scale is now connected to SmartThings!</p>
 			<p>Click 'Done' to finish setup.</p>

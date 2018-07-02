@@ -64,8 +64,19 @@ class DeviceAction {
         }
 
     }
-    public ArrayList getCommads(){
+    public ArrayList getCommands(){
         return commandsMap.keySet().toArray()
+    }
+
+    public boolean isItFrequentCommands(String command){
+        HashMap methods = commandsMap.get(command)
+        int result
+        for(Integer i :methods.values()){
+            result = result + i
+        }
+        if(result > 1)
+            return true
+        else return false
     }
 
     public ArrayList getMethodByCommad(String commad){

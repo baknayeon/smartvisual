@@ -1,12 +1,8 @@
 package node
 
-import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
-import preferenceNode.Capability
 import preferenceNode.Input
 import preferenceNode.Subscribe
-
-import java.lang.reflect.Array
 
 /**
  * Created by b_newyork on 2018-06-08.
@@ -17,13 +13,15 @@ class SmartApp {
     HashMap definition = new HashMap<>();
     ArrayList preferenceList = new ArrayList()
     ArrayList subscribeList = new ArrayList()
-    HashSet subscribe = new HashSet()
+    HashSet handlerMethod = new HashSet()
+    HashMap subCount = new HashMap()
     HashMap inputMap = new HashMap()
     HashMap methodMap = new HashMap()
     HashMap dynamicMethodMap = new HashMap<>();
     //first action
     HashMap sendMethodMap = new HashMap<>();
     int seneMethod = 0;
+    int actionCommand = 0;
 
     private HashMap sendList = new HashMap<>();
     private int actionCommand_In_handlerMethod = 0
@@ -38,6 +36,12 @@ class SmartApp {
 
     public SmartApp(){
     }
+
+    public int gettheNumof_sub(){
+        return subscribeList.size()
+    }
+
+
 
     public int total_MethodFlow(){
         int num = 0;
@@ -54,18 +58,22 @@ class SmartApp {
     public int total_ActionCommand_In_handlerMethod(){
         return actionCommand_In_handlerMethod;
     }
-
-    public int total_actionCommed(){
-        int num = 0;
-        for(DeviceAction hi : ActionsCommandMap.values()){
-            num = num + hi.getCommads().size()
-        }
-        return num;
+    public void count_actionCommand(){
+        actionCommand++
+    }
+    public int total_actionCommand(){
+        return actionCommand;
     }
 
-    public int total_sendMethod(){
+    public void count_sendMethod(){
+        seneMethod++
+    }
+    public int total_sendMethod() {
         return seneMethod;
     }
+
+
+
 
     public ArrayList getDevice(){
         int event = 0;
@@ -79,10 +87,15 @@ class SmartApp {
                 name = input
 
             if(name != null) {
-                if (isitEventDevice(name))
-                    event++
-                else if (isitActionDevice(name))
-                    action++
+                boolean isitEvent = isitEventDevice(name)
+                boolean isitAction = isitActionDevice(name)
+
+                if(isitAction || isitEvent) {
+                    if (isitEvent)
+                        event++
+                    if (isitAction)
+                        action++
+                }
                 else
                     data++
             }
@@ -108,7 +121,6 @@ class SmartApp {
     }
 
     public void collectSendMethd(def message, String sendMethod){
-        seneMethod++
         if(message in VariableExpression) {
             message = ((VariableExpression) message).variable
             if(sendList.containsKey(message)) {
@@ -123,7 +135,6 @@ class SmartApp {
     }
 
     public void collectSendMethd(def phone, def message, String sendMethod){
-        seneMethod++
         if(phone in VariableExpression) {
             phone = ((VariableExpression) phone).variable
             if(sendList.containsKey(phone)){
@@ -197,8 +208,15 @@ class SmartApp {
                     if (subscribe.getCapability().equals(newSubscribe.getCapability()))
                         return
         }
-        subscribe.add(newSubscribe.getHandler())
+        handlerMethod.add(newSubscribe.getHandler())
         subscribeList.add(newSubscribe)
+        if(subCount.containsKey(newSubscribe.getInput())){
+            int count = subCount.get(newSubscribe.getInput())
+            count = count+1
+            subCount.put(newSubscribe.getInput(), count)
+        }
+        else
+            subCount.put(newSubscribe.getInput(), 1)
     }
 
 

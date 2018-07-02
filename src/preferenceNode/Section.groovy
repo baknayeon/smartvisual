@@ -19,7 +19,7 @@ import org.codehaus.groovy.ast.stmt.ExpressionStatement
  */
 class Section {
 
-    String title
+    String title = null
 
     public Section(def args){
         args.each { arg ->

@@ -129,15 +129,15 @@ def validateCommand(device, deviceType, command) {
 	if (capabilityCommands[currentDeviceCapability]) {
 		return command in capabilityCommands[currentDeviceCapability] ? true : false
 	} else {
-		// Handling other device types here, which don't accept commands
+		// Handling other attribute types here, which don't accept commands
 		httpError(400, "Bad request.")
 	}
 }
 
 /**
  * Need to get the attribute name to do the lookup. Only
- * doing it for the device types which accept commands
- * @return attribute name of the device type
+ * doing it for the attribute types which accept commands
+ * @return attribute name of the attribute type
  */
 def getCapabilityName(type) {
     switch(type) {
@@ -152,8 +152,8 @@ def getCapabilityName(type) {
 
 /**
  * Constructing the map over here of
- * supported commands by device capability
- * @return a map of device capability -> supported commands
+ * supported commands by attribute capability
+ * @return a map of attribute capability -> supported commands
  */
 def getDeviceCapabilityCommands(deviceCapabilities) {
 	def map = [:]
@@ -165,7 +165,7 @@ def getDeviceCapabilityCommands(deviceCapabilities) {
 
 /**
  * Validates and executes the command
- * on the device or devices
+ * on the attribute or devices
  */
 def executeCommand(device, type, command) {
 	if (validateCommand(device, type, command)) {

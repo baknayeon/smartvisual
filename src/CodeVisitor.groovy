@@ -62,7 +62,7 @@ class CodeVisitor extends CompilationCustomizer{
         def action_methodssMap = smartAppInfo.getActionsCommandMap()
         for(String device : action_methodssMap.keySet()){
             DeviceAction commandList = action_methodssMap.get(device)
-            for(String command : commandList.getCommads()){
+            for(String command : commandList.getCommands()){
                 ArrayList methods =  commandList.getMethodByCommad(command)
                 for(String method : methods){
                     actionFlow(method,  new ArrayList())

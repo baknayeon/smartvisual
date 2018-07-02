@@ -42,11 +42,11 @@ class Visualization {
             DefaultMutableTreeNode deviceNode = new DefaultMutableTreeNode(device)
             DeviceAction methodFlows =  action_methodssMap.get(device)
 
-            for(String commads :  methodFlows.getCommads()){
+            for(String commads :  methodFlows.getCommands()){
                 ArrayList methodFlow = methodFlows.getMethodFlow(commads)
 
                 /*for(ArrayList methodsList : methodFlow) {
-                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(device + "." + commads + "()")
+                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(attribute + "." + commads + "()")
                     for (String method : methodsList)
                         methodFlowNode.add(new DefaultMutableTreeNode(method))
                     deviceNode.add(methodFlowNode)
@@ -142,7 +142,7 @@ class Visualization {
 
         Section sectionList = preferList.get(preferLevel)
 
-        def section = new DefaultMutableTreeNode('section \"'+sectionList.title?.toString()+'"')
+        def section = new DefaultMutableTreeNode( sectionList.getTitle() == null? "section":'section \"'+sectionList.title .toString()+'"')
 
         ++preferLevel
         while ( preferLevel < preferList.size() ){
@@ -214,7 +214,6 @@ class Visualization {
 
     public void makeHandler(DefaultMutableTreeNode node, String name){
 
-        int i =0
         if(!name.equals("")) {
             //여러 핸들러 등록가능
             for(Subscribe sub : subscribeList){
@@ -222,20 +221,22 @@ class Visualization {
                     String subInput = sub.getInput()
                     if (subInput.equals(name)) {
                           //sub.setMatched(true)
-                        if(sub.getCapability().equals("")){
-                            def handler = new DefaultMutableTreeNode(sub.getHandler())
+                        String cap = sub.getCapability()
+                        String han = sub.getHandler()
+                        if(cap.equals("default")){ //app location handlerMethod
+                            DefaultMutableTreeNode handler = new DefaultMutableTreeNode(han)
                             node.add(handler)
                         }else{
-                            def handler = new DefaultMutableTreeNode(sub.getCapability())
-                            handler.add(new DefaultMutableTreeNode(sub.getHandler()))
+                            DefaultMutableTreeNode handler = new DefaultMutableTreeNode(cap)
+                            handler.add(new DefaultMutableTreeNode(han))
                             node.add(handler)
                         }
-
-
                     }
                 }
             }
         }
+
+        int i =0
     }
 
     public void makeActionsinMethod(DefaultMutableTreeNode node, String device){
@@ -247,13 +248,23 @@ class Visualization {
     }
 
     public void makeSendMethod(DefaultMutableTreeNode node, String device){
-        HashMap inputMap = sendMethodMap.values()
-        if(inputMap.containsKey(device)) {
-            HashSet methodSet = inputMap.get(device)
-            for(String method : methodSet){
-                node.add(new DefaultMutableTreeNode(method+"("+device+")"))
+        ArrayList values;
+
+        if(sendMethodMap.size() == 1) {
+            values = new ArrayList()
+            values.add(sendMethodMap.values())
+        }else
+            values = sendMethodMap.values()
+
+        for(HashMap inputMap : values) {
+            if (inputMap.containsKey(device)) {
+                HashSet methodSet = inputMap.get(device)
+                for (String method : methodSet) {
+                    node.add(new DefaultMutableTreeNode(method + "(" + device + ")"))
+                }
             }
         }
+
     }
     
     DefaultMutableTreeNode makeDynamicPage(String dynamicPageName){
@@ -376,7 +387,7 @@ class Visualization {
 
     private def setNode(Section section, DefaultMutableTreeNode node){
 
-        node.setUserObject(new DefaultMutableTreeNode('section "'+section.getTitle()+'"'))
+        node.setUserObject(new DefaultMutableTreeNode(section.getTitle() == null? "section":'section \"'+section.getTitle() .toString()+'"'))
 
         return node
     }

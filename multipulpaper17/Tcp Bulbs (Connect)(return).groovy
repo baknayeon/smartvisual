@@ -94,7 +94,7 @@ def uninstallFromChildDevice(childDevice)
 	def dni = childDevice.device.deviceNetworkId
 
 	if ( !dni ) {
-		debugOut errorMsg += "could not find dni of device"
+		debugOut errorMsg += "could not find dni of attribute"
 		return
 	}
 
@@ -119,14 +119,14 @@ def setupBulbs() {
 			def newBulb = bulbs.find { (it.did) == did }
 			d = addChildDevice("wackford", deviceFile, did, null, [name: "${newBulb?.name}", label: "${newBulb?.name}", completedSetup: true])
 
-			/*if ( isRoom(did) ) { //change to the multi light group icon for a room device
+			/*if ( isRoom(did) ) { //change to the multi light group icon for a room attribute
 				d.setIcon("switch", "on",  "st.lights.multi-light-bulb-on")
 				d.setIcon("switch", "off",  "st.lights.multi-light-bulb-off")
 				d.save()
 			}*/
 
 		} else {
-			debugOut "We already added this device"
+			debugOut "We already added this attribute"
 		}
 	}
 
@@ -450,7 +450,7 @@ def debugOut(msg) {
  Child Device Call In Methods
  **************************************************************************/
 def on(childDevice) {
-	debugOut "On request from child device"
+	debugOut "On request from child attribute"
 
 	def dni = childDevice.device.deviceNetworkId
 	def data = ""
@@ -481,7 +481,7 @@ def on(childDevice) {
 }
 
 def off(childDevice) {
-	debugOut "Off request from child device"
+	debugOut "Off request from child attribute"
 
 	def dni = childDevice.device.deviceNetworkId
 	def data = ""
@@ -512,7 +512,7 @@ def off(childDevice) {
 }
 
 def setLevel(childDevice, value) {
-	debugOut "setLevel request from child device"
+	debugOut "setLevel request from child attribute"
 
 	def dni = childDevice.device.deviceNetworkId
 	def data = ""
@@ -584,15 +584,15 @@ def pollRoom(dni) {
 	def usingPower = totalPower * (avgLevel / 100) as float
 	def room = getChildDevice( dni )
 
-	//the device is a room but we use same type file
-	sendEvent( dni, [name: "setBulbPower",value:"${totalPower}"] ) //used in child device calcs
+	//the attribute is a room but we use same type file
+	sendEvent( dni, [name: "setBulbPower",value:"${totalPower}"] ) //used in child attribute calcs
 
 	//if all devices in room are on, room is on
 	if ( cnt == onCnt ) { // all devices are on
 		sendEvent( dni, [name: "switch",value:"on"] )
 		sendEvent( dni, [name: "power",value:usingPower.round(1)] )
 
-	} else { //if any device in room is off, room is off
+	} else { //if any attribute in room is off, room is off
 		sendEvent( dni, [name: "switch",value:"off"] )
 		sendEvent( dni, [name: "power",value:0.0] )
 	}
@@ -634,7 +634,7 @@ def poll(childDevice) {
 
 	def bulb = getChildDevice( dni )
 
-	//set the devices power max setting to do calcs within the device type
+	//set the devices power max setting to do calcs within the attribute type
 	if ( bulbData.other.bulbpower )
 		sendEvent( dni, [name: "setBulbPower",value:"${bulbData.other.bulbpower}"] )
 

@@ -33,7 +33,7 @@ class Input {
         if(capability.contains("capability")){
             Capability cap = CapHelper.getCap(capability)
             if(cap) {
-                this.device = cap.device
+                this.device = cap.attribute
             }
         }
         this.capability = capability

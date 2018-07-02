@@ -222,7 +222,7 @@ def connectionStatus(message, redirectUrl = null) {
         <body>
             <div class="container">
                 <img src="https://s3.amazonaws.com/smartapp-icons/Partner/ecobee%402x.png" alt="ecobee icon" />
-                <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-device-icn%402x.png" alt="connected device icon" />
+                <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-attribute-icn%402x.png" alt="connected attribute icon" />
                 <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/st-logo%402x.png" alt="SmartThings logo" />
                 ${message}
             </div>
@@ -234,7 +234,7 @@ def connectionStatus(message, redirectUrl = null) {
 }
 
 def getEcobeeThermostats() {
-	log.debug "getting device list"
+	log.debug "getting attribute list"
 	atomicState.remoteSensors = []
 
     def bodyParams = [
@@ -357,7 +357,7 @@ def initialize() {
 	log.warn "delete: ${delete}, deleting ${delete.size()} thermostats"
 	delete.each { deleteChildDevice(it.deviceNetworkId) } //inherits from SmartApp (data-management)
 
-	//send activity feeds to tell that device is connected
+	//send activity feeds to tell that attribute is connected
 	def notificationMessage = "is connected to SmartThings"
 	sendActivityFeeds(notificationMessage)
 	atomicState.timeSendPush = null
@@ -626,7 +626,7 @@ private void saveTokenAndResumeAction(json) {
 
 /**
  * Executes the resume program command on the Ecobee thermostat
- * @param deviceId - the ID of the device
+ * @param deviceId - the ID of the attribute
  *
  * @retrun true if the command was successful, false otherwise.
  */
@@ -650,7 +650,7 @@ boolean resumeProgram(deviceId) {
  * Executes the set hold command on the Ecobee thermostat
  * @param heating - The heating temperature to set in fahrenheit
  * @param cooling - the cooling temperature to set in fahrenheit
- * @param deviceId - the ID of the device
+ * @param deviceId - the ID of the attribute
  * @param sendHoldType - the hold type to execute
  *
  * @return true if the command was successful, false otherwise
@@ -685,7 +685,7 @@ boolean setHold(heating, cooling, deviceId, sendHoldType) {
  * Executes the set fan mode command on the Ecobee thermostat
  * @param heating - The heating temperature to set in fahrenheit
  * @param cooling - the cooling temperature to set in fahrenheit
- * @param deviceId - the ID of the device
+ * @param deviceId - the ID of the attribute
  * @param sendHoldType - the hold type to execute
  * @param fanMode - the fan mode to set to
  *
@@ -721,7 +721,7 @@ boolean setFanMode(heating, cooling, deviceId, sendHoldType, fanMode) {
 /**
  * Sets the mode of the Ecobee thermostat
  * @param mode - the mode to set to
- * @param deviceId - the ID of the device
+ * @param deviceId - the ID of the attribute
  *
  * @return true if the command was successful, false otherwise
  */

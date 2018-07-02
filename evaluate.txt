@@ -1,0 +1,2086 @@
+
+-----------Alfred Workflow.groovy-----------
+No. of input device	: 2
+No. of event device : 0
+No. of action device : 2
+No. of input : 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 2
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Big Turn OFF.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Big Turn ON.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Brighten My Path.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Button Controller(for).groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 2
+-----------Carpool Notifier.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Darken Behind Me.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Energy Saver.groovy-----------
+심플한 SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input : 1
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Feed My Pet.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Flood Alert!.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Garage Door Opener.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 1
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Habit Helper.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Has Barkley Been Fed.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Hue Mood Lighting.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 1
+No. of input : 8
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 2
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 1
+-----------It Moved.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------It's Too Cold.groovy-----------
+심플한 SmartApp
+No. of input device	: 6
+No. of event device : 1
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------It's Too Hot.groovy-----------
+심플한 SmartApp
+No. of input device	: 6
+No. of event device : 1
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Keep Me Cozy II.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 4
+No. of event device : 2
+No. of action device : 1
+No. of input : 2
+No. of subscribe : 4
+No. of event handler method : 2
+No. of action command : 7
+No. of action methodFlow : 6
+No. of command in event handler : 6
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Keep Me Cozy.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input : 2
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 6
+No. of action methodFlow : 6
+No. of command in event handler : 6
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Laundry Monitor.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 8
+No. of event device : 1
+No. of action device : 2
+No. of input : 5
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 7
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Left It Open.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Let There Be Light!.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Light Follows Me.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input : 1
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Light Up the Night.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Lights Off, When Closed.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Lock It When I Leave.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 1
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Mail Arrived.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Make It So.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 3
+No. of event device : 0
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 6
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Medicine Reminder.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 0
+No. of input : 9
+No. of subscribe : 4
+No. of event handler method : 4
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Mini Hue Controller.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 10
+No. of action methodFlow : 7
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Mood Cube.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 7
+No. of event device : 1
+No. of action device : 2
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 12
+No. of action methodFlow : 4
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 4
+-----------Notify Me When It Opens.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 1
+No. of event device : 1
+No. of action device : 0
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 1
+No. of dynamicPage : 0
+-----------Notify Me When.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 16
+No. of event device : 11
+No. of action device : 0
+No. of input : 5
+No. of subscribe : 13
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Notify Me With Hue.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 18
+No. of event device : 12
+No. of action device : 1
+No. of input : 5
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 3
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Once a Day.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 3
+No. of event device : 2
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Photo Burst When.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 11
+No. of event device : 6
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 6
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Power Allowance.groovy-----------
+Event와 Action 중복 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 1
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Presence Change Push.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 1
+No. of event device : 1
+No. of action device : 0
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Presence Change Text.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 4
+No. of dynamicPage : 0
+-----------Ridiculously Automated Garage Door.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 9
+No. of event device : 4
+No. of action device : 2
+No. of input : 4
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 3
+No. of action methodFlow : 4
+No. of command in event handler : 0
+No. of send method : 5
+No. of dynamicPage : 0
+-----------Rise and Shine.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 8
+No. of event device : 1
+No. of action device : 1
+No. of input : 6
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Scheduled Mode Change.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Severe Weather Alert.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 0
+No. of action device : 0
+No. of input : 5
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 5
+No. of dynamicPage : 0
+-----------Sleepy Time.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 7
+No. of event device : 1
+No. of action device : 0
+No. of input : 6
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 2
+-----------Smart Nightlight.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 9
+No. of event device : 2
+No. of action device : 1
+No. of input : 6
+No. of subscribe : 5
+No. of event handler method : 4
+No. of action command : 5
+No. of action methodFlow : 4
+No. of command in event handler : 3
+No. of send method : 0
+No. of dynamicPage : 0
+-----------SmartWeather Station Controller.groovy-----------
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 0
+No. of input : 1
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Speaker Control.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 1
+No. of input : 8
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 1
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 1
+-----------Speaker Mood Music.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 1
+No. of input : 8
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 3
+No. of action methodFlow : 9
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 2
+-----------Speaker Notify with Sound.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 12
+No. of event device : 0
+No. of action device : 1
+No. of input : 11
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 3
+No. of action methodFlow : 9
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 2
+-----------Speaker Weather Forecast.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 12
+No. of event device : 0
+No. of action device : 1
+No. of input : 11
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 4
+No. of action methodFlow : 12
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 2
+-----------Step Notifier.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 19
+No. of event device : 1
+No. of action device : 3
+No. of input : 15
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 7
+No. of action methodFlow : 4
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 2
+-----------SunriseSunset.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 14
+No. of event device : 0
+No. of action device : 4
+No. of input : 10
+No. of subscribe : 5
+No. of event handler method : 4
+No. of action command : 4
+No. of action methodFlow : 4
+No. of command in event handler : 4
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Text Me When It Opens.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Text Me When There's Motion and I'm Not Here.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------The Big Switch.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 1
+No. of input : 3
+No. of subscribe : 3
+No. of event handler method : 3
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------The Flasher.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 10
+No. of event device : 5
+No. of action device : 3
+No. of input : 2
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 7
+No. of action methodFlow : 15
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------The Gun Case Moved.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Turn It On For 5 Minutes.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Turn It On When I'm Here.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Turn It On When It Opens.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Turn On Only If I Arrive After Sunset.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Undead Early Warning.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Unlock It When I Arrive.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 1
+No. of dynamicPage : 0
+-----------Virtual Thermostat.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 7
+No. of event device : 2
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 6
+No. of action methodFlow : 6
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------When It's Going to Rain.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Withings Manager.groovy-----------
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 0
+No. of input : 1
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 1
+-----------66-----------
+-----------36-----------
+-----------26-----------
+-----------25-----------
+-----------16-----------
+-----------31-----------
+-----------5-----------
+-----------20-----------
+-----------Alfred Workflow.groovy-----------
+No. of input device	: 2
+No. of event device : 0
+No. of action device : 2
+No. of input : 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 2
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Big Turn OFF.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Big Turn ON.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Brighten My Path.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Button Controller(for).groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 2
+-----------Carpool Notifier.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Darken Behind Me.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Ecobee (Connect).groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Energy Saver.groovy-----------
+심플한 SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input : 1
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Feed My Pet.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Flood Alert!.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Garage Door Opener.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 1
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Habit Helper.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Has Barkley Been Fed.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Hue Mood Lighting.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 1
+No. of input : 8
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 2
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 1
+-----------It Moved.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------It's Too Cold.groovy-----------
+심플한 SmartApp
+No. of input device	: 6
+No. of event device : 1
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------It's Too Hot.groovy-----------
+심플한 SmartApp
+No. of input device	: 6
+No. of event device : 1
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Keep Me Cozy II.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 4
+No. of event device : 2
+No. of action device : 1
+No. of input : 2
+No. of subscribe : 4
+No. of event handler method : 2
+No. of action command : 7
+No. of action methodFlow : 6
+No. of command in event handler : 6
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Keep Me Cozy.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input : 2
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 6
+No. of action methodFlow : 6
+No. of command in event handler : 6
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Laundry Monitor.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 8
+No. of event device : 1
+No. of action device : 2
+No. of input : 5
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 7
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Left It Open.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Let There Be Light!.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Life360 (Connect).groovy-----------
+No. of input device	: 0
+No. of event device : 0
+No. of action device : 0
+No. of input : 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 4
+-----------Light Follows Me.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input : 1
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Light Up the Night.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Lights Off, When Closed.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Lock It When I Leave.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 1
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Mail Arrived.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Make It So.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 3
+No. of event device : 0
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 6
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Medicine Reminder.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 0
+No. of input : 9
+No. of subscribe : 4
+No. of event handler method : 4
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Mini Hue Controller.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 10
+No. of action methodFlow : 7
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Mood Cube.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 7
+No. of event device : 1
+No. of action device : 2
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 12
+No. of action methodFlow : 4
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 4
+-----------Notify Me When It Opens.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 1
+No. of event device : 1
+No. of action device : 0
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 1
+No. of dynamicPage : 0
+-----------Notify Me When.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 16
+No. of event device : 11
+No. of action device : 0
+No. of input : 5
+No. of subscribe : 13
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Notify Me With Hue.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 18
+No. of event device : 12
+No. of action device : 1
+No. of input : 5
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 3
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Once a Day.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 3
+No. of event device : 2
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Photo Burst When.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 11
+No. of event device : 6
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 6
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Power Allowance.groovy-----------
+Event와 Action 중복 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 1
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Presence Change Push.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 1
+No. of event device : 1
+No. of action device : 0
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Presence Change Text.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 4
+No. of dynamicPage : 0
+-----------Quirky (Connect).groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 4
+No. of dynamicPage : 0
+-----------Ridiculously Automated Garage Door.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 9
+No. of event device : 4
+No. of action device : 2
+No. of input : 4
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 3
+No. of action methodFlow : 4
+No. of command in event handler : 0
+No. of send method : 5
+No. of dynamicPage : 0
+-----------Rise and Shine.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 8
+No. of event device : 1
+No. of action device : 1
+No. of input : 6
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Scheduled Mode Change.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Severe Weather Alert.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 0
+No. of action device : 0
+No. of input : 5
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 5
+No. of dynamicPage : 0
+-----------Sleepy Time.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 7
+No. of event device : 1
+No. of action device : 0
+No. of input : 6
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 2
+-----------Smart Nightlight.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 9
+No. of event device : 2
+No. of action device : 1
+No. of input : 6
+No. of subscribe : 5
+No. of event handler method : 4
+No. of action command : 5
+No. of action methodFlow : 4
+No. of command in event handler : 3
+No. of send method : 0
+No. of dynamicPage : 0
+-----------SmartWeather Station Controller.groovy-----------
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 0
+No. of input : 1
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Speaker Control.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 1
+No. of input : 8
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 1
+No. of action methodFlow : 3
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 1
+-----------Speaker Mood Music.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 9
+No. of event device : 0
+No. of action device : 1
+No. of input : 8
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 3
+No. of action methodFlow : 9
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 2
+-----------Speaker Notify with Sound.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 12
+No. of event device : 0
+No. of action device : 1
+No. of input : 11
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 3
+No. of action methodFlow : 9
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 2
+-----------Speaker Weather Forecast.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 12
+No. of event device : 0
+No. of action device : 1
+No. of input : 11
+No. of subscribe : 16
+No. of event handler method : 4
+No. of action command : 4
+No. of action methodFlow : 12
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 2
+-----------Step Notifier.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 19
+No. of event device : 1
+No. of action device : 3
+No. of input : 15
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 7
+No. of action methodFlow : 4
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 2
+-----------SunriseSunset.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 14
+No. of event device : 0
+No. of action device : 4
+No. of input : 10
+No. of subscribe : 5
+No. of event handler method : 4
+No. of action command : 4
+No. of action methodFlow : 4
+No. of command in event handler : 4
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Tcp Bulbs (Connect)(return).groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 2
+No. of event device : 0
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 1
+No. of dynamicPage : 1
+-----------Tesla (Connect)(if).groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 2
+No. of event device : 0
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 1
+No. of dynamicPage : 1
+-----------Text Me When It Opens.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Text Me When There's Motion and I'm Not Here.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 1
+No. of action device : 0
+No. of input : 3
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------The Big Switch.groovy-----------
+Event 다발 SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 1
+No. of input : 3
+No. of subscribe : 3
+No. of event handler method : 3
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------The Flasher.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 10
+No. of event device : 5
+No. of action device : 3
+No. of input : 2
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 7
+No. of action methodFlow : 15
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------The Gun Case Moved.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 3
+No. of event device : 1
+No. of action device : 0
+No. of input : 2
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Turn It On For 5 Minutes.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Turn It On When I'm Here.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Turn It On When It Opens.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Turn On Only If I Arrive After Sunset.groovy-----------
+심플한 SmartApp
+Action 다발 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 2
+No. of action methodFlow : 2
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Undead Early Warning.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Unlock It When I Arrive.groovy-----------
+심플한 SmartApp
+No. of input device	: 2
+No. of event device : 1
+No. of action device : 1
+No. of input : 0
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 1
+No. of action methodFlow : 1
+No. of command in event handler : 1
+No. of send method : 1
+No. of dynamicPage : 0
+-----------Virtual Thermostat.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+No. of input device	: 7
+No. of event device : 2
+No. of action device : 1
+No. of input : 4
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 6
+No. of action methodFlow : 6
+No. of command in event handler : 2
+No. of send method : 0
+No. of dynamicPage : 0
+-----------When It's Going to Rain.groovy-----------
+심플한 SmartApp
+Sending Message SmartApp
+No. of input device	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 1
+No. of event handler method : 1
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 2
+No. of dynamicPage : 0
+-----------Withings Manager.groovy-----------
+No. of input device	: 1
+No. of event device : 0
+No. of action device : 0
+No. of input : 1
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 1
+-----------71-----------
+-----------40-----------
+-----------26-----------
+-----------25-----------
+-----------16-----------
+-----------36-----------
+-----------5-----------
+-----------23-----------
+-----------Life360 (Connect).groovy-----------
+No. of input device	: 0
+No. of event device : 0
+No. of action device : 0
+No. of input : 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 4
+-----------Smart Security.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+-----------Smart Security.groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 12
+No. of event device : 3
+No. of action device : 2
+No. of input : 8
+No. of subscribe : 6
+No. of event handler method : 6
+No. of action command : 7
+No. of action methodFlow : 8
+No. of command in event handler : 2
+No. of send method : 5
+No. of dynamicPage : 0
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Gentle Wake Up(if) - 복사본.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 0
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 1
+-----------Gentle Wake Up(if) - 복사본.groovy-----------
+Event 다발 SmartApp
+Sending Message SmartApp
+No. of input device	: 4
+No. of event device : 0
+No. of action device : 0
+No. of input : 4
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 0
+No. of action methodFlow : 0
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 1
+-----------Gentle Wake Up(if).groovy-----------
+Event 다발 SmartApp
+Action 다발 SmartApp
+Event와 Action 중복 SmartApp
+No. of input device	: 23
+No. of event device : 3
+No. of action device : 5
+No. of input : 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 10
+No. of action methodFlow : 23
+No. of command in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6

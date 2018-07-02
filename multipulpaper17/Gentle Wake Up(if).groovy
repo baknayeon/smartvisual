@@ -63,7 +63,7 @@ def rootPage() {
 
 			section("Rules For Dimming") {
 				href(name: "toSchedulingPage", page: "schedulingPage", title: "Automation", description: schedulingHrefDescription() ?: "Set rules for when to start", state: schedulingHrefDescription() ? "complete" : "")
-				input(name: "manualOverride", type: "enum", options: ["cancel": "Cancel dimming", "jumpTo": "Jump to the end"], title: "When one of the dimmers is manually turned off¡¦", description: "dimming will continue", required: false, multiple: false)
+				input(name: "manualOverride", type: "enum", options: ["cancel": "Cancel dimming", "jumpTo": "Jump to the end"], title: "When one of the dimmers is manually turned offï¿½ï¿½", description: "dimming will continue", required: false, multiple: false)
 				href(name: "toCompletionPage", title: "Completion Actions", page: "completionPage", state: completionHrefDescription() ? "complete" : "", description: completionHrefDescription() ?: "Set rules for what to do when dimming completes")
 			}
 
@@ -158,7 +158,7 @@ def controllerExplanationPage() {
 	dynamicPage(name: "controllerExplanationPage", title: "How To Control Gentle Wake Up") {
 
 		section("With other SmartApps", hideable: true, hidden: false) {
-			paragraph "When this SmartApp is installed, it will create a controller device which you can use in other SmartApps for even more customizable automation!"
+			paragraph "When this SmartApp is installed, it will create a controller attribute which you can use in other SmartApps for even more customizable automation!"
 			paragraph "The controller acts like a switch so any SmartApp that can control a switch can control Gentle Wake Up, too!"
 			paragraph "Routines and 'Smart Lighting' are great ways to automate Gentle Wake Up."
 		}
@@ -168,7 +168,7 @@ def controllerExplanationPage() {
 			image "http://f.cl.ly/items/2O0v0h41301U14042z3i/GentleWakeUpController-tile-stopped.png"
 			paragraph "You can start and stop Gentle Wake up by tapping the control on the right."
 			image "http://f.cl.ly/items/3W323J3M1b3K0k0V3X3a/GentleWakeUpController-tile-running.png"
-			paragraph "If you look at the device details screen, you will find even more information about Gentle Wake Up and more fine grain controls."
+			paragraph "If you look at the attribute details screen, you will find even more information about Gentle Wake Up and more fine grain controls."
 			image "http://f.cl.ly/items/291s3z2I2Q0r2q0x171H/GentleWakeUpController-richTile-stopped.png"
 			paragraph "The slider allows you to jump to any point in the dimming process. Think of it as a percentage. If Gentle Wake Up is set to dim down as you fall asleep, but your book is just too good to put down; simply drag the slider to the left and Gentle Wake Up will give you more time to finish your chapter and drift off to sleep."
 			image "http://f.cl.ly/items/0F0N2G0S3v1q0L0R3J3Y/GentleWakeUpController-richTile-running.png"
@@ -182,7 +182,7 @@ def controllerExplanationPage() {
 		}
 
 		section("Turning off devices while dimming", hideable: true, hidden: true) {
-			paragraph "It's best to use other Devices and SmartApps for triggering the Controller device. However, that isn't always an option."
+			paragraph "It's best to use other Devices and SmartApps for triggering the Controller attribute. However, that isn't always an option."
 			paragraph "If you turn off a switch that is being dimmed, it will either continue to dim, stop dimming, or jump to the end of the dimming cycle depending on your settings."
 			paragraph "Unfortunately, some switches take a little time to turn off and may not finish turning off before Gentle Wake Up sets its dim level again. You may need to try a few times to get it to stop."
 			paragraph "That's why it's best to use devices that aren't currently dimming. Remember that you can use other SmartApps to toggle the controller. :)"

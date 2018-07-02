@@ -23,7 +23,7 @@ public class Subscribe {
             def one = methodArgList.get(0)
             def second = methodArgList.get(1)
             this.input = handingArgs(one)
-            this.capability = ""
+            this.capability = "default"
             this.handler = handingArgs(second)
         }else if(size >= 3) {
             def one = methodArgList.get(0)
@@ -34,6 +34,8 @@ public class Subscribe {
             this.handler = handingArgs(third)
             if(capability.contains(".")){
                 cap_val = capability.tokenize(".").get(1)
+            }else{
+                cap_val = capability
             }
         }
     }

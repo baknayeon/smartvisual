@@ -11,7 +11,7 @@ import preferenceNode.Subscribe
  */
 class DetectingError {
 
-    private ArrayList preferenceList
+    private ArrayList inputList
     private ArrayList subscribeList
     private HashMap methodMap
 
@@ -20,7 +20,7 @@ class DetectingError {
 
     public DetectingError(SmartApp smartAppInfo) {
 
-        preferenceList = smartAppInfo.getPreferenceList()
+        inputList = smartAppInfo.getInputMap().values()
         subscribeList = smartAppInfo.getSubscribeList()
         methodMap = smartAppInfo.getMethodMap()
         methodErrorList = new ArrayList()
@@ -47,7 +47,7 @@ class DetectingError {
                         sub_cap.equals("position") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
                         c = true // capability of location, app
             }else{
-                for(def list : preferenceList){
+                for(def list : inputList){
                     if(list in Input){
                         // input
                         Input input = list
@@ -84,13 +84,14 @@ class DetectingError {
         String sub_cap = sub.getCapability()
         String sub_capVal = sub.getCap_val()
 
-        String input_cap = input.getCapability()
-        Capability cap = CapHelper.getCap(input_cap)
+        Capability cap = CapHelper.getCap(input.getCapability())
 
         if(cap !=null){
-            if(cap.checkVal(sub_capVal))
+            if(cap.getCapability().equals(sub_cap))
                 return true
-            else if(cap.device.equals(sub_cap))
+            else if(cap.checkVal(sub_capVal))
+                return true
+            else if(cap.getAttribute().equals(sub_cap))
                 return true
             else
                 return false

@@ -1,8 +1,6 @@
 package support
 
 import preferenceNode.Capability
-import preferenceNode.Input
-import preferenceNode.Subscribe
 
 /**
  * Created by b_newyork on 2017-09-01.
@@ -32,7 +30,7 @@ final class CapHelper {
             cap.setCapability(Cap)
 
             String dev = fields[2]?.toString()
-            cap.setDevice(dev)
+            cap.setAttribute(dev)
 
             fields[3]?.split(" ")?.each {
                 cap.cap_val.add(it.toString())

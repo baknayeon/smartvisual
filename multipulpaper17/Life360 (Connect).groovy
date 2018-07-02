@@ -150,7 +150,7 @@ def receiveToken() {
 <body>
 	<div class="container">
 		<img src="https://s3.amazonaws.com/smartapp-icons/Partner/life360@2x.png" alt="Life360 icon" />
-		<img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-device-icn%402x.png" alt="connected device icon" />
+		<img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-attribute-icn%402x.png" alt="connected attribute icon" />
 		<img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/st-logo%402x.png" alt="SmartThings logo" />
 		<p>Your Life360 Account is now connected to SmartThings!</p>
 		<p>Click 'Done' to finish setup.</p>
@@ -446,12 +446,12 @@ def installed() {
         
         // log.debug "External Id=${app.id}:${member.id}"
        
-       	// create the device
+       	// create the attribute
         if (member) {
         
        		def childDevice = addChildDevice("smartthings", "Life360 User", "${app.id}.${member.id}",null,[name:member.firstName, completedSetup: true])
         
-        	// save the memberId on the device itself so we can find easily later
+        	// save the memberId on the attribute itself so we can find easily later
         	// childDevice.setMemberId(member.id)
         
         	if (childDevice)
@@ -472,7 +472,7 @@ def installed() {
                		def icon="l360.${urlPathElements[4]}.${fileElements[0]}"
                     log.debug "Icon = ${icon}"
 
-            		// set the icon on the device
+            		// set the icon on the attribute
 					childDevice.setIcon("presence","present",icon)
 					childDevice.setIcon("presence","not present",icon)
 					childDevice.save()
@@ -557,17 +557,17 @@ def updated() {
     // log.debug "Members: ${state.members}"
     // log.debug "Users: ${settings.users}"
     
-    // loop through selected users and try to find child device for each
+    // loop through selected users and try to find child attribute for each
     
     settings.users.each {memberId->
     
     	def externalId = "${app.id}.${memberId}"
 
-		// find the appropriate child device based on my app id and the device network id
+		// find the appropriate child attribute based on my app id and the attribute network id
 
 		def deviceWrapper = getChildDevice("${externalId}")
         
-        if (!deviceWrapper) { // device isn't there - so we need to create
+        if (!deviceWrapper) { // attribute isn't there - so we need to create
     
     		// log.debug "Find by Member Id = ${memberId}"
     
@@ -577,7 +577,7 @@ def updated() {
 
         	// log.debug "External Id=${app.id}:${member.id}"
        
-       		// create the device
+       		// create the attribute
        		def childDevice = addChildDevice("smartthings", "Life360 User", "${app.id}.${member.id}",null,[name:member.firstName, completedSetup: true])
             // childDevice.setMemberId(member.id)
         
@@ -596,7 +596,7 @@ def updated() {
                 	def urlPathElements = member.avatar.tokenize("/")
                		def icon="l360.${urlPathElements[4]}.${urlPathElements[5]}"
 
-            		// set the icon on the device
+            		// set the icon on the attribute
 					childDevice.setIcon("presence","present",icon)
 					childDevice.setIcon("presence","not present",icon)
 					childDevice.save()
@@ -737,18 +737,18 @@ def placeEventHandler() {
     
 		def externalId = "${app.id}.${userId}"
 
-		// find the appropriate child device based on my app id and the device network id
+		// find the appropriate child attribute based on my app id and the attribute network id
 
 		def deviceWrapper = getChildDevice("${externalId}")
 
-		// invoke the generatePresenceEvent method on the child device
+		// invoke the generatePresenceEvent method on the child attribute
 
 		if (deviceWrapper) {
 			deviceWrapper.generatePresenceEvent(presenceState)
-    		log.debug "Life360 event raised on child device: ${externalId}"
+    		log.debug "Life360 event raised on child attribute: ${externalId}"
 		}
    		else {
-    		log.warn "Life360 couldn't find child device associated with inbound Life360 event."
+    		log.warn "Life360 couldn't find child attribute associated with inbound Life360 event."
     	}
     }
 

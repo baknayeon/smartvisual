@@ -171,7 +171,7 @@ Map carsDiscovered() {
 def removeChildFromSettings(child) {
 	def device = child.device
 	def dni = device.deviceNetworkId
-	log.debug "removing child device $device with dni ${dni}"
+	log.debug "removing child attribute $device with dni ${dni}"
 	if(!state?.suppressDelete?.get(dni))
 	{
 		def newSettings = settings.cars?.findAll { it != dni } ?: []

@@ -38,7 +38,7 @@ preferences {
 def selectPhrases() {
     dynamicPage(name: "selectPhrases", title: "Configure Your Jawbone Phrases.", install: true, uninstall: true) {		
 		section("Select your Jawbone UP") {
-			input "jawbone", "device.jawboneUser", title: "Jawbone UP", required: true, multiple: false,  submitOnChange:true
+			input "jawbone", "attribute.jawboneUser", title: "Jawbone UP", required: true, multiple: false,  submitOnChange:true
 		}
         
 		def phrases = location.helloHome?.getPhrases()*.label

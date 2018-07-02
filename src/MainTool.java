@@ -1,42 +1,37 @@
 import groovy.lang.GroovyShell;
 import groovy.lang.MissingMethodException;
 
-import javafx.scene.chart.Axis;
-import javafx.scene.chart.BarChart;
 import node.ErrorSubscribe;
 import node.SmartApp;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import Setting.SettingBoxList;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.RectangleInsets;
 import support.DialogHref;
 import Setting.DialogSetting;
 import support.Logger;
+import support.Metrix;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,7 +47,7 @@ public class MainTool extends JFrame{
 
 	private SettingBoxList settingBoxList;
 	private JPanel appInfo_Panel, errorJPanel ;
-	private JScrollPane treeScrollPane, actionsTree ;
+	private JScrollPane treeScrollPane, actionsTree, appCodePane;
 	private DefaultCategoryDataset barDataset;
 	Logger log;
 
@@ -63,6 +58,15 @@ public class MainTool extends JFrame{
 	int HEIGHT = 650;
 	int HEIGHT_info = 100;
 
+	//metrix
+	int total;
+	int m1;
+	int m2;
+	int m3;
+	int m23;
+	int m32;
+	int m4;
+	int m5;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -120,7 +124,8 @@ public class MainTool extends JFrame{
 		appInfo_Panel = new JPanel();
 		JPanel actionsPanel = new JPanel();
 		JPanel chartJPanel = new JPanel();
-		actionsTree= new JScrollPane();
+		actionsTree = new JScrollPane();
+		appCodePane = new JScrollPane();
 		errorJPanel = new JPanel();
 		treeScrollPane = new JScrollPane();
 
@@ -142,22 +147,29 @@ public class MainTool extends JFrame{
 
 		actionsPanel.setBorder(BorderFactory.createEmptyBorder(7 , 3, 3 , 3));
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
-		actionsPanel.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
+		actionsPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
+		actionsTree.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
+		appCodePane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
 		JLabel Service = new JLabel("Service flow");
 		Service.setBounds(0,5,10,10);
 		Service.setSize(10,10);
 		actionsPanel.add(Service);
+		JPanel jPanelsub = new JPanel();
+		jPanelsub.setLayout(new FlowLayout());
+		jPanelsub.add(actionsTree);
+		jPanelsub.add(appCodePane);
 		actionsPanel.add(actionsTree);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
-		tabbedPane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
+		tabbedPane.setPreferredSize(new Dimension(WIDTH+100, HEIGHT - HEIGHT_info - 20));
 		//treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		//errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
 		tabbedPane.addTab("Subscribe error", null, errorJPanel, null);
 
 		actionsTree.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		appCodePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		barDataset = new DefaultCategoryDataset();
@@ -165,6 +177,7 @@ public class MainTool extends JFrame{
 		barDataset.setValue(null, "smartApp", "event device");
 		barDataset.setValue(null, "smartApp", "action device");
 		barDataset.setValue(null, "smartApp", "input");
+		barDataset.setValue(null, "smartApp", "subscribe");
 		barDataset.setValue(null, "smartApp", "event handler method");
 		barDataset.setValue(null, "smartApp", "action command");
 		barDataset.setValue(null, "smartApp", "action methodFlow");
@@ -189,7 +202,7 @@ public class MainTool extends JFrame{
 		chartPanel.setVisible(true);
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(5 , 0, 0 , 0));
 
-		chartJPanel.setPreferredSize(new Dimension(WIDTH+200, HEIGHT - HEIGHT_info - 20));
+		chartJPanel.setPreferredSize(new Dimension(WIDTH+100, HEIGHT - HEIGHT_info - 20));
 		chartJPanel.setBorder(BorderFactory.createEmptyBorder(5 , 3, 3 , 3));
 		chartJPanel.setLayout(new BoxLayout(chartJPanel, BoxLayout.PAGE_AXIS));
 
@@ -223,7 +236,15 @@ public class MainTool extends JFrame{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String path="singlepaper56";
+			String path="smartapp";
+			total = 0;
+			m1 = 0;
+			m2 = 0;
+			m3 = 0;
+			m23 = 0;
+			m32 = 0;
+			m4 = 0;
+			m5 = 0;
 
 			File dirFile=new File(path);
 			File []fileList=dirFile.listFiles();
@@ -250,7 +271,14 @@ public class MainTool extends JFrame{
 				SmartApp smartApp = analysis.getSmartAppInfo();
 				generateFile(smartApp, tempFile.getName());
 			}
-
+			log.append("-----------"+total+"-----------");
+			log.append("-----------"+m1+"-----------");
+			log.append("-----------"+m2+"-----------");
+			log.append("-----------"+m3+"-----------");
+			log.append("-----------"+m23+"-----------");
+			log.append("-----------"+m32+"-----------");
+			log.append("-----------"+m4+"-----------");
+			log.append("-----------"+m5+"-----------");
 
 		}
 	}
@@ -295,8 +323,12 @@ public class MainTool extends JFrame{
 		GroovyShell gshell = new GroovyShell(cc);
 
 		File selectedFile = chooser.getSelectedFile();
-
+		String appCode = "";
 		try {
+			Scanner scanner = new Scanner(selectedFile);
+			//while(scanner.hasNextLine())
+				//appCode = appCode +'\n'+ scanner.nextLine();
+
 			gshell.evaluate(selectedFile);
 		} catch (CompilationFailedException e2) {
 			// TODO Auto-generated catch block
@@ -337,7 +369,6 @@ public class MainTool extends JFrame{
 				}
 			}
 		});
-
 		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		file.setText("file : " +chooser.getSelectedFile().getName());
 
@@ -352,23 +383,29 @@ public class MainTool extends JFrame{
 			description.setText("app description : "+definition.get("description").toString());
 
 		}
-
-
+		TextField app = new TextField();
+		app.setText(appCode);
+		app.setEnabled(false);
+		appCodePane.setViewportView(app);
 		treeScrollPane.setViewportView(tree);
 		actionsTree.setViewportView(actions_tree);
 		setError(error);
 		generateFile(smartApp, selectedFile.getName());
 	}
 
-	public void generateFile(SmartApp smartApp, String selectedFile){
+	public void generateFile(SmartApp smartApp, String selectedFile) {
+		total++;
+
+		Metrix metrix = new Metrix(smartApp);
+		boolean[] resultM = metrix.evaluating();
 
 		log = new Logger("evaluate.txt");
 		log.append("-----------"+selectedFile+"-----------");
 
 		int input = smartApp.getInputMap().size();
-		int handler = smartApp.getSubscribe().size();
+		int handler = smartApp.getHandlerMethod().size();
 		int dynamicPage = smartApp.getDynamicMethodMap().size();
-		int actionCommd = smartApp.total_actionCommed();
+		int actionCommd = smartApp.total_actionCommand();
 		int sendMethod = smartApp.total_sendMethod();
 		int methodFlow = smartApp.total_MethodFlow();
 		int methodFlow_In_handlerMethod = smartApp.total_ActionCommand_In_handlerMethod();
@@ -376,11 +413,41 @@ public class MainTool extends JFrame{
 		int event = (int)dev.get(0);
 		int action = (int)dev.get(1);
 		int data = (int)dev.get(2);
+		int sub = smartApp.gettheNumof_sub();
+
+		if(resultM[0] ) {
+			log.append("심플한 SmartApp");
+			m1++;
+		}
+		if(resultM[1]) {
+			log.append("Event 다발 SmartApp");
+			m2++;
+		}
+		if(resultM[2]) {
+			log.append("Action 다발 SmartApp");
+			m3++;
+		}
+
+		if(resultM[1] && resultM[2])
+			m23++;
+
+		if(!resultM[1] && !resultM[2])
+			m32++;
+
+		if(resultM[3]){
+			log.append("Event와 Action 중복 SmartApp") ;
+			m4++;
+		}
+		if(resultM[4]) {
+			log.append("Sending Message SmartApp");
+			m5++;
+		}
 
 		log.append("No. of input device	: "+String.valueOf(input));
 		log.append("No. of event device : "+String.valueOf(event));
 		log.append("No. of action device : "+String.valueOf(action));
 		log.append("No. of input : "+String.valueOf(data));
+		log.append("No. of subscribe : "+String.valueOf(sub));
 		log.append("No. of event handler method : "+String.valueOf(handler));
 		log.append("No. of action command : "+String.valueOf(actionCommd));
 		log.append("No. of action methodFlow : "+String.valueOf(methodFlow));
@@ -392,6 +459,7 @@ public class MainTool extends JFrame{
 		barDataset.setValue(event, "smartApp", "event device");
 		barDataset.setValue(action, "smartApp", "action device");
 		barDataset.setValue(data, "smartApp", "input");
+		barDataset.setValue(sub, "smartApp", "subscribe");
 		barDataset.setValue(handler, "smartApp", "event handler method");
 		barDataset.setValue(actionCommd, "smartApp", "action command");
 		barDataset.setValue(methodFlow, "smartApp", "action methodFlow");
@@ -448,7 +516,7 @@ public class MainTool extends JFrame{
 			JTextPaneList panleList = (JTextPaneList)errorList.get(i);
 
 			JTextPane subOpen = new JTextPane();
-			subOpen.setText("subscribe(");
+			subOpen.setText("handlerMethod(");
 			subOpen.setEditable(false);
 
 			JTextPane subClose = new JTextPane();

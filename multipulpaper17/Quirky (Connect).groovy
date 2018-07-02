@@ -46,7 +46,7 @@ private apiUrl() 			{ "https://winkapi.quirky.com/" }
 private getVendorName() 	{ "Quirky Wink" }
 private getVendorAuthPath()	{ "https://winkapi.quirky.com/oauth2/authorize?" }
 private getVendorTokenPath(){ "https://winkapi.quirky.com/oauth2/token?" }
-private getVendorIcon()		{ "https://s3.amazonaws.com/smartthings-device-icons/custom/quirky/quirky-device@2x.png" }
+private getVendorIcon()		{ "https://s3.amazonaws.com/smartthings-attribute-icons/custom/quirky/quirky-attribute@2x.png" }
 private getClientId() 		{ appSettings.clientId }
 private getClientSecret() 	{ appSettings.clientSecret }
 private getServerUrl() 		{ appSettings.serverUrl }
@@ -230,7 +230,7 @@ def receiveToken() {
         <body>
             <div class="container">
                 <img src=""" + getVendorIcon() + """ alt="Vendor icon" />
-                <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-device-icn%402x.png" alt="connected device icon" />
+                <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-attribute-icn%402x.png" alt="connected attribute icon" />
                 <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/st-logo%402x.png" alt="SmartThings logo" />
                 <p>We have located your """ + getVendorName() + """ account.</p>
                 <p>Tap 'Done' to process your credentials.</p>
@@ -304,7 +304,7 @@ def receivedToken() {
         <body>
             <div class="container">
                 <img src=""" + getVendorIcon() + """ alt="Vendor icon" />
-                <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-device-icn%402x.png" alt="connected device icon" />
+                <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/connected-attribute-icn%402x.png" alt="connected attribute icon" />
                 <img src="https://s3.amazonaws.com/smartapp-icons/Partner/support/st-logo%402x.png" alt="SmartThings logo" />
                 <p>Tap 'Done' to continue to Devices.</p>
 			</div>
@@ -568,7 +568,7 @@ def createChildDevice(deviceFile, dni, name, label)
 			log.debug "Device $dni already exists"
 		}
 	} catch (e) {
-		log.error "Error creating device: ${e}"
+		log.error "Error creating attribute: ${e}"
 	}
 
 }
@@ -654,7 +654,7 @@ def poll(childDevice)
 		}
 	}
 
-	log.debug "device type is: ${deviceType}"
+	log.debug "attribute type is: ${deviceType}"
 
 	switch(deviceType) {	//outlets are polled in unique method not here
 
@@ -733,7 +733,7 @@ def createNimbusChildren(deviceData)
 	def deviceFile = "Quirky-Wink-Nimbus"
 	def index = 1
 	deviceData.dials.each {
-		log.debug "creating dial device for ${it.dial_id}"
+		log.debug "creating dial attribute for ${it.dial_id}"
 		def dialName = "Dial ${index}"
 		def dialLabel = "${nimbusName} ${dialName}"
 		createChildDevice( deviceFile, it.dial_id, dialName, dialLabel )
@@ -817,7 +817,7 @@ def pollNimbus(dni)
 					childDevice?.setIcon("dial", "dial",  "st.quirky.nimbus.quirky-nimbus-fitbit")
 					break
 				case "Egg Minder":
-					childDevice?.setIcon("dial", "dial",  "st.quirky.egg-minder.quirky-egg-device")
+					childDevice?.setIcon("dial", "dial",  "st.quirky.egg-minder.quirky-egg-attribute")
 					break
 				case "Porkfolio":
 					childDevice?.setIcon("dial", "dial",  "st.quirky.porkfolio.quirky-porkfolio-side")
@@ -1075,7 +1075,7 @@ def on(childDevice)
 
 	apiPut("/outlets/" + childDevice.device.deviceNetworkId, [powered : true]) { response ->
 		def data = response.data.data
-		log.debug "Sending 'on' to device"
+		log.debug "Sending 'on' to attribute"
 	}
 }
 
@@ -1085,7 +1085,7 @@ def off(childDevice)
 
 	apiPut("/outlets/" + childDevice.device.deviceNetworkId, [powered : false]) { response ->
 		def data = response.data.data
-		log.debug "Sending 'off' to device"
+		log.debug "Sending 'off' to attribute"
 	}
 }
 

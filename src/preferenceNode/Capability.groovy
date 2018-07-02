@@ -7,14 +7,14 @@ package preferenceNode
 class Capability {
 
     String capability
-    String device
+    String attribute
     ArrayList cap_val
 
 
 
     public Capability() {
         cap_val = new ArrayList()
-        device = ""
+        attribute = ""
     }
 
     public boolean checkVal(String newVal){
