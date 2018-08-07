@@ -7,23 +7,29 @@ import preferenceNode.Input
 /**
  * Created by b_newyork on 2018-06-27.
  */
-class Metrix {
-    SmartApp smartApp
+class Matrix {
+    private SmartApp smartApp
+    String duplicatedDevice
+    String frequentAction
+    String smsArgs
 
-    public Metrix(SmartApp smartApp){
+    public Matrix(SmartApp smartApp){
         this.smartApp = smartApp
+        duplicatedDevice = ""
+        frequentAction = ""
+        smsArgs = ""
     }
 
     public boolean[] evaluating() {
         boolean[] result = [false, false, false, false, false]
-        String comment = ""
+
         if (simpleSmartApp())
             result[0] = true
         if(frequentEventSmartApp())
             result[1] = true
-        if(((ArrayList)frequentActionSmartApp()).size() > 0)
+        if(frequentActionSmartApp())
             result[2] = true
-        if(duplicatedSmartApp() != null)
+        if(duplicatedDevice())
             result[3] = true
         if(OnlysendingSMS())
             result[4] = true
@@ -35,7 +41,7 @@ class Metrix {
 
         int sub = smartApp.gettheNumof_sub()
         if (sub == 1) {
-            if(duplicatedSmartApp() != null)
+            if(duplicatedDevice())
                 return false
         }
         else
@@ -44,7 +50,9 @@ class Metrix {
         return true
     }
 
-    private String duplicatedSmartApp(){
+    private boolean duplicatedDevice(){
+
+        ArrayList result = new ArrayList()
         HashMap inputMap = smartApp.getInputMap()
         for (def input : inputMap.values()) {
             String name
@@ -55,11 +63,16 @@ class Metrix {
 
             if (name != null) {
                 if(smartApp.isitEventDevice(name) && smartApp.isitActionDevice(name)){
-                    return name // true
+                    duplicatedDevice = duplicatedDevice +  name +" "
+
                 }
             }
         }
-        return null //false
+
+        if(duplicatedDevice.length() > 0 )
+            return true
+        else
+            return false
     }
 
     private boolean frequentEventSmartApp(){
@@ -70,28 +83,42 @@ class Metrix {
             return false
     }
 
-    private ArrayList frequentActionSmartApp(){
+    private boolean frequentActionSmartApp(){
 
         ArrayList result = new ArrayList()
         HashMap Action = smartApp.getActionsCommandMap()
         for(String key : Action.keySet()){
             DeviceAction deviceAction = Action.get(key)
             ArrayList commands  = deviceAction.getCommands()
-            if(commands.size() > 1)
+            if(commands.size() > 1) { // on, off
+                frequentAction = frequentAction + key +" "
                 result.add(key)
-            for(String c : commands){
+                continue
+            }
+            for(String c : commands){ //on, on
                 if(deviceAction.isItFrequentCommands(c))
-                    result.add(key)
-
-
+                    frequentAction = frequentAction + key +" "
             }
         }
-        return result
+
+
+
+        if(frequentAction.length() > 0)
+            return true
+        else
+            return false
     }
 
     private boolean OnlysendingSMS(){
         int command = smartApp.total_actionCommand()
         int sendMethod =  smartApp.total_sendMethod()
+        HashMap sendMap = smartApp.getSendMethodMap()
+        for(String key : sendMap.keySet()){
+            HashMap args = sendMap.get(key)
+            for(String arg : args.keySet()){
+                smsArgs = smsArgs + arg+" "
+            }
+        }
         if(sendMethod > 0 && command == 0)
             return true
         return false

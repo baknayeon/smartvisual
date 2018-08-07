@@ -26,7 +26,6 @@ public class DialogHref extends JDialog {
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         getContentPane().add(scrollPane);
 
-
         this.setTitle(pageName);
         this.setSize(500,500);
         this.setModal(true);

@@ -16,19 +16,15 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
-import support.DialogHref;
+import support.*;
 import Setting.DialogSetting;
-import support.Logger;
-import support.Metrix;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -47,26 +43,18 @@ public class MainTool extends JFrame{
 
 	private SettingBoxList settingBoxList;
 	private JPanel appInfo_Panel, errorJPanel ;
-	private JScrollPane treeScrollPane, actionsTree, appCodePane;
+	private JScrollPane treeScrollPane, eventScrollPane, appCodePane;
 	private DefaultCategoryDataset barDataset;
 	Logger log;
 
 	JFileChooser chooser;
-	JLabel file, appName, description;
+	JLabel file, appName, description, featrue;
+	Result result;
 
 	int WIDTH = 400;
 	int HEIGHT = 650;
-	int HEIGHT_info = 100;
+	int HEIGHT_info = 130;
 
-	//metrix
-	int total;
-	int m1;
-	int m2;
-	int m3;
-	int m23;
-	int m32;
-	int m4;
-	int m5;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -124,7 +112,7 @@ public class MainTool extends JFrame{
 		appInfo_Panel = new JPanel();
 		JPanel actionsPanel = new JPanel();
 		JPanel chartJPanel = new JPanel();
-		actionsTree = new JScrollPane();
+		eventScrollPane = new JScrollPane();
 		appCodePane = new JScrollPane();
 		errorJPanel = new JPanel();
 		treeScrollPane = new JScrollPane();
@@ -137,28 +125,34 @@ public class MainTool extends JFrame{
 		file = new JLabel();
 		appName = new JLabel();
 		description = new JLabel();
+		featrue = new JLabel();
 		JLabel textPane = new JLabel();
 		textPane.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 17));
 		textPane.setText("SmartApp Info");
+		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+		appName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+		description.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+		featrue.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		appInfo_Panel.add(textPane);
 		appInfo_Panel.add(file);
 		appInfo_Panel.add(appName);
 		appInfo_Panel.add(description);
+		appInfo_Panel.add(featrue);
 
 		actionsPanel.setBorder(BorderFactory.createEmptyBorder(7 , 3, 3 , 3));
 		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
 		actionsPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
-		actionsTree.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
+		eventScrollPane.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
 		appCodePane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
-		JLabel Service = new JLabel("Service flow");
+		JLabel Service = new JLabel("Event flow");
 		Service.setBounds(0,5,10,10);
 		Service.setSize(10,10);
 		actionsPanel.add(Service);
 		JPanel jPanelsub = new JPanel();
 		jPanelsub.setLayout(new FlowLayout());
-		jPanelsub.add(actionsTree);
+		jPanelsub.add(eventScrollPane);
 		jPanelsub.add(appCodePane);
-		actionsPanel.add(actionsTree);
+		actionsPanel.add(eventScrollPane);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
@@ -168,7 +162,7 @@ public class MainTool extends JFrame{
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
 		tabbedPane.addTab("Subscribe error", null, errorJPanel, null);
 
-		actionsTree.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		eventScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		appCodePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -216,7 +210,9 @@ public class MainTool extends JFrame{
 		mainPane.add("Center", actionsPanel);
 		mainPane.add("East", chartJPanel);
 
+		result = new Result();
 		settingBoxList = new SettingBoxList();
+
 	}
 
 	class OpenSettingActionListener implements ActionListener {
@@ -236,15 +232,10 @@ public class MainTool extends JFrame{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+
+			//DialogMatrix dialogMatrix = new DialogMatrix();
 			String path="smartapp";
-			total = 0;
-			m1 = 0;
-			m2 = 0;
-			m3 = 0;
-			m23 = 0;
-			m32 = 0;
-			m4 = 0;
-			m5 = 0;
+			result = new Result();
 
 			File dirFile=new File(path);
 			File []fileList=dirFile.listFiles();
@@ -271,14 +262,16 @@ public class MainTool extends JFrame{
 				SmartApp smartApp = analysis.getSmartAppInfo();
 				generateFile(smartApp, tempFile.getName());
 			}
-			log.append("-----------"+total+"-----------");
-			log.append("-----------"+m1+"-----------");
-			log.append("-----------"+m2+"-----------");
-			log.append("-----------"+m3+"-----------");
-			log.append("-----------"+m23+"-----------");
-			log.append("-----------"+m32+"-----------");
-			log.append("-----------"+m4+"-----------");
-			log.append("-----------"+m5+"-----------");
+			log.append("-----------No. of SmartApp : "+result.getTotal()+"-----------");
+			log.append("Simple SmartApp : "+result.getSimpleSmartApp()+"");
+			log.append("Frequent Event SmartApp : "+result.getEvent_freq()+"");
+			log.append("Frequent Action SmartApp : "+result.getAction_freq()+"");
+			log.append("\t Frequent Event &&  Frequent Action : "+result.getEvent_and_Action()+"");
+			log.append("\t!Frequent Event && !Frequent Action : "+result.getnEvent_and_nAction() +"");
+			log.append("Event and Action device SmartApp "+result.getDuplicate()+"");
+			log.append("only Sending message SmartApp "+result.getSendingMessage()+"");
+
+			DialogMatrix dialogMatrix = new DialogMatrix(result);
 
 		}
 	}
@@ -314,7 +307,8 @@ public class MainTool extends JFrame{
 		ArrayList error;
 		HashMap definition;
 		CodeVisitor analysis;
-		JTree tree, actions_tree;
+		JTree tree;
+		EventFlow eventFlow;
 		SmartApp smartApp;
 
 		analysis = new CodeVisitor(settingBoxList);
@@ -342,7 +336,7 @@ public class MainTool extends JFrame{
 
 		definition = analysis.getSmartAppInfo().getDefinition();
 		tree = analysis.getPreferenceTree();
-		actions_tree = analysis.getActionTree();
+		eventFlow = analysis.getEventFlow();
 		smartApp = analysis.getSmartAppInfo();
 		error = analysis.errorReport();
 
@@ -369,17 +363,14 @@ public class MainTool extends JFrame{
 				}
 			}
 		});
-		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		file.setText("file : " +chooser.getSelectedFile().getName());
 
 		if(definition.containsKey("name")) {
-			appName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 			appName.setText("app name : " + definition.get("name").toString());
 
 		}
 		if(definition.containsKey("description")){
 			//description.setBackground(Color.decode("#FF0000"));
-			description.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 			description.setText("app description : "+definition.get("description").toString());
 
 		}
@@ -388,18 +379,23 @@ public class MainTool extends JFrame{
 		app.setEnabled(false);
 		appCodePane.setViewportView(app);
 		treeScrollPane.setViewportView(tree);
-		actionsTree.setViewportView(actions_tree);
+		eventScrollPane.setViewportView(eventFlow.getEventFlow());
 		setError(error);
 		generateFile(smartApp, selectedFile.getName());
 	}
 
 	public void generateFile(SmartApp smartApp, String selectedFile) {
-		total++;
+		result.Count();
+		String s = "<html>feature<br/>";
 
-		Metrix metrix = new Metrix(smartApp);
-		boolean[] resultM = metrix.evaluating();
+		Matrix matrix = new Matrix(smartApp);
+		boolean[] resultM = matrix.evaluating();
 
-		log = new Logger("evaluate.txt");
+		String frequentAction = matrix.getFrequentAction();
+		String duplicatedDevice = matrix.getDuplicatedDevice();
+		String sendingArg = matrix.getSmsArgs();
+
+		log = new Logger();//new Logger("evaluate.txt");
 		log.append("-----------"+selectedFile+"-----------");
 
 		int input = smartApp.getInputMap().size();
@@ -416,32 +412,39 @@ public class MainTool extends JFrame{
 		int sub = smartApp.gettheNumof_sub();
 
 		if(resultM[0] ) {
-			log.append("심플한 SmartApp");
-			m1++;
+			log.append("Simple SmartApp");
+			s = s+ "&nbsp;&nbsp;* Simple SmartApp";
+			result.simpleSmartApp++;
 		}
 		if(resultM[1]) {
-			log.append("Event 다발 SmartApp");
-			m2++;
+			log.append("Frequent Event SmartApp");
+			s = s+ "&nbsp;&nbsp;* Frequent Event SmartApp";
+			result.Event_freq++;
 		}
 		if(resultM[2]) {
-			log.append("Action 다발 SmartApp");
-			m3++;
+			log.append("Frequent Action SmartApp");
+			s = s+ "&nbsp;&nbsp;* Frequent Action SmartApp(" + frequentAction+")";
+			result.Action_freq++;
 		}
 
 		if(resultM[1] && resultM[2])
-			m23++;
+			result.Event_and_Action++;
 
 		if(!resultM[1] && !resultM[2])
-			m32++;
+			result.nEvent_and_nAction++;
 
 		if(resultM[3]){
-			log.append("Event와 Action 중복 SmartApp") ;
-			m4++;
+			log.append("Event and Action device SmartApp") ;
+			s = s+ "&nbsp;&nbsp;* Event and Action device SmartApp("+duplicatedDevice+")";
+			result.duplicate++;
 		}
 		if(resultM[4]) {
-			log.append("Sending Message SmartApp");
-			m5++;
+			log.append("Only Sending Message SmartApp");
+			s = s+ "&nbsp;&nbsp;* Only Sending Message SmartApp("+sendingArg+")";
+			result.sendingMessage++;
 		}
+		s = s+"</html>";
+		featrue.setText(s);
 
 		log.append("No. of input device	: "+String.valueOf(input));
 		log.append("No. of event device : "+String.valueOf(event));
@@ -454,6 +457,7 @@ public class MainTool extends JFrame{
 		log.append("No. of command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
 		log.append("No. of send method : "+String.valueOf(sendMethod));
 		log.append("No. of dynamicPage : "+String.valueOf(dynamicPage));
+		log.push(resultM);
 
 		barDataset.setValue(input, "smartApp", "input device");
 		barDataset.setValue(event, "smartApp", "event device");
@@ -467,14 +471,6 @@ public class MainTool extends JFrame{
 		barDataset.setValue(sendMethod, "smartApp", "send method");
 		barDataset.setValue(dynamicPage, "smartApp", "dynamicPage");
 
-		/*try {
-			Robot robot = new Robot();
-			BufferedImage bi=robot.createScreenCapture(new Rectangle(100, 100, 1000, 600));
-			ImageIO.write(bi, "gif", new File("C:\\Users\\b_newyork\\git\\SmartThings_VisualizationTool\\"+selectedFile+".gif"));
-
-		} catch (AWTException |IOException e) {
-			e.printStackTrace();
-		}*/
 	}
 
 	public void setError(ArrayList error){
@@ -516,7 +512,7 @@ public class MainTool extends JFrame{
 			JTextPaneList panleList = (JTextPaneList)errorList.get(i);
 
 			JTextPane subOpen = new JTextPane();
-			subOpen.setText("handlerMethod(");
+			subOpen.setText("subscribe(");
 			subOpen.setEditable(false);
 
 			JTextPane subClose = new JTextPane();

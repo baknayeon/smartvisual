@@ -8,6 +8,7 @@ import node.SmartApp
 import preferenceNode.Subscribe
 import support.CapHelper
 import support.DetectingError
+import support.EventFlow
 import traverseAST.MyClassCodeVisitorSupport
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.classgen.GeneratorContext
@@ -19,6 +20,8 @@ import Setting.SettingBoxList
 import support.TreeCellRenderer
 
 import javax.swing.*
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.view.mxGraph;
 
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
@@ -124,16 +127,14 @@ class CodeVisitor extends CompilationCustomizer{
 
         return jtree
     }
-    public JTree getActionTree(){
+    public EventFlow getEventFlow(){
 
-        JTree jtree = new JTree(tree.getAction())
-        jtree.setCellRenderer(new TreeCellRenderer(smartAppInfo,"action"))
-        jtree.setRootVisible(false)
-        jtree.setShowsRootHandles(true)
-        jtree.putClientProperty("JTree.lineStyle", "None")
+        EventFlow eventFlow = new EventFlow(smartAppInfo.getActionsCommandMap())
 
-        return jtree
+        return eventFlow
     }
+
+
 
     class SmartThingAppCodeVisitor extends MyClassCodeVisitorSupport {
 
