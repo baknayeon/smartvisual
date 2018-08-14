@@ -51,7 +51,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     int Level
     boolean dynamicPre = false
 
-    protected void addList(def state){
+    protected void addList4Dynamic(def state){
         if(dynamicPre) {
             dynamicStack.push(Level)
             dynamicPage.add(state)
@@ -74,7 +74,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     public void visitIfElse(IfStatement ifElse) {
 
         if(setting.showIf())
-            addList("if")
+            addList4Dynamic("if")
 
         ifElse.getBooleanExpression().visit(this);
         ifElse.getIfBlock().visit(this);
@@ -91,14 +91,14 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
 
     public void visitForLoop(ForStatement forLoop) {
         if(setting.showFor())
-            addList("for")
+            addList4Dynamic("for")
         forLoop.getCollectionExpression().visit(this);
         forLoop.getLoopBlock().visit(this);
     }
 
     public void visitWhileLoop(WhileStatement loop) {
         if(setting.showWhile())
-            addList("while")
+            addList4Dynamic("while")
         loop.getBooleanExpression().visit(this);
         loop.getLoopBlock().visit(this);
     }
@@ -106,7 +106,7 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
     public void visitDoWhileLoop(DoWhileStatement loop) {
 
         if(setting.showWhile())
-         addList("doWhile")
+         addList4Dynamic("doWhile")
         loop.getLoopBlock().visit(this);
         loop.getBooleanExpression().visit(this);
     }
@@ -224,9 +224,11 @@ public abstract class MyCodeVisitorSupport implements GroovyCodeVisitor {
         expression.getExpression().visit(this);
     }
 
+
     public void visitClosureExpression(ClosureExpression expression) {
 
         expression.getCode().visit(this);
+
     }
 
     public void visitTupleExpression(TupleExpression expression) {

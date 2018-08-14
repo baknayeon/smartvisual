@@ -23,7 +23,7 @@ public class Subscribe {
             def one = methodArgList.get(0)
             def second = methodArgList.get(1)
             this.input = handingArgs(one)
-            this.capability = "default"
+            this.capability = this.input
             this.handler = handingArgs(second)
         }else if(size >= 3) {
             def one = methodArgList.get(0)
@@ -43,7 +43,7 @@ public class Subscribe {
     public Subscribe(String input, String handler){
         this.input = input
         this.handler = handler
-        String capability = "default"
+        String capability = input
     }
 
     public Subscribe(String input, String capability, String handler) {

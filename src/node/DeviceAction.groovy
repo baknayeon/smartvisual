@@ -1,7 +1,6 @@
 package node
 
 import javax.swing.tree.DefaultMutableTreeNode
-import java.lang.reflect.Array
 
 /**
  * Created by b_newyork on 2018-06-06.
@@ -9,37 +8,12 @@ import java.lang.reflect.Array
 class DeviceAction {
 
     private HashMap commandsMap = new HashMap()
-    private HashMap methodFlowMap = new HashMap()
-    private HashMap methodMap = new HashMap()
-    private DefaultMutableTreeNode device;
+    private HashMap whereMap = new HashMap()
 
-    public boolean actionMethod(String method){
-        if(methodMap.containsKey(method))
-            return true
-        else
-            return false
-    }
-    public void setMethodFlow(String commad, ArrayList list){
-        methodFlowMap.put(commad, list)
-    }
-
-    public int getMethodFlowSize(){
-        int num = 0;
-
-        for(ArrayList handlerList :  methodFlowMap.values()){
-            num = num + handlerList.size();
-        }
-        return num
-    }
-
-    public ArrayList getMethodFlow(String commad){
-        ArrayList list =  methodFlowMap.get(commad)
-        return list
-    }
     public void add(String commad, String methodName){
 
         HashMap methodsMap1 = commandsMap.get(commad) ?: null;
-        HashSet methodsMap2 = methodMap.get(methodName) ?: null;
+        HashSet methodsMap2 = whereMap.get(methodName) ?: null;
 
         if (methodsMap1) {
             if (methodsMap1.containsKey(methodName)) {
@@ -60,7 +34,7 @@ class DeviceAction {
         }else{
             methodsMap2 = new HashSet()
             methodsMap2.add(commad)
-            methodMap.put(methodName, methodsMap2)
+            whereMap.put(methodName, methodsMap2)
         }
 
     }
@@ -88,23 +62,17 @@ class DeviceAction {
         return null
     }
 
-    public ArrayList getMethodList(){
-        return methodMap.keySet().toArray()
-    }
-
     public def getActionNode(DefaultMutableTreeNode inputNode, String devName){
 
-        ArrayList methods = methodMap.keySet().toArray()
+        ArrayList methods = whereMap.keySet().toArray()
         for(String method: methods){
             DefaultMutableTreeNode methodNode
-            HashSet commandset = methodMap.get(method)
+            HashSet commandset = whereMap.get(method)
             for(String command : commandset){
                 methodNode = new DefaultMutableTreeNode(devName +"."+command+"()")
                 methodNode.add(new DefaultMutableTreeNode(method))
                 inputNode.add(methodNode)
             }
         }
-
-
     }
 }

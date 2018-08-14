@@ -2,6 +2,7 @@ package traverseAST
 
 import Setting.SettingBoxList
 import node.DeviceAction
+import org.codehaus.groovy.ast.VariableScope
 import preferenceNode.Href
 import preferenceNode.Input
 import preferenceNode.Label
@@ -68,10 +69,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     SettingBoxList setting
 
     boolean preference = false
-
     boolean actionsMethod =false
-
-    ///ArrayList DynamicSubMethodList = new ArrayList()
 
 
     public void visitMethod(MethodNode node) {
@@ -82,7 +80,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 preference = true
             }else {
                 if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName))
-                   smartApp.methodMap.put(methodName,node)
+                   smartApp.addMethodMap(methodName)
             }
         }else if(second){
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
@@ -170,61 +168,61 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                         if(key in ConstantExpression && var in ConstantExpression) {
                             key = ((ConstantExpression)key).getText()
                             var = ((ConstantExpression)var).getText()
-                            smartApp.definition.put(key, var)
+                            smartApp.putDefinition(key, var)
                         }
 
                     }
                 }
             }else if (methodCall.equals("preferences")) {
-                smartApp.preferenceList.add(methodCall)
+                smartApp.addPreferenceList(methodCall)
             } else if (methodCall.equals("page")) {
                 if (smartApp.isDynamicPage(args)) {
                     def dynamicPage = new Page(args, "dynamicPage")
-                    smartApp.dynamicMethodMap.put(dynamicPage.getName(), dynamicPage)
-                    smartApp.preferenceList.add(new Page(args, "dynamicPage"))
+                    smartApp.putDynamicMethodMap(dynamicPage.getName(), dynamicPage)
+                    smartApp.addPreferenceList(new Page(args, "dynamicPage"))
                 } else {
-                    smartApp.preferenceList.add(new Page(args, "page"))
+                    smartApp.addPreferenceList(new Page(args, "page"))
                 }
 
             } else if (methodCall.equals("input")) {
                 Input input = new Input(args)
-                smartApp.preferenceList.add(input)
-                smartApp.inputMap.put(input.getName() ,input)
+                smartApp.addPreferenceList(input)
+                smartApp.putInputMap(input.getName() ,input)
 
             } else if (methodCall.equals("label")) {
-                smartApp.preferenceList.add(new Label(args))
+                smartApp.addPreferenceList(new Label(args))
 
             } else if (methodCall.equals("href")) {
-                smartApp.preferenceList.add(new Href(args))
+                smartApp.addPreferenceList(new Href(args))
 
             } else if (methodCall.equals("section")) {
-                smartApp.preferenceList.add(new Section(args))
+                smartApp.addPreferenceList(new Section(args))
             }
         }else if (dynamicPre) {
 
             if (methodCall.equals("dynamicPage")) {
-                addList(new Page(args, "dynamicPage"))
+                addList4Dynamic(new Page(args, "dynamicPage"))
             } else if (methodCall.equals("label")) {
-                addList(new Label(args))
+                addList4Dynamic(new Label(args))
             } else if (methodCall.equals("href")) {
-                addList(new Href(args))
+                addList4Dynamic(new Href(args))
             } else if (methodCall.equals("section")) {
-                addList(new Section(args))
+                addList4Dynamic(new Section(args))
             }else if (methodCall.equals("input")) {
-                addinput(args)
+                addinput4Dynamic(args)
                // dynamicSubMethod = true
             } /*else if(isitinput(args)) {
-                addinput(args)
+                addinput4Dynamic(args)
             } else {
                 if( smartApp.dynamicMethodMap.containsKey(methodCall))
-                    addList(new Page(methodCall, args, "methodCall"))
+                    addList4Dynamic(new Page(methodCall, args, "methodCall"))
 
                 if (setting.showMethod())
                     if(DynamicSubMethodList.contains(methodCall))
-                        addList(new Method(methodCall))
+                        addList4Dynamic(new Method(methodCall))
 
                 if (isitinput(args)) {
-                    addinput(args)
+                    addinput4Dynamic(args)
                 }
             }*/
         }else if(second && preference == false ){
@@ -237,10 +235,10 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         super.visitMethodCallExpression(call)
     }
 
-    private void addinput(def args){
+    private void addinput4Dynamic(def args){
         Input input = new Input(args)
-        addList(input)
-        smartApp.inputMap.put(input.getName() ,input)
+        addList4Dynamic(input)
+        smartApp.putInputMap(input.getName() ,input)
     }
 
     public void addDynamicThings(MethodNode node){
@@ -255,7 +253,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             method.setMethodName(methodName)
             method.setParameter(node.getParameters())
 
-            smartApp.dynamicPageList.add(method)
+            smartApp.addDynamicPageList(method)
             initDynamic()
         }
         dynamicPre = false
@@ -267,17 +265,17 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             level_up()
 
         for (Statement statement : block.getStatements()) {
-            if(actionsMethod){
-                if(statement in ExpressionStatement) {
-                    def methodcallExpression = statement.expression
-                    if (methodcallExpression instanceof MethodCallExpression) {
-                        if (methodcallExpression.objectExpression instanceof VariableExpression
-                                && methodcallExpression.method instanceof ConstantExpression)
-                            actionMap(methodcallExpression)
+            if(actionsMethod) {
+                    if (statement in ExpressionStatement) {
+                        def methodcallExpression = statement.expression
+                        if (methodcallExpression instanceof MethodCallExpression) {
+                            if (methodcallExpression.objectExpression instanceof VariableExpression
+                                    && methodcallExpression.method instanceof ConstantExpression)
+                                actionMap(methodcallExpression)
+
+                        }
 
                     }
-
-                }
             }
 
             statement.visit(this);
@@ -290,10 +288,11 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     private void actionMap(methodcallExpression){
 
         String obj = methodcallExpression.objectExpression.variable
-        if (smartApp.inputMap.containsKey(obj)) {
+        def eachVariable= smartApp.getEachVariable()
+        if (smartApp.inputMap.containsKey(obj) ) {
             //deveice command call
             smartApp.count_actionCommand()
-            String device = obj //+"."+methodcallExpression.methodMap.value
+            String device = obj //+"."+methodcallExpression.methodSet.value
 
             String commomd = methodcallExpression.method.value
             if(commomd.equals("each") || commomd.equals("eachWithIndex")){
@@ -301,31 +300,41 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                     if(methodcallExpression.arguments.expressions && methodcallExpression.arguments.expressions.size > 0) {
                         def colure = methodcallExpression.arguments.expressions.get(0)
                         if (colure in ClosureExpression){
-                            if(colure.parameters && colure.parameters[0]){
-                                def parameter = colure.parameters[0].name
-                                smartApp.inputMap.put(parameter, device)
+                            VariableScope variableScope= colure.getVariableScope()
+                            HashMap declaredVariables = variableScope.getDeclaredVariables()
+                            Set keySet = declaredVariables.keySet()
+                            for(String key : keySet) {
+                                smartApp.putEachInputMap(key, device)
                             }
                         }
 
                     }
             }else {
-                def eachDevice = smartApp.inputMap.get(obj)
-                if(smartApp.inputMap.containsKey(eachDevice)){
-                    device = eachDevice
-                }
-                if (smartApp.ActionsCommandMap.containsKey(device)) {
-                    DeviceAction methodsMap1 = smartApp.ActionsCommandMap.get(device) ?: null;
+                if (smartApp.actionsMap.containsKey(device)) {
+                    DeviceAction methodsMap1 = smartApp.actionsMap.get(device) ?: null;
                     methodsMap1.add(commomd, methodName)
                 } else {
                     DeviceAction methodsMap1 = new DeviceAction()
                     methodsMap1.add(commomd, methodName)
-                    smartApp.ActionsCommandMap.put(device, methodsMap1)
+                    smartApp.putActionsCommandMap(device, methodsMap1)
                 }
             }
 
-        } else if (obj== "this") {  //methodMap call
+        }else if(eachVariable.equals(obj)){
+            def eachDevice = smartApp.getEachDevice()
+            String commomd = methodcallExpression.method.value
+            if (smartApp.actionsMap.containsKey(eachDevice)) {
+                DeviceAction methodsMap1 = smartApp.actionsMap.get(eachDevice) ?: null;
+                methodsMap1.add(commomd, methodName)
+            } else {
+                DeviceAction methodsMap1 = new DeviceAction()
+                methodsMap1.add(commomd, methodName)
+                smartApp.putActionsCommandMap(eachDevice, methodsMap1)
+            }
 
-            def method = methodcallExpression.method.value
+        }else if (obj== "this") {  //methodSet call
+
+            String method = methodcallExpression.method.value
 
             if (method == "runIn") {
                 method = methodcallExpression.arguments.getExpressions().get(1)
@@ -334,7 +343,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 else if (method in VariableExpression)
                     method = method.variable;
             }
-            HashSet hashSet = smartApp.calli2callerMap.get(method) ?: null
+            HashSet hashSet = smartApp.callGraphMap.get(method) ?: null
             if (hashSet) {
                 if(!method.equals(methodName)) //recursive
                     hashSet.addAll(methodName)
@@ -342,7 +351,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             } else {
                 HashSet newset = new HashSet();
                 newset.addAll(methodName)
-                smartApp.calli2callerMap.put(method, newset)
+                smartApp.putCallGraphMap(method, newset)
             }
         }
     }

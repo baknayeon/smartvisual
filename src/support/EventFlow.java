@@ -4,12 +4,9 @@ package support;
  * Created by b_newyork on 2018-08-06.
  */
 
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-
+import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
-import node.DeviceAction;
 
 import java.awt.*;
 import java.util.*;
@@ -17,67 +14,105 @@ import java.util.*;
 
 public class EventFlow {
 
-    mxGraphComponent graphComponent;
-    HashMap action_methodssMap;
+    private HashMap event2actionMap;
+    private mxGraph graph;
+    private int Y = 35;
+    private int X = 140;
+    private int width = 130;
+    private int height = 20;
 
-    public EventFlow(HashMap ActionsCommandMap) {
-        action_methodssMap = ActionsCommandMap;
-
-
-
-        graphComponent = new mxGraphComponent(getGraph());
-        graphComponent.setEnabled(false);
-        graphComponent.setPageBorderColor(Color.white);
-
-        //graphComponent.setPageBackgroundColor(Color.white);
-        //graphComponent.setPageBorderColor(Color.white);
+    public EventFlow(HashMap event2actionMap) {
+        this.event2actionMap = event2actionMap;
     }
 
-    public mxGraphComponent getEventFlow() {
-        return graphComponent;
+    public Iterator getIterator(){
+        return event2actionMap.keySet().iterator();
     }
 
-    private mxGraph getGraph(){
-        mxGraph graph = new mxGraph();
-        graph.getStylesheet();
+    public mxGraphComponent getGraph(String event){
+        graph = new mxGraph();
         Object defaultParent = graph.getDefaultParent();
+
         graph.getModel().beginUpdate();
-        int x = 0;
-        Iterator<String> keys = action_methodssMap.keySet().iterator();
-        while( keys.hasNext() ){
-            String device = keys.next();
-            DeviceAction methodFlows =  (DeviceAction)action_methodssMap.get(device);
-            for(Object obj2 :  methodFlows.getCommands()){
-                String commads = (String)obj2;
-                ArrayList methodFlow = methodFlows.getMethodFlow(commads);
-                for(Object obj3 : methodFlow){
-                    ArrayList methodsList = (ArrayList)obj3;
-                    Collections.reverse(methodsList);
-                    int j=0;
-                    for(int i = 0; i < methodsList.size()-1; i++){
-                        j = i+1;
-                        String method1 = (String)methodsList.get(i);
-                        String method2 = (String)methodsList.get(j);
-                        Object node1;
-                        if(i == 0)
-                            node1 = graph.insertVertex(defaultParent, null, method1,  20+ x*150, 20+ i*30, 130, 20,"strokeColor=black;fillColor=#4ac0bd;fontColor=black");
-                        else
-                            node1 = graph.insertVertex(defaultParent, null, method1,  20+ x*150, 20+ i*30, 130, 20,"strokeColor=black;fillColor=white;fontColor=black");
-                        Object node2 = graph.insertVertex(defaultParent, null, method2, 20+ x*150, 20+ i*30+30, 130, 20,"strokeColor=black;fillColor=white;fontColor=black");
-                        graph.insertEdge(defaultParent, null, " ", node1, node2,"strokeColor=black;");
-                    }
-                    String method1 = (String)methodsList.get(j);
-                    Object node1 = graph.insertVertex(defaultParent, null, method1, 20+ x*150, 20+j*30, 130, 20,"strokeColor=black;fillColor=white;fontColor=black");
-                    Object node2 = graph.insertVertex(defaultParent, null, device+"."+commads+"()", 20+ x*150, 20+j*30+30, 130, 20, "strokeColor=black;fillColor=#e5cc0d;fontColor=black");
-                    graph.insertEdge(defaultParent, null, " ", node1, node2,"strokeColor=black;");
-                    x++;
+        ArrayList methodFlows = (ArrayList)event2actionMap.get(event);
+        Object eventNode = graph.insertVertex(defaultParent, event, event,  20, 10, width, height,"strokeColor=black;fillColor=#4ac0bd;fontColor=black");
+        mxCell parent = (mxCell)eventNode;
+        for(Object obj3 : methodFlows) {
+            ArrayList methodsList = (ArrayList)obj3;
+            for(int i = 1; i < methodsList.size()-1; i++) {
+                String method1 = (String) methodsList.get(i);
+
+                if(exist(method1)){
+                    parent = getCell(method1);
+                }else{
+                    double x = parent.getGeometry().getX();
+                    double y = parent.getGeometry().getY();
+                    int j = 0;
+
+                    while(exist(x + j*X, y + Y))
+                        j++;
+
+                    mxCell childnode = (mxCell)graph.insertVertex(defaultParent, method1, method1,  x +j*X, y + Y, width, height,"strokeColor=black;fillColor=white;fontColor=black");
+                    if(parent.getId().equals(event))
+                        graph.insertEdge(defaultParent, null, " ", parent, childnode,"strokeColor=black;dashed=1");
+                    else
+                        graph.insertEdge(defaultParent, null, " ", parent, childnode,"strokeColor=black;");
+                    parent = childnode;
                 }
             }
+            double x = parent.getGeometry().getX();
+            double y = parent.getGeometry().getY();
+            int j = 0;
+            while(exist(x + j*X, y + Y))
+                j++;
+
+
+            String action = (String) methodsList.get(methodsList.size()-1);
+            mxCell actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, width, height,"strokeColor=black;fillColor=#e5cc0d;fontColor=black");
+            graph.insertEdge(defaultParent, null, " ", parent, actionNode,"strokeColor=black;");
         }
+
 
         graph.getModel().endUpdate();
 
-       return graph;
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        graphComponent.setEnabled(false);
+        graphComponent.setPageBorderColor(Color.white);
+        return graphComponent;
+    }
+
+    protected boolean exist(String method1){
+        Object[] cells = graph.getChildVertices(graph.getDefaultParent());
+        for (Object c : cells)
+        {
+            mxCell cell = (mxCell) c;
+            if(cell.getId().equals(method1)) { // alread exit
+                return true;
+            }
+        }
+        return false;
+    }
+    protected boolean exist(double x, double y){
+        Object[] cells = graph.getChildVertices(graph.getDefaultParent());
+        for (Object c : cells)
+        {
+            mxCell cell = (mxCell) c;
+            if(cell.getGeometry().getX() == x && cell.getGeometry().getY() == y ) { // alread exit
+                return true;
+            }
+        }
+        return false;
+    }
+    protected mxCell getCell(String method1){
+        Object[] cells = graph.getChildVertices(graph.getDefaultParent());
+        for (Object c : cells)
+        {
+            mxCell cell = (mxCell) c;
+            if(cell.getId().equals(method1)) { // alread exit
+                return cell;
+            }
+        }
+        return null;
     }
 
 }

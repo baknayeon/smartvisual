@@ -20,15 +20,13 @@ import Setting.SettingBoxList
 import support.TreeCellRenderer
 
 import javax.swing.*
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.view.mxGraph;
 
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class CodeVisitor extends CompilationCustomizer{
     Visualization tree
     DetectingError detectingError
     SmartApp smartAppInfo
-    ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
+   // ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
     SettingBoxList settingList
 
     public CodeVisitor(SettingBoxList boxList) {
@@ -62,23 +60,26 @@ class CodeVisitor extends CompilationCustomizer{
     }
 
     void generating_actions_methodFlows(){
-        def action_methodssMap = smartAppInfo.getActionsCommandMap()
+        def action_methodssMap = smartAppInfo.getActionsMap()
         for(String device : action_methodssMap.keySet()){
             DeviceAction commandList = action_methodssMap.get(device)
             for(String command : commandList.getCommands()){
                 ArrayList methods =  commandList.getMethodByCommad(command)
                 for(String method : methods){
-                    actionFlow(method,  new ArrayList())
+                    ArrayList list = new ArrayList()
+                    list.add(device+"."+command)
+                    actionFlow(method, list)
                 }
-                commandList.setMethodFlow(command, FlowsList.clone())
-                this.FlowsList.clear()
+                //commandList.setMethodFlow(command, FlowsList.clone())
+
+                //this.FlowsList.clear()
             }
         }
     }
 
     public void actionFlow(String startingMethod, ArrayList flow){
         String method = startingMethod
-        def calli2callerMap = smartAppInfo.getCalli2callerMap()
+        def calli2callerMap = smartAppInfo.getCallGraphMap()
         def subscribeList = smartAppInfo.getSubscribeList()
 
         if(calli2callerMap.containsKey(method)){
@@ -89,7 +90,7 @@ class CodeVisitor extends CompilationCustomizer{
                 if(flow.size() > 0)
                     flow.remove(flow.size()-1)
             }
-        }else {
+        }else{
             def result = false
             for( Subscribe entry : subscribeList){
                 if(entry.handler.equals(method)){
@@ -103,7 +104,20 @@ class CodeVisitor extends CompilationCustomizer{
                 if(flow.size() == 1){
                     smartAppInfo.actionCommand_In_handlerMethod()
                 }
-                FlowsList.add(flow.clone())
+
+                //add event
+                String eventHandler = method
+                for (Subscribe entry : subscribeList) {
+                    if (entry.handler.equals(eventHandler)) {
+                        ArrayList methods = flow.clone()
+                        String event = entry.capability
+                        methods.add(event)
+                        Collections.reverse(methods)
+                        smartAppInfo.setEvent2Action(event, methods.clone())
+                        break
+                    }
+                }
+                //FlowsList.add(flow.clone())
             }else{
                 detectingError.addMethodError(method)
 
@@ -112,6 +126,7 @@ class CodeVisitor extends CompilationCustomizer{
 
         return
     }
+
 
     public ArrayList errorReport(){
         return detectingError.getSubErrorList()
@@ -129,7 +144,7 @@ class CodeVisitor extends CompilationCustomizer{
     }
     public EventFlow getEventFlow(){
 
-        EventFlow eventFlow = new EventFlow(smartAppInfo.getActionsCommandMap())
+        EventFlow eventFlow = new EventFlow(smartAppInfo.getEvent2Action())
 
         return eventFlow
     }

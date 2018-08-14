@@ -43,6 +43,7 @@ public class MainTool extends JFrame{
 
 	private SettingBoxList settingBoxList;
 	private JPanel appInfo_Panel, errorJPanel ;
+	private JTabbedPane eventFlowsTabbedPane;
 	private JScrollPane treeScrollPane, eventScrollPane, appCodePane;
 	private DefaultCategoryDataset barDataset;
 	Logger log;
@@ -52,6 +53,7 @@ public class MainTool extends JFrame{
 	Result result;
 
 	int WIDTH = 400;
+	int WIDTH2 = 450;
 	int HEIGHT = 650;
 	int HEIGHT_info = 130;
 
@@ -74,7 +76,7 @@ public class MainTool extends JFrame{
 
 	public MainTool() {
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("SmartThing visualization tool");
+		setTitle("Smart Visual");
 		setBounds(100, 100, 1000, 600);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -110,14 +112,15 @@ public class MainTool extends JFrame{
 		setContentPane(mainPane);
 
 		appInfo_Panel = new JPanel();
-		JPanel actionsPanel = new JPanel();
+		JPanel eventFlowPanel = new JPanel();
 		JPanel chartJPanel = new JPanel();
-		eventScrollPane = new JScrollPane();
-		appCodePane = new JScrollPane();
+		eventFlowsTabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		//eventScrollPane = new JScrollPane();
+		//appCodePane = new JScrollPane();
 		errorJPanel = new JPanel();
 		treeScrollPane = new JScrollPane();
 
-		appInfo_Panel.setPreferredSize(new Dimension(WIDTH*3, HEIGHT_info));
+		appInfo_Panel.setPreferredSize(new Dimension(WIDTH*2+WIDTH2, HEIGHT_info));
 		appInfo_Panel.setLayout(new BoxLayout(appInfo_Panel, BoxLayout.PAGE_AXIS));
 		appInfo_Panel.setBorder(new EmptyBorder(3 , 10 , 10 , 10));
 		mainPane.add("North", appInfo_Panel);
@@ -139,31 +142,28 @@ public class MainTool extends JFrame{
 		appInfo_Panel.add(description);
 		appInfo_Panel.add(featrue);
 
-		actionsPanel.setBorder(BorderFactory.createEmptyBorder(7 , 3, 3 , 3));
-		actionsPanel.setLayout(new BoxLayout(actionsPanel, BoxLayout.PAGE_AXIS));
-		actionsPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
-		eventScrollPane.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
-		appCodePane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
+		eventFlowPanel.setBorder(BorderFactory.createEmptyBorder(3 , 0, 0 , 0));
+		eventFlowPanel.setLayout(new BoxLayout(eventFlowPanel, BoxLayout.PAGE_AXIS));
+		eventFlowPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
+		eventFlowsTabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		eventFlowsTabbedPane.setPreferredSize(new Dimension(WIDTH-100, HEIGHT - HEIGHT_info - 20));
+		//appCodePane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
 		JLabel Service = new JLabel("Event flow");
-		Service.setBounds(0,5,10,10);
+		Service.setBounds(0,0,10,10);
 		Service.setSize(10,10);
-		actionsPanel.add(Service);
-		JPanel jPanelsub = new JPanel();
-		jPanelsub.setLayout(new FlowLayout());
-		jPanelsub.add(eventScrollPane);
-		jPanelsub.add(appCodePane);
-		actionsPanel.add(eventScrollPane);
+		eventFlowPanel.add(Service);
+		eventFlowPanel.add(eventFlowsTabbedPane);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
-		tabbedPane.setPreferredSize(new Dimension(WIDTH+100, HEIGHT - HEIGHT_info - 20));
-		//treeScrollPane.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
+		tabbedPane.setPreferredSize(new Dimension(WIDTH, HEIGHT - HEIGHT_info - 20));
+		treeScrollPane.setBorder(BorderFactory.createEmptyBorder(0 , 0, 0 , 0));
 		//errorJPanel.setBorder(BorderFactory.createEmptyBorder(3 , 3, 3 , 3));
 		tabbedPane.addTab("visualizing page", null, treeScrollPane, null);
 		tabbedPane.addTab("Subscribe error", null, errorJPanel, null);
 
-		eventScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		appCodePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//eventScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//appCodePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		barDataset = new DefaultCategoryDataset();
@@ -172,9 +172,9 @@ public class MainTool extends JFrame{
 		barDataset.setValue(null, "smartApp", "action device");
 		barDataset.setValue(null, "smartApp", "input");
 		barDataset.setValue(null, "smartApp", "subscribe");
+		barDataset.setValue(null, "smartApp", "event flow");
 		barDataset.setValue(null, "smartApp", "event handler method");
 		barDataset.setValue(null, "smartApp", "action command");
-		barDataset.setValue(null, "smartApp", "action methodFlow");
 		barDataset.setValue(null, "smartApp", "action in event handler");
 		barDataset.setValue(null, "smartApp", "send method");
 		barDataset.setValue(null, "smartApp", "dynamicPage");
@@ -196,18 +196,18 @@ public class MainTool extends JFrame{
 		chartPanel.setVisible(true);
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(5 , 0, 0 , 0));
 
-		chartJPanel.setPreferredSize(new Dimension(WIDTH+100, HEIGHT - HEIGHT_info - 20));
+		chartJPanel.setPreferredSize(new Dimension(WIDTH2, HEIGHT - HEIGHT_info - 20));
 		chartJPanel.setBorder(BorderFactory.createEmptyBorder(5 , 3, 3 , 3));
 		chartJPanel.setLayout(new BoxLayout(chartJPanel, BoxLayout.PAGE_AXIS));
 
-		JLabel Evaluate = new JLabel("Matrix");
+		JLabel Evaluate = new JLabel("Metrix");
 		Evaluate.setBounds(0,2,10,10);
 		Evaluate.setSize(10,10);
 		chartJPanel.add(Evaluate);
 		chartJPanel.add(chartPanel);
 
 		mainPane.add("West", tabbedPane);
-		mainPane.add("Center", actionsPanel);
+		mainPane.add("Center", eventFlowPanel);
 		mainPane.add("East", chartJPanel);
 
 		result = new Result();
@@ -374,14 +374,23 @@ public class MainTool extends JFrame{
 			description.setText("app description : "+definition.get("description").toString());
 
 		}
-		TextField app = new TextField();
-		app.setText(appCode);
-		app.setEnabled(false);
-		appCodePane.setViewportView(app);
+
 		treeScrollPane.setViewportView(tree);
-		eventScrollPane.setViewportView(eventFlow.getEventFlow());
+		addEventFlowTab(eventFlow);
 		setError(error);
 		generateFile(smartApp, selectedFile.getName());
+	}
+
+	private void addEventFlowTab(EventFlow eventFlow){
+		eventFlowsTabbedPane.removeAll();
+		Iterator Iterator = eventFlow.getIterator();
+		while( Iterator.hasNext() ){
+			String event = (String)Iterator.next();
+			JScrollPane eventScrollPane = new JScrollPane();
+			eventScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			eventScrollPane.setViewportView(eventFlow.getGraph(event));
+			eventFlowsTabbedPane.addTab(event, null, eventScrollPane, null);
+		}
 	}
 
 	public void generateFile(SmartApp smartApp, String selectedFile) {
@@ -403,7 +412,7 @@ public class MainTool extends JFrame{
 		int dynamicPage = smartApp.getDynamicMethodMap().size();
 		int actionCommd = smartApp.total_actionCommand();
 		int sendMethod = smartApp.total_sendMethod();
-		int methodFlow = smartApp.total_MethodFlow();
+		int eventFlow = smartApp.total_MethodFlow();
 		int methodFlow_In_handlerMethod = smartApp.total_ActionCommand_In_handlerMethod();
 		ArrayList dev = smartApp.getDevice();
 		int event = (int)dev.get(0);
@@ -451,9 +460,9 @@ public class MainTool extends JFrame{
 		log.append("No. of action device : "+String.valueOf(action));
 		log.append("No. of input : "+String.valueOf(data));
 		log.append("No. of subscribe : "+String.valueOf(sub));
+		log.append("No. of event flow : "+String.valueOf(eventFlow));
 		log.append("No. of event handler method : "+String.valueOf(handler));
 		log.append("No. of action command : "+String.valueOf(actionCommd));
-		log.append("No. of action methodFlow : "+String.valueOf(methodFlow));
 		log.append("No. of command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
 		log.append("No. of send method : "+String.valueOf(sendMethod));
 		log.append("No. of dynamicPage : "+String.valueOf(dynamicPage));
@@ -464,9 +473,9 @@ public class MainTool extends JFrame{
 		barDataset.setValue(action, "smartApp", "action device");
 		barDataset.setValue(data, "smartApp", "input");
 		barDataset.setValue(sub, "smartApp", "subscribe");
+		barDataset.setValue(eventFlow, "smartApp", "event flow");
 		barDataset.setValue(handler, "smartApp", "event handler method");
 		barDataset.setValue(actionCommd, "smartApp", "action command");
-		barDataset.setValue(methodFlow, "smartApp", "action methodFlow");
 		barDataset.setValue(methodFlow_In_handlerMethod, "smartApp", "action in event handler");
 		barDataset.setValue(sendMethod, "smartApp", "send method");
 		barDataset.setValue(dynamicPage, "smartApp", "dynamicPage");

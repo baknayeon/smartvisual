@@ -86,7 +86,7 @@ class Matrix {
     private boolean frequentActionSmartApp(){
 
         ArrayList result = new ArrayList()
-        HashMap Action = smartApp.getActionsCommandMap()
+        HashMap Action = smartApp.getActionsMap()
         for(String key : Action.keySet()){
             DeviceAction deviceAction = Action.get(key)
             ArrayList commands  = deviceAction.getCommands()

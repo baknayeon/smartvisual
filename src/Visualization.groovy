@@ -31,41 +31,8 @@ class Visualization {
         preferList = smartApp.getPreferenceList()
         subscribeList = smartApp.getSubscribeList()
         dynamicPageList = smartApp.getDynamicPageList()
-        action_methodssMap = smartApp.getActionsCommandMap()
+        action_methodssMap = smartApp.getActionsMap()
         sendMethodMap = smartApp.getSendMethodMap()
-    }
-
-    public DefaultMutableTreeNode getAction(){
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Action")
-
-        for(String device : action_methodssMap.keySet()) {
-            DefaultMutableTreeNode deviceNode = new DefaultMutableTreeNode(device)
-            DeviceAction methodFlows =  action_methodssMap.get(device)
-
-            for(String commads :  methodFlows.getCommands()){
-                ArrayList methodFlow = methodFlows.getMethodFlow(commads)
-
-                /*for(ArrayList methodsList : methodFlow) {
-                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(attribute + "." + commads + "()")
-                    for (String method : methodsList)
-                        methodFlowNode.add(new DefaultMutableTreeNode(method))
-                    deviceNode.add(methodFlowNode)
-                }*/
-                for(ArrayList methodsList : methodFlow) {
-                    ArrayList subList = methodsList.reverse()
-                    DefaultMutableTreeNode methodFlowNode = new DefaultMutableTreeNode(new DefaultMutableTreeNode(device + "." + commads + "()")) //handler
-                    for (String method : subList)
-                        methodFlowNode.add(new DefaultMutableTreeNode(method))
-                    methodFlowNode.add(new DefaultMutableTreeNode(device + "." + commads + "()")) //action
-                    deviceNode.add(methodFlowNode)
-                }
-
-            }
-            root.add(deviceNode)
-
-        }
-
-        return root
     }
 
     public DefaultMutableTreeNode getPage(){

@@ -13,7 +13,7 @@ class DetectingError {
 
     private ArrayList inputList
     private ArrayList subscribeList
-    private HashMap methodMap
+    private HashSet methodSet
 
     ArrayList subErrorList
     ArrayList methodErrorList
@@ -22,7 +22,7 @@ class DetectingError {
 
         inputList = smartAppInfo.getInputMap().values()
         subscribeList = smartAppInfo.getSubscribeList()
-        methodMap = smartAppInfo.getMethodMap()
+        methodSet = smartAppInfo.getMethodSet()
         methodErrorList = new ArrayList()
     }
 
@@ -64,7 +64,7 @@ class DetectingError {
             }
 
             // handler
-            if(isItRightHandler(sub, methodMap)) {
+            if(isItRightHandler(sub, methodSet)) {
                 h = true
             }
 
@@ -99,11 +99,11 @@ class DetectingError {
         return false
     }
 
-    boolean isItRightHandler(Subscribe sub, HashMap methodMap){
+    boolean isItRightHandler(Subscribe sub, HashSet methodSet){
 
         String handlerMethod = sub.getHandler().toString()
 
-        return methodMap.containsKey(handlerMethod)
+        return methodSet.contains(handlerMethod)
     }
 
 

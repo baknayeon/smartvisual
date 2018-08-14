@@ -26,7 +26,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         this.smartApp = smartApp;
         this.dynamicPageList = smartApp.getDynamicPageList();
         this.subscribeList = smartApp.getSubscribeList();
-        this.action_methodFlowsssMap = smartApp.getActionsCommandMap();
+        this.action_methodFlowsssMap = smartApp.getActionsMap();
         this.i = i.toLowerCase();
     }
 
