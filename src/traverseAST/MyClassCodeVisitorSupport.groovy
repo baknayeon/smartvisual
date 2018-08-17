@@ -337,11 +337,12 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             String method = methodcallExpression.method.value
 
             if (method == "runIn") {
-                method = methodcallExpression.arguments.getExpressions().get(1)
-                if (method in ConstantExpression)
-                    method = method.value;
-                else if (method in VariableExpression)
-                    method = method.variable;
+                def arg = methodcallExpression.arguments.getExpressions().get(1)
+                if (arg in ConstantExpression){
+                    method = ((ConstantExpression)arg).getValue()
+                }
+                else if (arg in VariableExpression)
+                    method = ((VariableExpression)arg).getName()
             }
             HashSet hashSet = smartApp.callGraphMap.get(method) ?: null
             if (hashSet) {

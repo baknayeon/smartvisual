@@ -49,13 +49,13 @@ public class MainTool extends JFrame{
 	Logger log;
 
 	JFileChooser chooser;
-	JLabel file, appName, description, featrue;
-	Result result;
+	JLabel file, appName, description;
+	//JLabel featrue;
 
 	int WIDTH = 400;
 	int WIDTH2 = 450;
 	int HEIGHT = 650;
-	int HEIGHT_info = 130;
+	int HEIGHT_info = 100;
 
 
 	public static void main(String[] args) {
@@ -128,19 +128,19 @@ public class MainTool extends JFrame{
 		file = new JLabel();
 		appName = new JLabel();
 		description = new JLabel();
-		featrue = new JLabel();
+		//featrue = new JLabel();
 		JLabel textPane = new JLabel();
 		textPane.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 17));
 		textPane.setText("SmartApp Info");
 		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		appName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		description.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-		featrue.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+		//featrue.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		appInfo_Panel.add(textPane);
 		appInfo_Panel.add(file);
 		appInfo_Panel.add(appName);
 		appInfo_Panel.add(description);
-		appInfo_Panel.add(featrue);
+		//appInfo_Panel.add(featrue);
 
 		eventFlowPanel.setBorder(BorderFactory.createEmptyBorder(3 , 0, 0 , 0));
 		eventFlowPanel.setLayout(new BoxLayout(eventFlowPanel, BoxLayout.PAGE_AXIS));
@@ -210,7 +210,6 @@ public class MainTool extends JFrame{
 		mainPane.add("Center", eventFlowPanel);
 		mainPane.add("East", chartJPanel);
 
-		result = new Result();
 		settingBoxList = new SettingBoxList();
 
 	}
@@ -233,9 +232,7 @@ public class MainTool extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			//DialogMatrix dialogMatrix = new DialogMatrix();
 			String path="smartapp";
-			result = new Result();
 
 			File dirFile=new File(path);
 			File []fileList=dirFile.listFiles();
@@ -262,16 +259,7 @@ public class MainTool extends JFrame{
 				SmartApp smartApp = analysis.getSmartAppInfo();
 				generateFile(smartApp, tempFile.getName());
 			}
-			log.append("-----------No. of SmartApp : "+result.getTotal()+"-----------");
-			log.append("Simple SmartApp : "+result.getSimpleSmartApp()+"");
-			log.append("Frequent Event SmartApp : "+result.getEvent_freq()+"");
-			log.append("Frequent Action SmartApp : "+result.getAction_freq()+"");
-			log.append("\t Frequent Event &&  Frequent Action : "+result.getEvent_and_Action()+"");
-			log.append("\t!Frequent Event && !Frequent Action : "+result.getnEvent_and_nAction() +"");
-			log.append("Event and Action device SmartApp "+result.getDuplicate()+"");
-			log.append("only Sending message SmartApp "+result.getSendingMessage()+"");
 
-			DialogMatrix dialogMatrix = new DialogMatrix(result);
 
 		}
 	}
@@ -394,15 +382,7 @@ public class MainTool extends JFrame{
 	}
 
 	public void generateFile(SmartApp smartApp, String selectedFile) {
-		result.Count();
-		String s = "<html>feature<br/>";
 
-		Matrix matrix = new Matrix(smartApp);
-		boolean[] resultM = matrix.evaluating();
-
-		String frequentAction = matrix.getFrequentAction();
-		String duplicatedDevice = matrix.getDuplicatedDevice();
-		String sendingArg = matrix.getSmsArgs();
 
 		log = new Logger();//new Logger("evaluate.txt");
 		log.append("-----------"+selectedFile+"-----------");
@@ -419,41 +399,7 @@ public class MainTool extends JFrame{
 		int action = (int)dev.get(1);
 		int data = (int)dev.get(2);
 		int sub = smartApp.gettheNumof_sub();
-
-		if(resultM[0] ) {
-			log.append("Simple SmartApp");
-			s = s+ "&nbsp;&nbsp;* Simple SmartApp";
-			result.simpleSmartApp++;
-		}
-		if(resultM[1]) {
-			log.append("Frequent Event SmartApp");
-			s = s+ "&nbsp;&nbsp;* Frequent Event SmartApp";
-			result.Event_freq++;
-		}
-		if(resultM[2]) {
-			log.append("Frequent Action SmartApp");
-			s = s+ "&nbsp;&nbsp;* Frequent Action SmartApp(" + frequentAction+")";
-			result.Action_freq++;
-		}
-
-		if(resultM[1] && resultM[2])
-			result.Event_and_Action++;
-
-		if(!resultM[1] && !resultM[2])
-			result.nEvent_and_nAction++;
-
-		if(resultM[3]){
-			log.append("Event and Action device SmartApp") ;
-			s = s+ "&nbsp;&nbsp;* Event and Action device SmartApp("+duplicatedDevice+")";
-			result.duplicate++;
-		}
-		if(resultM[4]) {
-			log.append("Only Sending Message SmartApp");
-			s = s+ "&nbsp;&nbsp;* Only Sending Message SmartApp("+sendingArg+")";
-			result.sendingMessage++;
-		}
-		s = s+"</html>";
-		featrue.setText(s);
+;
 
 		log.append("No. of input device	: "+String.valueOf(input));
 		log.append("No. of event device : "+String.valueOf(event));
@@ -466,7 +412,7 @@ public class MainTool extends JFrame{
 		log.append("No. of command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
 		log.append("No. of send method : "+String.valueOf(sendMethod));
 		log.append("No. of dynamicPage : "+String.valueOf(dynamicPage));
-		log.push(resultM);
+
 
 		barDataset.setValue(input, "smartApp", "input device");
 		barDataset.setValue(event, "smartApp", "event device");

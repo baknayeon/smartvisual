@@ -6,6 +6,7 @@ package support;
 
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
 import com.mxgraph.view.mxGraph;
 
 import java.awt.*;
@@ -35,7 +36,7 @@ public class EventFlow {
 
         graph.getModel().beginUpdate();
         ArrayList methodFlows = (ArrayList)event2actionMap.get(event);
-        Object eventNode = graph.insertVertex(defaultParent, event, event,  20, 10, width, height,"strokeColor=black;fillColor=#4ac0bd;fontColor=black");
+        Object eventNode = graph.insertVertex(defaultParent, event, event,  20, 10, width, height,"shape=ellipse;strokeColor=black;fillColor=#4ac0bd;fontColor=black");
         mxCell parent = (mxCell)eventNode;
         for(Object obj3 : methodFlows) {
             ArrayList methodsList = (ArrayList)obj3;
@@ -68,8 +69,8 @@ public class EventFlow {
 
 
             String action = (String) methodsList.get(methodsList.size()-1);
-            mxCell actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, width, height,"strokeColor=black;fillColor=#e5cc0d;fontColor=black");
-            graph.insertEdge(defaultParent, null, " ", parent, actionNode,"strokeColor=black;");
+            mxCell actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, width, height,"shape=ellipse;strokeColor=black;fillColor=#e5cc0d;fontColor=black");
+            graph.insertEdge(defaultParent, null, " ", parent, actionNode,"strokeColor=black;dashed=1");
         }
 
 
