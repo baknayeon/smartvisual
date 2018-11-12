@@ -1,5 +1,7 @@
 package node
 
+import support.CapHelper
+
 import javax.swing.tree.DefaultMutableTreeNode
 
 /**
@@ -9,29 +11,38 @@ class DeviceAction {
 
     private HashMap commandsMap = new HashMap()
     private HashMap whereMap = new HashMap()
+    public String device
+    public String cap
+    int actionCount = 0
+
+    public DeviceAction(String device, String cap){
+        this.device = device
+        this.cap = cap
+    }
 
     public void add(String commad, String methodName){
 
+        actionCount++
         HashMap methodsMap1 = commandsMap.get(commad) ?: null;
         HashSet methodsMap2 = whereMap.get(methodName) ?: null;
 
         if (methodsMap1) {
             if (methodsMap1.containsKey(methodName)) {
                 int count = methodsMap1.get(methodName)
-                 count = count+1
-                methodsMap1.put(methodName , count)
+                count = count + 1
+                methodsMap1.put(methodName, count)
             } else {
-                methodsMap1.put(methodName , 1)
+                methodsMap1.put(methodName, 1)
             }
         } else {
             HashMap methodsMap12 = new HashMap()
-            methodsMap12.put(methodName , 1)
+            methodsMap12.put(methodName, 1)
             commandsMap.put(commad, methodsMap12)
         }
 
-        if(methodsMap2){
+        if (methodsMap2) {
             methodsMap2.add(commad)
-        }else{
+        } else {
             methodsMap2 = new HashSet()
             methodsMap2.add(commad)
             whereMap.put(methodName, methodsMap2)

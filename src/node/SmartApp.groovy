@@ -19,18 +19,17 @@ class SmartApp {
     HashMap<String, Input> inputMap = new HashMap()
     HashSet methodSet = new HashSet()
     HashMap<String, Page> dynamicMethodMap = new HashMap<>();
-    //first action
-    HashMap sendMethodMap = new HashMap<>();
-    int seneMethod = 0;
-    int actionCommand = 0;
 
-    private HashMap sendList = new HashMap<>();
+    //first action
     private int actionCommand_In_handlerMethod = 0
 
     //second action
+    HashMap<String, String> closureInputMap = new HashMap()
     HashMap<String, DeviceAction> actionsMap = new HashMap()
     HashMap<String, HashSet> callGraphMap = new HashMap()
-    String[] eachInput= new String[2]
+    HashMap sendMethodMap = new HashMap<>();
+    int seneMethod = 0;
+    private HashMap sendList = new HashMap<>();
 
     //second dynamic
     ArrayList<Method> dynamicPageList =  new ArrayList<Method>()
@@ -59,23 +58,53 @@ class SmartApp {
     }
 
     void putEachInputMap(String each, String input) {
-        eachInput[0] = each
-        eachInput[1] = input
+        closureInputMap.put(each, input)
     }
-    public String getEachVariable(){
-        return  eachInput[0]
+    public def isClosureInput(closure){
+        return closureInputMap.containsKey(closure)
     }
-    public String getEachDevice(){
-        return eachInput[1]
+    public String getEachDevice(closure){
+        return closureInputMap.get(closure)
     }
     void addDynamicPageList(Method node){
         this.dynamicPageList.add(node)
     }
-    void putCallGraphMap(String key, HashSet var){
-        this.callGraphMap.put(key, var)
+    void putCallGraphMap(String callee, HashSet caller){
+        this.callGraphMap.put(callee, caller)
     }
     void putActionsCommandMap(String key, DeviceAction var){
-        this.actionsMap.put(key, var)
+            this.actionsMap.put(key, var)
+    }
+    public boolean isitActionDevCommand(String name){
+        return inputMap.containsKey(name)
+    }
+
+    public String getInputDevi(String name){
+        Input input = inputMap.get(name)
+        return input.getDevice()
+    }
+
+    public String getInputCap(String name){
+        Input input = inputMap.get(name)
+        return input.getCapability()
+    }
+    public double getAvgLen_eventFlow (){
+        double avg = 0
+        double total = 0
+        double count = 0
+        for( String event : event2action.keySet() ){
+            ArrayList methodsList = event2action.get(event)
+            for(ArrayList eventFlow: methodsList){
+                count++
+                total += eventFlow.size()-2
+            }
+        }
+        if(count > 0)
+            avg = total/count
+        else return 0
+
+        return avg
+
     }
 
     public void setEvent2Action(event, methodList){
@@ -89,6 +118,15 @@ class SmartApp {
         }
     }
 
+    public int getNumof_EH(){
+        HashSet set = new HashSet()
+        for(Subscribe subscribe : subscribeList){
+
+            String eh = subscribe.getHandler()
+            set.add(eh)
+        }
+        return set.size()
+    }
     public int gettheNumof_sub(){
         return subscribeList.size()
     }
@@ -105,11 +143,14 @@ class SmartApp {
     public int total_ActionCommand_In_handlerMethod(){
         return actionCommand_In_handlerMethod;
     }
-    public void count_actionCommand(){
-        actionCommand++
-    }
+
     public int total_actionCommand(){
-        return actionCommand;
+        int result = 0
+        ArrayList actionList = actionsMap.values()
+        for(DeviceAction action : actionList){
+            result += action.getActionCount()
+        }
+        return result;
     }
 
     public void count_sendMethod(){
@@ -120,7 +161,7 @@ class SmartApp {
     }
 
 
-    public void actionCommand_In_handlerMethod(){
+    public void count_actionInEH(){
         actionCommand_In_handlerMethod++;
     }
 

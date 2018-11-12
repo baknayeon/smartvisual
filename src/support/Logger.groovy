@@ -10,11 +10,18 @@ package support
 
 class Logger 
 {
-	File file = new File("evaluate.txt")
+	File Afile = new File("evaluate.txt")
+	File fileS = new File("totalevaluate.txt")
 
-	public void append(String s)
+	public void appendAfile(String s)
 	{
-		file.append(System.getProperty("line.separator") + s)
+		Afile.append(System.getProperty("line.separator") + s)
+
+	}
+
+	public void appendfileS(String s)
+	{
+		fileS.append(System.getProperty("line.separator") + s)
 
 	}
 }

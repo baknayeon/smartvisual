@@ -17,6 +17,17 @@ final class CapHelper {
         Capability cap = allCommands[capName]
         return cap
     }
+
+    static boolean rightCommand(String capName, String com){
+        Capability cap = allCommands[capName]
+        ArrayList commands = cap.getCommands()
+        for(String command : commands){
+            if(command.equals(com))
+                return true
+        }
+        return false
+    }
+
     static def loadCapRef() {
 
         def capsAsPerSamsungFile = "./" + "Capabilities.csv"
@@ -33,7 +44,11 @@ final class CapHelper {
             cap.setAttribute(dev)
 
             fields[3]?.split(" ")?.each {
-                cap.cap_val.add(it.toString())
+                cap.attr_val.add(it.toString())
+            }
+
+            fields[4]?.split(" ")?.each {
+                cap.commands.add(it.toString())
             }
 
             allCommands[Cap] =  cap

@@ -26,7 +26,6 @@ class CodeVisitor extends CompilationCustomizer{
     Visualization tree
     DetectingError detectingError
     SmartApp smartAppInfo
-   // ArrayList<ArrayList> FlowsList = new ArrayList<ArrayList>()
     SettingBoxList settingList
 
     public CodeVisitor(SettingBoxList boxList) {
@@ -51,15 +50,15 @@ class CodeVisitor extends CompilationCustomizer{
         smartAppInfo = codeVisitor.getSmartApp()
         codeVisitor.setSecond(false)
 
+
         tree = new Visualization(smartAppInfo)
         detectingError = new DetectingError(smartAppInfo)
         detectingError.subscribe_error()
 
-        generating_actions_methodFlows()
-
+        generating_eventFlows()
     }
 
-    void generating_actions_methodFlows(){
+    void generating_eventFlows(){
         def action_methodssMap = smartAppInfo.getActionsMap()
         for(String device : action_methodssMap.keySet()){
             DeviceAction commandList = action_methodssMap.get(device)
@@ -99,11 +98,12 @@ class CodeVisitor extends CompilationCustomizer{
                 }
             }
             if(result){
-                flow.add(method)
                 //flow = flow.reverse()
                 if(flow.size() == 1){
-                    smartAppInfo.actionCommand_In_handlerMethod()
+                    smartAppInfo.count_actionInEH()
                 }
+                flow.add(method) // add event handler
+
 
                 //add event
                 String eventHandler = method
@@ -119,7 +119,7 @@ class CodeVisitor extends CompilationCustomizer{
                 }
                 //FlowsList.add(flow.clone())
             }else{
-                detectingError.addMethodError(method)
+                //detectingError.addMethodError(method)
 
             }
         }

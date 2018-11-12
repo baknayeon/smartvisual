@@ -1,61 +1,196 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
 -----------Unlock It When I Arrive.groovy-----------
-No. of input device	: 4
+No. of input	: 4
 No. of event device : 1
 No. of action device : 1
-No. of input : 2
+No. of input variable: 2
 No. of subscribe : 1
-No. of event flow : 1
 No. of event handler method : 1
 No. of action command : 1
-No. of command in event handler : 0
+No. of event flow : 1
+avg. path of event flow : 2.0
+No. of action in event handler : 0
 No. of send method : 1
 No. of dynamicPage : 1
 -----------Unlock It When I Arrive.groovy-----------
-No. of input device	: 4
+No. of input	: 4
 No. of event device : 1
 No. of action device : 1
-No. of input : 2
+No. of input variable: 2
 No. of subscribe : 1
-No. of event flow : 1
 No. of event handler method : 1
 No. of action command : 1
-No. of command in event handler : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
 No. of send method : 1
 No. of dynamicPage : 1
+-----------Alfred Workflow.groovy-----------
+No. of input	: 2
+No. of event device : 0
+No. of action device : 2
+No. of input variable: 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 2
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Alfred Workflow.groovy-----------
+No. of input	: 2
+No. of event device : 0
+No. of action device : 2
+No. of input variable: 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 2
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
 -----------Unlock It When I Arrive.groovy-----------
-No. of input device	: 4
+No. of input	: 4
 No. of event device : 1
 No. of action device : 1
-No. of input : 2
+No. of input variable: 2
 No. of subscribe : 1
-No. of event flow : 1
 No. of event handler method : 1
-No. of action command : 1
-No. of command in event handler : 0
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
 No. of send method : 1
 No. of dynamicPage : 1
+-----------Alfred Workflow.groovy-----------
+No. of input	: 2
+No. of event device : 0
+No. of action device : 2
+No. of input variable: 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Alfred Workflow.groovy-----------
+No. of input	: 2
+No. of event device : 0
+No. of action device : 2
+No. of input variable: 0
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Alfred Workflow.groovy-----------
+No. of input	: 2
+No. of event device : 0
+No. of action device : 0
+No. of input variable: 2
+No. of subscribe : 0
+No. of event handler method : 0
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 0
+No. of dynamicPage : 0
 -----------Unlock It When I Arrive.groovy-----------
-No. of input device	: 4
+No. of input	: 4
 No. of event device : 1
-No. of action device : 1
-No. of input : 2
+No. of action device : 0
+No. of input variable: 3
 No. of subscribe : 1
-No. of event flow : 1
 No. of event handler method : 1
-No. of action command : 1
-No. of command in event handler : 0
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
 No. of send method : 1
 No. of dynamicPage : 1
+-----------Gentle Wake Up(if).groovy-----------
+No. of input	: 21
+No. of event device : 2
+No. of action device : 3
+No. of input variable: 17
+No. of subscribe : 5
+No. of event handler method : 5
+No. of action command : 5
+No. of event flow : 23
+avg. path of event flow : 4.173913043478261
+No. of action in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 6
+-----------Left It Open.groovy-----------
+No. of input	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input variable: 4
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Left It Open.groovy-----------
+No. of input	: 5
+No. of event device : 1
+No. of action device : 0
+No. of input variable: 4
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 0
+No. of event flow : 0
+avg. path of event flow : 0.0
+No. of action in event handler : 0
+No. of send method : 3
+No. of dynamicPage : 0
+-----------Light Follows Me.groovy-----------
+No. of input	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input variable: 1
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of event flow : 2
+avg. path of event flow : 1.5
+No. of action in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Light Follows Me.groovy-----------
+No. of input	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input variable: 1
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of event flow : 2
+avg. path of event flow : 1.5
+No. of action in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0
+-----------Light Follows Me.groovy-----------
+No. of input	: 3
+No. of event device : 1
+No. of action device : 1
+No. of input variable: 1
+No. of subscribe : 2
+No. of event handler method : 2
+No. of action command : 2
+No. of event flow : 2
+avg. path of event flow : 1.5
+No. of action in event handler : 1
+No. of send method : 0
+No. of dynamicPage : 0

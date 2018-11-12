@@ -49,7 +49,8 @@ public class MainTool extends JFrame{
 	Logger log;
 
 	JFileChooser chooser;
-	JLabel file, appName, description;
+	JLabel file, appName;
+	JLabel description;
 	//JLabel featrue;
 
 	int WIDTH = 400;
@@ -57,6 +58,10 @@ public class MainTool extends JFrame{
 	int HEIGHT = 650;
 	int HEIGHT_info = 100;
 
+	int sub1 = 0;
+	int sub2 = 0;
+	int sub3 = 0;
+	int sub4 = 0;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -135,6 +140,8 @@ public class MainTool extends JFrame{
 		file.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		appName.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		description.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
+		//description.setBackground(Color.GRAY);
+		//description.disable();
 		//featrue.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
 		appInfo_Panel.add(textPane);
 		appInfo_Panel.add(file);
@@ -167,14 +174,15 @@ public class MainTool extends JFrame{
 		treeScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
 		barDataset = new DefaultCategoryDataset();
-		barDataset.setValue(null, "smartApp", "input device");
+		barDataset.setValue(null, "smartApp", "input");
 		barDataset.setValue(null, "smartApp", "event device");
 		barDataset.setValue(null, "smartApp", "action device");
-		barDataset.setValue(null, "smartApp", "input");
+		barDataset.setValue(null, "smartApp", "input variable");
 		barDataset.setValue(null, "smartApp", "subscribe");
-		barDataset.setValue(null, "smartApp", "event flow");
 		barDataset.setValue(null, "smartApp", "event handler method");
 		barDataset.setValue(null, "smartApp", "action command");
+		barDataset.setValue(null, "smartApp", "event flow");
+		barDataset.setValue(null, "smartApp", "avg path of flows");
 		barDataset.setValue(null, "smartApp", "action in event handler");
 		barDataset.setValue(null, "smartApp", "send method");
 		barDataset.setValue(null, "smartApp", "dynamicPage");
@@ -257,10 +265,13 @@ public class MainTool extends JFrame{
 				analysis.getPreferenceTree();
 				analysis.errorReport();
 				SmartApp smartApp = analysis.getSmartAppInfo();
-				generateFile(smartApp, tempFile.getName());
+				generateFileS(smartApp, tempFile.getName());
 			}
 
-
+			System.out.println(sub1);
+			System.out.println(sub2);
+			System.out.println(sub3);
+			System.out.println(sub4);
 		}
 	}
 
@@ -366,7 +377,7 @@ public class MainTool extends JFrame{
 		treeScrollPane.setViewportView(tree);
 		addEventFlowTab(eventFlow);
 		setError(error);
-		generateFile(smartApp, selectedFile.getName());
+		generateAFile(smartApp, selectedFile.getName());
 	}
 
 	private void addEventFlowTab(EventFlow eventFlow){
@@ -380,12 +391,57 @@ public class MainTool extends JFrame{
 			eventFlowsTabbedPane.addTab(event, null, eventScrollPane, null);
 		}
 	}
-
-	public void generateFile(SmartApp smartApp, String selectedFile) {
-
+	public void generateFileS(SmartApp smartApp, String selectedFile) {
 
 		log = new Logger();//new Logger("evaluate.txt");
-		log.append("-----------"+selectedFile+"-----------");
+		log.appendfileS("-----------"+selectedFile+"-----------");
+
+		int input = smartApp.getInputMap().size();
+		int handler = smartApp.getHandlerMethod().size();
+		int dynamicPage = smartApp.getDynamicMethodMap().size();
+		int actionCom = smartApp.total_actionCommand();
+		int sendMethod = smartApp.total_sendMethod();
+		int eventFlow = smartApp.total_MethodFlow();
+		double avg_path_length  = smartApp.getAvgLen_eventFlow();
+		int methodFlow_In_handlerMethod = smartApp.total_ActionCommand_In_handlerMethod();
+		ArrayList dev = smartApp.getDevice();
+		int event = (int)dev.get(0);
+		int action = (int)dev.get(1);
+		int data = (int)dev.get(2);
+		int sub = smartApp.gettheNumof_sub();
+
+		if(actionCom > 0 && sendMethod > 0)
+			sub1++;
+		else if(actionCom > 0 && sendMethod ==0)
+			sub2++;
+		else if(actionCom == 0 && sendMethod > 0)
+			sub3++;
+		else if(actionCom == 0 && sendMethod ==0)
+			sub4++;
+
+
+		log.appendfileS("No. of input	: "+String.valueOf(input));
+		log.appendfileS("No. of event device : "+String.valueOf(event));
+		log.appendfileS("No. of action device : "+String.valueOf(action));
+		log.appendfileS("No. of input variable: "+String.valueOf(data));
+		log.appendfileS("No. of subscribe : "+String.valueOf(sub));
+		log.appendfileS("No. of event handler method : "+String.valueOf(handler));
+		log.appendfileS("No. of action command : "+String.valueOf(actionCom));
+		log.appendfileS("No. of event flow : "+String.valueOf(eventFlow));
+		log.appendfileS("avg. path of event flow : "+String.valueOf(avg_path_length));
+		log.appendfileS("No. of action in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
+		log.appendfileS("No. of send method : "+String.valueOf(sendMethod));
+		log.appendfileS("No. of dynamicPage : "+String.valueOf(dynamicPage));
+		log.appendfileS("No. of actionCom > 0 && sendMethod > 0 : "+String.valueOf(sub1));
+		log.appendfileS("No. of actionCom > 0 && sendMethod ==0 : "+String.valueOf(sub2));
+		log.appendfileS("No. of actionCom == 0 && sendMethod > 0 : "+String.valueOf(sub3));
+		log.appendfileS("No. of actionCom == 0 && sendMethod ==0 : "+String.valueOf(sub4));
+	}
+
+
+	public void generateAFile(SmartApp smartApp, String selectedFile) {
+		log = new Logger();//new Logger("evaluate.txt");
+		log.appendAfile("-----------"+selectedFile+"-----------");
 
 		int input = smartApp.getInputMap().size();
 		int handler = smartApp.getHandlerMethod().size();
@@ -393,33 +449,34 @@ public class MainTool extends JFrame{
 		int actionCommd = smartApp.total_actionCommand();
 		int sendMethod = smartApp.total_sendMethod();
 		int eventFlow = smartApp.total_MethodFlow();
+		double avg_path_length  = smartApp.getAvgLen_eventFlow();
 		int methodFlow_In_handlerMethod = smartApp.total_ActionCommand_In_handlerMethod();
 		ArrayList dev = smartApp.getDevice();
 		int event = (int)dev.get(0);
 		int action = (int)dev.get(1);
 		int data = (int)dev.get(2);
 		int sub = smartApp.gettheNumof_sub();
-;
 
-		log.append("No. of input device	: "+String.valueOf(input));
-		log.append("No. of event device : "+String.valueOf(event));
-		log.append("No. of action device : "+String.valueOf(action));
-		log.append("No. of input : "+String.valueOf(data));
-		log.append("No. of subscribe : "+String.valueOf(sub));
-		log.append("No. of event flow : "+String.valueOf(eventFlow));
-		log.append("No. of event handler method : "+String.valueOf(handler));
-		log.append("No. of action command : "+String.valueOf(actionCommd));
-		log.append("No. of command in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
-		log.append("No. of send method : "+String.valueOf(sendMethod));
-		log.append("No. of dynamicPage : "+String.valueOf(dynamicPage));
+		log.appendAfile("No. of input	: "+String.valueOf(input));
+		log.appendAfile("No. of event device : "+String.valueOf(event));
+		log.appendAfile("No. of action device : "+String.valueOf(action));
+		log.appendAfile("No. of input variable: "+String.valueOf(data));
+		log.appendAfile("No. of subscribe : "+String.valueOf(sub));
+		log.appendAfile("No. of event handler method : "+String.valueOf(handler));
+		log.appendAfile("No. of action command : "+String.valueOf(actionCommd));
+		log.appendAfile("No. of event flow : "+String.valueOf(eventFlow));
+		log.appendAfile("avg. path of event flow : "+String.valueOf(avg_path_length));
+		log.appendAfile("No. of action in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
+		log.appendAfile("No. of send method : "+String.valueOf(sendMethod));
+		log.appendAfile("No. of dynamicPage : "+String.valueOf(dynamicPage));
 
-
-		barDataset.setValue(input, "smartApp", "input device");
+		barDataset.setValue(input, "smartApp", "input");
 		barDataset.setValue(event, "smartApp", "event device");
 		barDataset.setValue(action, "smartApp", "action device");
-		barDataset.setValue(data, "smartApp", "input");
+		barDataset.setValue(data, "smartApp", "input variable");
 		barDataset.setValue(sub, "smartApp", "subscribe");
 		barDataset.setValue(eventFlow, "smartApp", "event flow");
+		barDataset.setValue(avg_path_length, "smartApp", "avg path of flows");
 		barDataset.setValue(handler, "smartApp", "event handler method");
 		barDataset.setValue(actionCommd, "smartApp", "action command");
 		barDataset.setValue(methodFlow_In_handlerMethod, "smartApp", "action in event handler");

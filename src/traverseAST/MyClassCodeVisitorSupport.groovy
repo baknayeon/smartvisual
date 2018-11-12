@@ -59,6 +59,7 @@ import org.codehaus.groovy.ast.stmt.WhileStatement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException
+import support.CapHelper
 
 public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport implements GroovyClassVisitor {
 
@@ -98,12 +99,13 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             if ("run".equals(methodName)) {
                 preference = false
             }
-            smartApp.pushSendMethod(methodName)
         }
         else if(second) { //second
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
                 actionsMethod = false
             }
+            smartApp.pushSendMethod(methodName)
+
             if(dynamicPre) {
                 addDynamicThings(node)
                 dynamicPre = false
@@ -137,24 +139,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 if (args.size() > 0) {
                     Subscribe subscribe = new Subscribe(args)
                     smartApp.addSubscribeList(subscribe)
-
                 }
-            }else if( methodCall.equals("sendPush") || methodCall.equals("sendPushMessage") ||
-                    methodCall.equals("sendNotification") || methodCall.equals("sendNotificationEvent") || methodCall.equals("sendNotificationToContacts")){
-
-                for(def arg in args){
-                    smartApp.collectSendMethd(arg, methodCall)
-
-                }
-                smartApp.count_sendMethod()
-            }else if( methodCall.equals("sendSms") || methodCall.equals("sendSmsMessage")){
-                if(args.size() == 2){
-                    def phone = args[0]
-                    def message = args[1]
-                    smartApp.collectSendMethd(phone, message, methodCall)
-                }
-                smartApp.count_sendMethod()
-
             }
         }
         if (preference) {
@@ -228,6 +213,21 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         }else if(second && preference == false ){
             if (methodCall.equals("input")) {
                 //smartApp.dynamicInputMap.put(methodName, new Input(args))
+            }else if( methodCall.equals("sendPush") || methodCall.equals("sendPushMessage") ||
+                    methodCall.equals("sendNotification") || methodCall.equals("sendNotificationEvent") || methodCall.equals("sendNotificationToContacts")){
+
+                for(def arg in args){
+                    smartApp.collectSendMethd(arg, methodCall)
+                }
+                smartApp.count_sendMethod()
+            }else if( methodCall.equals("sendSms") || methodCall.equals("sendSmsMessage")){
+                if(args.size() == 2){
+                    def phone = args[0]
+                    def message = args[1]
+                    smartApp.collectSendMethd(phone, message, methodCall)
+                }
+                smartApp.count_sendMethod()
+
             }
         }
 
@@ -288,11 +288,10 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
     private void actionMap(methodcallExpression){
 
         String obj = methodcallExpression.objectExpression.variable
-        def eachVariable= smartApp.getEachVariable()
-        if (smartApp.inputMap.containsKey(obj) ) {
+        String input = obj
+        if (smartApp.isitActionDevCommand(obj)) {
             //deveice command call
-            smartApp.count_actionCommand()
-            String device = obj //+"."+methodcallExpression.methodSet.value
+            //+"."+methodcallExpression.methodSet.value
 
             String commomd = methodcallExpression.method.value
             if(commomd.equals("each") || commomd.equals("eachWithIndex")){
@@ -304,40 +303,54 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                             HashMap declaredVariables = variableScope.getDeclaredVariables()
                             Set keySet = declaredVariables.keySet()
                             for(String key : keySet) {
-                                smartApp.putEachInputMap(key, device)
+                                smartApp.putEachInputMap(key, input)
                             }
                         }
 
                     }
             }else {
-                if (smartApp.actionsMap.containsKey(device)) {
-                    DeviceAction methodsMap1 = smartApp.actionsMap.get(device) ?: null;
+                if (smartApp.actionsMap.containsKey(input)) {
+                    DeviceAction methodsMap1 = smartApp.actionsMap.get(input) ?: null;
                     methodsMap1.add(commomd, methodName)
                 } else {
-                    DeviceAction methodsMap1 = new DeviceAction()
-                    methodsMap1.add(commomd, methodName)
-                    smartApp.putActionsCommandMap(device, methodsMap1)
+                    String device = smartApp.getInputDevi(input)
+                    String cap = smartApp.getInputCap(input)
+
+                    //if(CapHelper.rightCommand(cap, commomd)) {
+                        DeviceAction methodsMap1 = new DeviceAction(device, cap)
+                        methodsMap1.add(commomd, methodName)
+                        smartApp.putActionsCommandMap(input, methodsMap1)
+                    //}
                 }
             }
 
-        }else if(eachVariable.equals(obj)){
-            def eachDevice = smartApp.getEachDevice()
-            String commomd = methodcallExpression.method.value
-            if (smartApp.actionsMap.containsKey(eachDevice)) {
-                DeviceAction methodsMap1 = smartApp.actionsMap.get(eachDevice) ?: null;
-                methodsMap1.add(commomd, methodName)
+        }else if(smartApp.isClosureInput(obj)){ //deveice command call with closure
+            def parentDevice = smartApp.getEachDevice(obj)
+            String command = methodcallExpression.method.value
+            if (smartApp.actionsMap.containsKey(parentDevice)) {
+                DeviceAction methodsMap1 = smartApp.actionsMap.get(parentDevice) ?: null;
+                methodsMap1.add(command, methodName)
             } else {
-                DeviceAction methodsMap1 = new DeviceAction()
-                methodsMap1.add(commomd, methodName)
-                smartApp.putActionsCommandMap(eachDevice, methodsMap1)
+                String device = smartApp.getInputDevi(parentDevice)
+                String cap = smartApp.getInputCap(parentDevice)
+                DeviceAction methodsMap1 = new DeviceAction(device, cap)
+                methodsMap1.add(command, methodName)
+                smartApp.putActionsCommandMap(parentDevice, methodsMap1)
             }
 
         }else if (obj== "this") {  //methodSet call
 
             String method = methodcallExpression.method.value
 
-            if (method == "runIn") {
+            if (method == "runIn" || method == "runOnce" ) {
                 def arg = methodcallExpression.arguments.getExpressions().get(1)
+                if (arg in ConstantExpression){
+                    method = ((ConstantExpression)arg).getValue()
+                }
+                else if (arg in VariableExpression)
+                    method = ((VariableExpression)arg).getName()
+            }else if (method.contains("runEvery")) {
+                def arg = methodcallExpression.arguments.getExpressions().get(0)
                 if (arg in ConstantExpression){
                     method = ((ConstantExpression)arg).getValue()
                 }

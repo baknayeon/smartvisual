@@ -6,26 +6,19 @@ package preferenceNode
 
 class Capability {
 
-    String capability
-    String attribute
-    ArrayList cap_val
+    String capability  = ""
+    String attribute  = ""
+    ArrayList attr_val = new ArrayList()
+    ArrayList commands  = new ArrayList()
 
-
-
-    public Capability() {
-        cap_val = new ArrayList()
-        attribute = ""
-    }
-
-    public boolean checkVal(String newVal){
-        if(cap_val.size() == 0)
+    public boolean checkAttrVal(String newVal){
+        if(attr_val.size() == 0)
             return true
-        for(String val : cap_val){
+        for(String val : attr_val){
             if(newVal.equals(val))
                 return true
         }
         return false
     }
-
 
 }

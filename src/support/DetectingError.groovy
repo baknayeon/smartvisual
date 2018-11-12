@@ -89,7 +89,7 @@ class DetectingError {
         if(cap !=null){
             if(cap.getCapability().equals(sub_cap))
                 return true
-            else if(cap.checkVal(sub_capVal))
+            else if(cap.checkAttrVal(sub_capVal))
                 return true
             else if(cap.getAttribute().equals(sub_cap))
                 return true
