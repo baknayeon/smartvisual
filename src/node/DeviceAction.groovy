@@ -22,7 +22,6 @@ class DeviceAction {
 
     public void add(String commad, String methodName){
 
-        actionCount++
         HashMap methodsMap1 = commandsMap.get(commad) ?: null;
         HashSet methodsMap2 = whereMap.get(methodName) ?: null;
 
@@ -47,6 +46,8 @@ class DeviceAction {
             methodsMap2.add(commad)
             whereMap.put(methodName, methodsMap2)
         }
+
+        actionCount++
 
     }
     public ArrayList getCommands(){

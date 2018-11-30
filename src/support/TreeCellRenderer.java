@@ -26,7 +26,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         this.smartApp = smartApp;
         this.dynamicPageList = smartApp.getDynamicPageList();
         this.subscribeList = smartApp.getSubscribeList();
-        this.action_methodFlowsssMap = smartApp.getActionsMap();
+        this.action_methodFlowsssMap = smartApp.getActionsCommandMap();
         this.i = i.toLowerCase();
     }
 
@@ -180,6 +180,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         String ObjectName = Object.getUserObject().toString().toLowerCase();
 
         if(ObjectName.equals("root") || ObjectName.equals("preferences") || ObjectName.equals("location") || ObjectName.equals("app")
+                || ObjectName.equals("mode") || ObjectName.equals("position") || ObjectName.equals("sunset") || ObjectName.equals("sunrise") || ObjectName.equals("sunrisetime") || ObjectName.equals("sunsettime")
                 || ObjectName.startsWith("page") || ObjectName.startsWith("dynamic") || ObjectName.startsWith("section")
                 || ObjectName.startsWith("input") || ObjectName.startsWith("href") || ObjectName.startsWith("label")) {
             return true;

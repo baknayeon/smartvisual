@@ -59,9 +59,9 @@ class CodeVisitor extends CompilationCustomizer{
     }
 
     void generating_eventFlows(){
-        def action_methodssMap = smartAppInfo.getActionsMap()
-        for(String device : action_methodssMap.keySet()){
-            DeviceAction commandList = action_methodssMap.get(device)
+        def map = smartAppInfo.getActionsCommandMap()
+        for(String device : map.keySet()){
+            DeviceAction commandList = map.get(device)
             for(String command : commandList.getCommands()){
                 ArrayList methods =  commandList.getMethodByCommad(command)
                 for(String method : methods){
@@ -69,10 +69,32 @@ class CodeVisitor extends CompilationCustomizer{
                     list.add(device+"."+command)
                     actionFlow(method, list)
                 }
-                //commandList.setMethodFlow(command, FlowsList.clone())
-
-                //this.FlowsList.clear()
             }
+        }
+
+
+        map = smartAppInfo.getSendMethodByMethod()
+        for(String method : map.keySet()) {
+            HashSet sendMethodSet = map.get(method)
+            List<String> sendMethodList = new ArrayList<String>(sendMethodSet);
+            for(String sendMethod : sendMethodList){
+                ArrayList list = new ArrayList()
+                list.add(sendMethod)
+                actionFlow(method, list)
+            }
+
+        }
+
+        map = smartAppInfo.getSetLocaionMethodByMethod()
+        for(String method : map.keySet()) {
+            HashSet setMethodSet = map.get(method)
+            List<String> setMethodList = new ArrayList<String>(setMethodSet);
+            for(String setMethod : setMethodList){
+                ArrayList list = new ArrayList()
+                list.add(setMethod)
+                actionFlow(method, list)
+            }
+
         }
     }
 

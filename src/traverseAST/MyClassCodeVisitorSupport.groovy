@@ -104,7 +104,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
                 actionsMethod = false
             }
-            smartApp.pushSendMethod(methodName)
+            smartApp.pushActionMethod(methodName)
 
             if(dynamicPre) {
                 addDynamicThings(node)
@@ -213,11 +213,17 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         }else if(second && preference == false ){
             if (methodCall.equals("input")) {
                 //smartApp.dynamicInputMap.put(methodName, new Input(args))
-            }else if( methodCall.equals("sendPush") || methodCall.equals("sendPushMessage") ||
-                    methodCall.equals("sendNotification") || methodCall.equals("sendNotificationEvent") || methodCall.equals("sendNotificationToContacts")){
+            }else if( methodCall.equals("sendPush") || methodCall.equals("sendPushMessage") ||methodCall.equals("sendNotification") || methodCall.equals("sendNotificationEvent") ){
 
-                for(def arg in args){
-                    smartApp.collectSendMethd(arg, methodCall)
+                def message = args[0]
+                smartApp.collectSendMethd(message, methodCall)
+                smartApp.count_sendMethod()
+            }else if( methodCall.equals("sendNotificationToContacts")){
+
+                if(args.size() >= 2){
+                    def message = args[0]
+                    def phone = args[1]
+                    smartApp.collectSendMethd(phone, message, methodCall)
                 }
                 smartApp.count_sendMethod()
             }else if( methodCall.equals("sendSms") || methodCall.equals("sendSmsMessage")){
@@ -228,9 +234,25 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 }
                 smartApp.count_sendMethod()
 
+            }else if (methodCall.equals("setLocationMode")) {
+
+                if(args.size() >= 1){
+                    def mode = args[0]
+                    smartApp.pushSetLocation(mode, methodCall)
+                }
+                smartApp.count_setLocationMethod()
+            }else if ( methodCall.equals("unschedule")) {
+                def arg
+                if(args.size() >= 1){
+                    arg = args[0]
+                    smartApp.pushSetLocation(arg, methodCall)
+                }
+                smartApp.count_setLocationMethod()
             }
         }
-
+        if(actionsMethod) {
+            actionMap(call)
+        }
 
         super.visitMethodCallExpression(call)
     }
@@ -265,18 +287,19 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
             level_up()
 
         for (Statement statement : block.getStatements()) {
-            if(actionsMethod) {
+            /*if(actionsMethod) {
                     if (statement in ExpressionStatement) {
                         def methodcallExpression = statement.expression
                         if (methodcallExpression instanceof MethodCallExpression) {
                             if (methodcallExpression.objectExpression instanceof VariableExpression
                                     && methodcallExpression.method instanceof ConstantExpression)
+
                                 actionMap(methodcallExpression)
 
                         }
 
                     }
-            }
+            }*/
 
             statement.visit(this);
         }
@@ -287,87 +310,110 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
 
     private void actionMap(methodcallExpression){
 
-        String obj = methodcallExpression.objectExpression.variable
-        String input = obj
-        if (smartApp.isitActionDevCommand(obj)) {
-            //deveice command call
-            //+"."+methodcallExpression.methodSet.value
 
-            String commomd = methodcallExpression.method.value
-            if(commomd.equals("each") || commomd.equals("eachWithIndex")){
-                if(methodcallExpression.arguments)
-                    if(methodcallExpression.arguments.expressions && methodcallExpression.arguments.expressions.size > 0) {
-                        def colure = methodcallExpression.arguments.expressions.get(0)
-                        if (colure in ClosureExpression){
-                            VariableScope variableScope= colure.getVariableScope()
-                            HashMap declaredVariables = variableScope.getDeclaredVariables()
-                            Set keySet = declaredVariables.keySet()
-                            for(String key : keySet) {
-                                smartApp.putEachInputMap(key, input)
+        if (methodcallExpression instanceof MethodCallExpression)
+            if (methodcallExpression.objectExpression instanceof VariableExpression
+                    && methodcallExpression.method instanceof ConstantExpression) {
+
+                String obj = methodcallExpression.objectExpression.variable
+                String command = methodcallExpression.method.value
+                String input = obj
+                if (smartApp.isitActionDevCommand(obj)) {
+                    //deveice command call
+                    //+"."+methodcallExpression.methodSet.value
+
+                    //String command = methodcallExpression.method.value
+                    if (command.equals("each") || command.equals("eachWithIndex")) {
+                        if (methodcallExpression.arguments)
+                            if (methodcallExpression.arguments.expressions && methodcallExpression.arguments.expressions.size > 0) {
+                                def colure = methodcallExpression.arguments.expressions.get(0)
+                                if (colure in ClosureExpression) {
+                                    VariableScope variableScope = colure.getVariableScope()
+                                    HashMap declaredVariables = variableScope.getDeclaredVariables()
+                                    Set keySet = declaredVariables.keySet()
+                                    for (String key : keySet) {
+                                        smartApp.putEachInputMap(key, input)
+                                    }
+                                }
+
                             }
+                    } else {
+
+                        String device = smartApp.getInputDevi(input)
+                        String cap = smartApp.getInputCap(input)
+                        if (CapHelper.rightCommand(cap, command)) {
+                            if (smartApp.actionsCommandMap.containsKey(input)) {
+                                DeviceAction methodsMap1 = smartApp.actionsCommandMap.get(input) ?: null;
+                                methodsMap1.add(command, methodName)
+                            } else {
+                                DeviceAction methodsMap1 = new DeviceAction(device, cap)
+                                methodsMap1.add(command, methodName)
+                                smartApp.putActionsCommandMap(input, methodsMap1)
+                            }
+                        } else {
+                            smartApp.addUnSupportedCommand(command)
                         }
-
                     }
-            }else {
-                if (smartApp.actionsMap.containsKey(input)) {
-                    DeviceAction methodsMap1 = smartApp.actionsMap.get(input) ?: null;
-                    methodsMap1.add(commomd, methodName)
-                } else {
-                    String device = smartApp.getInputDevi(input)
-                    String cap = smartApp.getInputCap(input)
 
-                    //if(CapHelper.rightCommand(cap, commomd)) {
-                        DeviceAction methodsMap1 = new DeviceAction(device, cap)
-                        methodsMap1.add(commomd, methodName)
+                } else if (smartApp.isClosureInput(obj)) { //deveice command call with closure
+
+                    //String command = methodcallExpression.method.value
+                    def parentDevice = smartApp.getEachDevice(obj)
+                    String device = smartApp.getInputDevi(parentDevice)
+                    String cap = smartApp.getInputCap(parentDevice)
+                    if (CapHelper.rightCommand(cap, command)) {
+                        if (smartApp.actionsCommandMap.containsKey(parentDevice)) {
+                            DeviceAction methodsMap1 = smartApp.actionsCommandMap.get(parentDevice) ?: null;
+                            methodsMap1.add(command, methodName)
+                        } else {
+                            DeviceAction methodsMap1 = new DeviceAction(device, cap)
+                            methodsMap1.add(command, methodName)
+                            smartApp.putActionsCommandMap(parentDevice, methodsMap1)
+                        }
+                    }else {
+                        smartApp.addUnSupportedCommand(command)
+                    }
+
+                } else if (obj == "this") {  //methodSet call
+
+                    String method = methodcallExpression.method.value
+
+                    if (method == "runIn" || method == "runOnce") {
+                        def arg = methodcallExpression.arguments.getExpressions().get(1)
+                        if (arg in ConstantExpression) {
+                            method = ((ConstantExpression) arg).getValue()
+                        } else if (arg in VariableExpression)
+                            method = ((VariableExpression) arg).getName()
+                    } else if (method.contains("runEvery")) {
+                        def arg = methodcallExpression.arguments.getExpressions().get(0)
+                        if (arg in ConstantExpression) {
+                            method = ((ConstantExpression) arg).getValue()
+                        } else if (arg in VariableExpression)
+                            method = ((VariableExpression) arg).getName()
+                    }
+                    HashSet hashSet = smartApp.callGraphMap.get(method) ?: null
+                    if (hashSet) {
+                        if (!method.equals(methodName)) //recursive
+                            hashSet.addAll(methodName)
+
+                    } else {
+                        HashSet newset = new HashSet();
+                        newset.addAll(methodName)
+                        smartApp.putCallGraphMap(method, newset)
+                    }
+                }else if(CapHelper.rightCommand(command)){ // only command
+
+                    if (smartApp.actionsCommandMap.containsKey(input)) {
+                        DeviceAction methodsMap1 = smartApp.actionsCommandMap.get(input) ?: null;
+                        methodsMap1.add(command, methodName)
+                    } else {
+                        DeviceAction methodsMap1 = new DeviceAction(input, "unknown")
+                        methodsMap1.add(command, methodName)
                         smartApp.putActionsCommandMap(input, methodsMap1)
-                    //}
+                    }
                 }
+
             }
-
-        }else if(smartApp.isClosureInput(obj)){ //deveice command call with closure
-            def parentDevice = smartApp.getEachDevice(obj)
-            String command = methodcallExpression.method.value
-            if (smartApp.actionsMap.containsKey(parentDevice)) {
-                DeviceAction methodsMap1 = smartApp.actionsMap.get(parentDevice) ?: null;
-                methodsMap1.add(command, methodName)
-            } else {
-                String device = smartApp.getInputDevi(parentDevice)
-                String cap = smartApp.getInputCap(parentDevice)
-                DeviceAction methodsMap1 = new DeviceAction(device, cap)
-                methodsMap1.add(command, methodName)
-                smartApp.putActionsCommandMap(parentDevice, methodsMap1)
-            }
-
-        }else if (obj== "this") {  //methodSet call
-
-            String method = methodcallExpression.method.value
-
-            if (method == "runIn" || method == "runOnce" ) {
-                def arg = methodcallExpression.arguments.getExpressions().get(1)
-                if (arg in ConstantExpression){
-                    method = ((ConstantExpression)arg).getValue()
-                }
-                else if (arg in VariableExpression)
-                    method = ((VariableExpression)arg).getName()
-            }else if (method.contains("runEvery")) {
-                def arg = methodcallExpression.arguments.getExpressions().get(0)
-                if (arg in ConstantExpression){
-                    method = ((ConstantExpression)arg).getValue()
-                }
-                else if (arg in VariableExpression)
-                    method = ((VariableExpression)arg).getName()
-            }
-            HashSet hashSet = smartApp.callGraphMap.get(method) ?: null
-            if (hashSet) {
-                if(!method.equals(methodName)) //recursive
-                    hashSet.addAll(methodName)
-
-            } else {
-                HashSet newset = new HashSet();
-                newset.addAll(methodName)
-                smartApp.putCallGraphMap(method, newset)
-            }
-        }
     }
 
     public void visitBlockStatement(BlockStatement block) {

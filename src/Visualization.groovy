@@ -25,14 +25,14 @@ class Visualization {
     ArrayList subscribeList
     ArrayList dynamicPageList
     HashMap action_methodssMap
-    HashMap sendMethodMap
+    def variableInSendMethodMap
 
     public Visualization(SmartApp smartApp){
         preferList = smartApp.getPreferenceList()
         subscribeList = smartApp.getSubscribeList()
         dynamicPageList = smartApp.getDynamicPageList()
-        action_methodssMap = smartApp.getActionsMap()
-        sendMethodMap = smartApp.getSendMethodMap()
+        action_methodssMap = smartApp.getActionsCommandMap()
+        variableInSendMethodMap = smartApp.getVariableInSendMethod()
     }
 
     public DefaultMutableTreeNode getPage(){
@@ -68,8 +68,8 @@ class Visualization {
             }
         }
 
-        DefaultMutableTreeNode location = new DefaultMutableTreeNode("Location")
-        DefaultMutableTreeNode app = new DefaultMutableTreeNode("App")
+        DefaultMutableTreeNode location = new DefaultMutableTreeNode("location")
+        DefaultMutableTreeNode app = new DefaultMutableTreeNode("app")
 
         makeHandler(location, "location")
         makeHandler(app, "app")
@@ -189,7 +189,7 @@ class Visualization {
                           //sub.setMatched(true)
                         String cap = sub.getCapability()
                         String han = sub.getHandler()
-                        if(cap.equals("default")){ //app location handlerMethod
+                        if(cap.equals("app") || cap.equals("location") ){ //app location handlerMethod
                             DefaultMutableTreeNode handler = new DefaultMutableTreeNode(han)
                             node.add(handler)
                         }else{
@@ -214,23 +214,13 @@ class Visualization {
     }
 
     public void makeSendMethod(DefaultMutableTreeNode node, String device){
-        ArrayList values;
 
-        if(sendMethodMap.size() == 1) {
-            values = new ArrayList()
-            values.add(sendMethodMap.values())
-        }else
-            values = sendMethodMap.values()
-
-        for(HashMap inputMap : values) {
-            if (inputMap.containsKey(device)) {
-                HashSet methodSet = inputMap.get(device)
-                for (String method : methodSet) {
-                    node.add(new DefaultMutableTreeNode(method + "(" + device + ")"))
-                }
+        for(HashMap inputMap : variableInSendMethodMap) {
+            HashSet methodSet = inputMap.get(device)
+            for (String method : methodSet) {
+                node.add(new DefaultMutableTreeNode(method + "(" + device + ")"))
             }
         }
-
     }
     
     DefaultMutableTreeNode makeDynamicPage(String dynamicPageName){
@@ -241,10 +231,10 @@ class Visualization {
             if(dynamicPageName.equals(methodNamce)){
                 def nodes = makeDynamicNodes(dynamicMethod.getLevel(), dynamicMethod.getCode())
                 DefaultMutableTreeNode dynamicPage = generate(nodes.pop())
-                DefaultMutableTreeNode dynamicMethodNew = new DefaultMutableTreeNode("dynamicMethod " +methodNamce)
-                dynamicMethodNew.add(dynamicPage)
+                //DefaultMutableTreeNode dynamicMethodNew = new DefaultMutableTreeNode("dynamicMethod " +methodNamce)
+                //dynamicMethodNew.add(dynamicPage)
 
-                return dynamicMethodNew
+                return dynamicPage
             }
         }
     }

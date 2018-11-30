@@ -43,8 +43,8 @@ class DetectingError {
 
             if(sub_input.equals("location") || sub_input.equals("app")){
                 i = true
-                if(sub_cap.equals("default") ||
-                        sub_cap.equals("position") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
+                if(sub_cap.equals("location") || sub_input.equals("app")
+                        || sub_cap.equals("mode") || sub_cap.equals("position") || sub_cap.equals("sunset") || sub_cap.equals("sunrise") || sub_cap.equals("sunriseTime") || sub_cap.equals("sunsetTime") )
                         c = true // capability of location, app
             }else{
                 for(def list : inputList){

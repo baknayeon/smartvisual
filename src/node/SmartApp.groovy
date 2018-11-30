@@ -25,11 +25,20 @@ class SmartApp {
 
     //second action
     HashMap<String, String> closureInputMap = new HashMap()
-    HashMap<String, DeviceAction> actionsMap = new HashMap()
+    HashMap<String, DeviceAction> actionsCommandMap = new HashMap()
+    HashMap<String, Integer> unsupportedCommandMap = new HashMap()
     HashMap<String, HashSet> callGraphMap = new HashMap()
-    HashMap sendMethodMap = new HashMap<>();
-    int seneMethod = 0;
-    private HashMap sendList = new HashMap<>();
+    HashMap methodMap_parameterInSend = new HashMap<>();
+    HashMap methodMap_sendMethodsList = new HashMap<>();
+    HashMap methodMap_setLocationMethodsList = new HashMap<>();
+
+    int sendMethod = 0;
+    int setLocationMethod = 0;
+    int unscheduleMethod = 0;
+    private HashMap variableInSendMethod = new HashMap<>();
+    private HashSet sendMethodInMethod = new HashSet<>();
+    private HashSet setLocationMethodInMethod = new HashSet<>();
+    private HashSet unscheduleMethod = new HashSet<>();
 
     //second dynamic
     ArrayList<Method> dynamicPageList =  new ArrayList<Method>()
@@ -73,7 +82,7 @@ class SmartApp {
         this.callGraphMap.put(callee, caller)
     }
     void putActionsCommandMap(String key, DeviceAction var){
-            this.actionsMap.put(key, var)
+            this.actionsCommandMap.put(key, var)
     }
     public boolean isitActionDevCommand(String name){
         return inputMap.containsKey(name)
@@ -87,6 +96,10 @@ class SmartApp {
     public String getInputCap(String name){
         Input input = inputMap.get(name)
         return input.getCapability()
+    }
+    public ArrayList<Input> getInputs(){
+        ArrayList<Input> inputArrayList = inputMap.values()
+        return inputArrayList
     }
     public double getAvgLen_eventFlow (){
         double avg = 0
@@ -146,7 +159,7 @@ class SmartApp {
 
     public int total_actionCommand(){
         int result = 0
-        ArrayList actionList = actionsMap.values()
+        ArrayList actionList = actionsCommandMap.values()
         for(DeviceAction action : actionList){
             result += action.getActionCount()
         }
@@ -154,10 +167,16 @@ class SmartApp {
     }
 
     public void count_sendMethod(){
-        seneMethod++
+        sendMethod++
+    }
+    public void count_setLocationMethod(){
+        setLocationMethod++
     }
     public int total_sendMethod() {
-        return seneMethod;
+        return sendMethod;
+    }
+    public int total_setLocation() {
+        return setLocationMethod;
     }
 
 
@@ -204,7 +223,7 @@ class SmartApp {
     }
 
     public boolean isitActionDevice(String name){
-        if(actionsMap.containsKey(name))
+        if(actionsCommandMap.containsKey(name))
            return true
        // else if(newSet.containsKey(name))
            //return true
@@ -214,48 +233,86 @@ class SmartApp {
     public void collectSendMethd(def message, String sendMethod){
         if(message in VariableExpression) {
             message = ((VariableExpression) message).variable
-            if(sendList.containsKey(message)) {
-                HashSet newSet = sendList.get(message)
+            if(variableInSendMethod.containsKey(message)) {
+                HashSet newSet = variableInSendMethod.get(message)
                 newSet.add(sendMethod)
             }else{
                 HashSet newSet = new HashSet()
                 newSet.add(sendMethod)
-                sendList.put(message, newSet);
+                variableInSendMethod.put(message, newSet);
             }
+
         }
+        if(message in String)
+            sendMethodInMethod.add(sendMethod +"(" +message +")")
+        else
+            sendMethodInMethod.add(sendMethod)
+    }
+    public void pushSetLocation(def mode, String setLocation) {
+        if(mode in VariableExpression) {
+            mode = ((VariableExpression) mode).variable
+        }
+        setLocationMethodInMethod.add(setLocation +"(" +mode+")")
+    }
+    public void pushUnschedule(String method, String unschedule) {
+        if(method.length() > 0)
+            unscheduleMethod.add(unschedule +"(" +method+")")
+        else
+            unscheduleMethod.add(unschedule +"()")
     }
 
     public void collectSendMethd(def phone, def message, String sendMethod){
         if(phone in VariableExpression) {
             phone = ((VariableExpression) phone).variable
-            if(sendList.containsKey(phone)){
-                HashSet newSet = sendList.get(phone)
+            if(variableInSendMethod.containsKey(phone)){
+                HashSet newSet = variableInSendMethod.get(phone)
                 newSet.add(sendMethod)
             }else{
                 HashSet newSet = new HashSet()
                 newSet.add(sendMethod)
-                sendList.put(phone, newSet);
+                variableInSendMethod.put(phone, newSet);
             }
         }
         if(message in VariableExpression) {
             message = ((VariableExpression) message).variable
-            if(sendList.containsKey(message)) {
-                HashSet newSet = sendList.get(message)
+            if(variableInSendMethod.containsKey(message)) {
+                HashSet newSet = variableInSendMethod.get(message)
                 newSet.add(sendMethod)
             }else{
                 HashSet newSet = new HashSet()
                 newSet.add(sendMethod)
-                sendList.put(message, newSet);
+                variableInSendMethod.put(message, newSet);
             }
         }
+        if(message in String && phone in String)
+            sendMethodInMethod.add(sendMethod +"(" +phone+", "+message +")")
+        else
+            sendMethodInMethod.add(sendMethod)
+
     }
 
-    public void pushSendMethod(String methodName){
-        if(sendList.size() >0 ) {
-            sendMethodMap.put(methodName, sendList)
-            sendList = new HashMap<>()
+    public void pushActionMethod(String methodName){
+        if(variableInSendMethod.size() > 0 || sendMethodInMethod.size() > 0 || setLocationMethodInMethod.size() > 0 ) {
+            methodMap_parameterInSend.put(methodName, variableInSendMethod)
+            methodMap_sendMethodsList.put(methodName, sendMethodInMethod)
+            methodMap_setLocationMethodsList.put(methodName, setLocationMethodInMethod)
+            sendMethodInMethod = new HashSet()
+            variableInSendMethod = new HashMap<>()
+            setLocationMethodInMethod = new HashSet<>()
         }
     }
+    public def getVariableInSendMethod(){
+        return methodMap_parameterInSend.values()
+    }
+    public HashMap getSendMethodByMethod(){
+        return methodMap_sendMethodsList
+    }
+
+    public HashMap getSetLocaionMethodByMethod(){
+        return methodMap_setLocationMethodsList
+    }
+
+
 
     boolean isDynamicPage(ArrayList pageArgList){
 
@@ -308,6 +365,24 @@ class SmartApp {
         }
         else
             subCount.put(newSubscribe.getInput(), 1)
+    }
+
+    public void addUnSupportedCommand(String command){
+        if(unsupportedCommandMap.containsKey(command)){
+            int count = unsupportedCommandMap.get(command)
+            count++
+            unsupportedCommandMap.put(command, count)
+        }else{
+            unsupportedCommandMap.put(command, 1)
+        }
+    }
+    public int getUnSupportedCommand(){
+        ArrayList values = unsupportedCommandMap.values()
+        int sum = 0;
+        for(int count : values){
+            sum += count
+        }
+        return sum
     }
 
 
