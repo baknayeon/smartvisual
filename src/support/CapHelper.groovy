@@ -27,20 +27,32 @@ final class CapHelper {
     }
 
 
-    static public boolean rightCommand(String capability, String command){
+    static public int rightCommand(String capability, String command){
+        String deviceCommand = ";currentState;currentValue;events;eventsBetween;eventsSince;" +
+                "getCapabilities;getDeviceNetworkId;getDisplayName;getHub;getId;getLabel;getLastActivity;getManufacturerName;getModelName;getStatus;getName;getSupportedAttributes;getSupportedCommands;getTypeName;" +
+                "hasAttribute;hasCapability;hasCommand;latestState;latestValue;statesBetween;statesSince;" //current
+        String methods = ";collect;findAll;find;count;size;"
 
-        if(command.equals("collect")){
-            return false
-        }else {
+        if(capability.startsWith("capability.")) {
             if (cap.containsKey(capability)) {
                 String commands = cap.get(capability)
-                if (commands.contains(";"+command+";"))
-                    return true
+                if (commands.contains(";" + command + ";"))
+                    return 1
+                else if (deviceCommand.contains(";" + command + ";"))
+                    return -3 //method
+                else if (methods.contains(";" + command + ";"))
+                    return -3 //method
+                else if (command.endsWith("State"))
+                    return -3 //method
+                else if (command.endsWith("current"))
+                    return -3 //method
                 else
-                    return false
+                    return 0 //unsupported command
             } else
-                return false
-        }
+                return -1 //unsupported cap
+
+        }else
+            return -2 //?
     }
     static Capability getCap(String capName){
         Capability cap = allCommands[capName]
@@ -84,46 +96,53 @@ final class CapHelper {
         }
 
         String capability = "capability."
-        //accelerationSensor
-        //actuator
+
+        cap.put(capability +"accelerationSensor", "")
+        cap.put(capability +"actuator", "")
         cap.put(capability +"airConditionerMode", ";setAirConditionerMode;")
-        //airQualitySensor
+        cap.put(capability +"airQualitySensor", "")
         cap.put(capability +"alarm", ";both;off;siren;strobe;")
         cap.put(capability +"audioMute", ";setMute;mute;unmute;")
         cap.put(capability +"audioNotification", ";playTrack;playTrackAndResume;playTrackAndRestore;")
-        //audioTrackData
+        cap.put(capability +"audioTrackData", "")
         cap.put(capability +"audioVolume", ";setVolume;volumeUp;volumeDown;")
-        //battery
-        //beacon
-        //bridge
+        cap.put(capability +"battery", "")
+        cap.put(capability +"beacon", "")
+        cap.put(capability +"bridge", "")
+
         cap.put(capability +"bulb", ";off;on;")
-        //button
-        //carbonDioxideMeasurement
-        //carbonMonoxideDetector
+        cap.put(capability +"button", "")
+        cap.put(capability +"carbonDioxideMeasurement", "")
+        cap.put(capability +"carbonMonoxideDetector", "")
+
         cap.put(capability +"colorControl", ";setColor;setHue;setSaturation;")
         cap.put(capability +"colorTemperature", ";setColorTemperature;")
         cap.put(capability +"color", ";setColorValue;")
         cap.put(capability +"colorMode", ";colorMode;")
         cap.put(capability +"configuration", ";configure;")
         cap.put(capability +"consumable", ";setConsumableStatus;")
-        //contactSensor
+        cap.put(capability +"contactSensor", "")
+
         cap.put(capability +"demandResponseLoadControl", ";requestDrlcAction;overrideDrlcAction;")
         cap.put(capability +"dishwasherMode", ";setDishwasherMode;")
         cap.put(capability +"dishwasherOperatingState", ";setMachineState;")
         cap.put(capability +"doorControl", ";close;open;")
         cap.put(capability +"dryerMode", ";setDryerMode;")
         cap.put(capability +"dryerOperatingState", ";setMachineState;")
-        //dustSensor
-        //energyMeter
-        //estimatedTimeOfArrival
+        cap.put(capability +"dustSensor", "")
+        cap.put(capability +"energyMeter", "")
+        cap.put(capability +"estimatedTimeOfArrival", "")
+
         cap.put(capability +"execute", ";execute;")
 
         cap.put(capability +"fanSpeed", ";setFanSpeed;")
-        //filterStatus
+        cap.put(capability +"filterStatus", "")
+
         cap.put(capability +"garageDoorControl", ";close;open;")
-        //geolocation
-        //holdableButton
-        //illuminanceMeasurement
+        cap.put(capability +"geolocation", "")
+        cap.put(capability +"holdableButton", "")
+        cap.put(capability +"illuminanceMeasurement", "")
+
         cap.put(capability +"imageCapture", ";take;")
         cap.put(capability +"indicator", ";indicatorNever;indicatorWhenOff;indicatorWhenOn;")
         cap.put(capability +"infraredLevel", ";setInfraredLevel;")
@@ -138,64 +157,90 @@ final class CapHelper {
         cap.put(capability +"mediaPresets", ";setInputSource;playPreset;")
         cap.put(capability +"mediaTrackControl", ";nextTrack;previousTrack;")
         cap.put(capability +"momentary", ";push;")
-        //motionSensor
+        cap.put(capability +"motionSensor", "")
+
         cap.put(capability +"musicPlayer", ";mute;nextTrack;pause;play;playTrack;previousTrack;restoreTrack;resumeTrack;stop;unmute;setLevel;setTrack;")
         cap.put(capability +"notification", ";deviceNotification;")
-        //odorSensor
+        cap.put(capability +"odorSensor", "")
+
         cap.put(capability +"outlet", ";off;on;")
         cap.put(capability +"ovenMode", ";setOvenMode;")
         cap.put(capability +"ovenOperatingState", ";setMachineState;stop;")
         cap.put(capability +"ovenSetpoint", ";setOvenSetpoint;")
-        //pHMeasurement
+        cap.put(capability +"pHMeasurement", "")
+
         cap.put(capability +"polling", ";poll;")
-        //powerConsumptionReport
-        //powerMeter
-        //powerSource
-        //presenceSensor
+        cap.put(capability +"powerConsumptionReport", "")
+        cap.put(capability +"powerMeter", "")
+        cap.put(capability +"powerSource", "")
+        //
+        cap.put(capability +"presenceSensor", "")
+        //
+        //
+        //
         cap.put(capability +"rapidCooling", ";setRapidCooling;")
         cap.put(capability +"refresh", ";refresh;")
         cap.put(capability +"refrigerationSetpoint", ";setRefrigerationSetpoint;")
-        //relativeHumidityMeasurement
+        cap.put(capability +"relativeHumidityMeasurement", "")
+        //
         cap.put(capability +"relaySwitch", ";off;on;")
         cap.put(capability +"robotCleanerCleaningMode", ";setRobotCleanerCleaningMode;")
         cap.put(capability +"robotCleanerMovement", ";setRobotCleanerMovement;")
         cap.put(capability +"robotCleanerTurboMode", ";setRobotCleanerTurboMode;")
-        //sensor
-        //shockSensor
-        //signalStrength
-        ///sleepSensor
-        //smokeDetector
-        //soundPressureLevel
-        //soundSensor
-        //speechRecognition
+        cap.put(capability +"sensor", "")
+        cap.put(capability +"shockSensor", "")
+        cap.put(capability +"signalStrength", "")
+        cap.put(capability +"sleepSensor", "")
+        cap.put(capability +"smokeDetector", "")
+        cap.put(capability +"soundPressureLevel", "")
+        cap.put(capability +"soundSensor", "")
+        cap.put(capability +"speechRecognition", "")
+        //
+        //
+        //
+        ///
+        //
+        //
+        //
+        //
         cap.put(capability +"speechSynthesis", ";speak;")
-        //stepSensor
+        cap.put(capability +"stepSensor", "")
+        //
         cap.put(capability +"switchLevel", ";setLevel;")
         cap.put(capability +"switch", ";off;on;")
+        cap.put(capability +"tamperAlert", "")
+        cap.put(capability +"temperatureMeasurement", "")
 
-        //tamperAlert
-        //temperatureMeasurement
+        //
+        //
 
         cap.put(capability +"thermostatCoolingSetpoint", ";setCoolingSetpoint;")
         cap.put(capability +"thermostatFanMode", ";fanAuto;fanCirculate;fanOn;setThermostatFanMode;")
         cap.put(capability +"thermostatHeatingSetpoint", ";setHeatingSetpoint;")
         cap.put(capability +"thermostatMode", ";auto;cool;emergencyHeat;heat;off;setThermostatMode;")
-        //thermostatOperatingState
-        //thermostatSetpoint
+        cap.put(capability +"thermostatOperatingState", "")
+        cap.put(capability +"thermostatSetpoint", "")
+        //
+        //
         cap.put(capability +"thermostat", ";auto;cool;emergencyHeat;fanAuto;fanCirculate;fanOn;heat;off;setCoolingSetpoint;setHeatingSetpoint;setSchedule;setThermostatFanMode;setThermostatMode")
-       //threeAxis
+        cap.put(capability +"threeAxis", "")
+       //
         cap.put(capability +"timedSession", ";cancel;pause;setCompletionTime;start;stop;")
         cap.put(capability +"tone", ";beep;")
-        //touchSensor
+        cap.put(capability +"touchSensor", "")
+        //
         cap.put(capability +"tvChannel", ";setTvChannel;channelUp;channelDown;")
-        //ultravioletIndex
+        cap.put(capability +"ultravioletIndex", "")
+        //
         cap.put(capability +"valve", ";close;open;")
         cap.put(capability +"videoClips", ";captureClip;")
         cap.put(capability +"videoStream", ";startStream;stopStream;")
-        //voltageMeasurement
+        cap.put(capability +"voltageMeasurement", "")
+        //
         cap.put(capability +"washerMode", ";setWasherMode;")
         cap.put(capability +"washerOperatingState", ";setMachineState;")
-        //waterSensor
+        cap.put(capability +"waterSensor", "")
+        //
         cap.put(capability +"windowShade", ";presetPosition;open;close;")
     }
 

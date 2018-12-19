@@ -37,10 +37,6 @@ preferences {
 		}
 		section("To control these lights") {
 			input "lights", "capability.switch", multiple: true, required: false, title: "Lights, switches & dimmers"
-			input "color", "capability.colorControl", multiple: true, required: false, title: "Lights, switches & dimmers"
-			input "switchLevel", "capability.switchLevel", multiple: true, required: false, title: "Lights, switches & dimmers"
-
-			
 		}
 		section([title: " ", mobileOnly:true]) {
 			label title: "Assign a name", required: false
@@ -223,7 +219,7 @@ private restoreStates(sceneId) {
 			if (type == "level") {
 				log.debug "${light.displayName} level is '$level'"
 				if (level != null) {
-					switchLevel.setLevel(level)
+					light.setLevel(level)
 				}
 			}
 			else if (type == "color") {
@@ -233,16 +229,16 @@ private restoreStates(sceneId) {
 					def saturation = segs[1].toInteger()
 					log.debug "${light.displayName} color is level: $level, hue: $hue, sat: $saturation"
 					if (level != null) {
-						color.setColor(level: level, hue: hue, saturation: saturation)
+						light.setColor(level: level, hue: hue, saturation: saturation)
 					}
 					else {
-						color.setColor(hue: hue, saturation: saturation)
+						light.setColor(hue: hue, saturation: saturation)
 					}
 				}
 				else {
 					log.debug "${light.displayName} level is '$level'"
 					if (level != null) {
-						switchLevel.setLevel(level)
+						light.setLevel(level)
 					}
 				}
 			}

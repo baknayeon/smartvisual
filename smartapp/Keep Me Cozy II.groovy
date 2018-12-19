@@ -28,6 +28,7 @@ definition(
 preferences() {
 	section("Choose thermostat... ") {
 		input "thermostat", "capability.thermostat"
+		input "polling", "capability.Polling"
 	}
 	section("Heat setting..." ) {
 		input "heatingSetpoint", "decimal", title: "Degrees"
@@ -110,7 +111,7 @@ private evaluate()
 	else {
 		thermostat.setHeatingSetpoint(heatingSetpoint)
 		thermostat.setCoolingSetpoint(coolingSetpoint)
-		thermostat.poll()
+		polling.poll()
 	}
 }
 

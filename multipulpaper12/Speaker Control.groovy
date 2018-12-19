@@ -81,7 +81,6 @@ def mainPage() {
 			]
 		}
 		section {
-			input "switchs", "capability.switch", title: "Speaker music player", required: true
 			input "sonos", "capability.musicPlayer", title: "Speaker music player", required: true
 		}
 		section("More options", hideable: true, hidden: true) {
@@ -207,10 +206,10 @@ private takeAction(evt) {
 
 	switch (actionType) {
 		case "Play":
-			options ? switchs.on(options) : switchs.on()
+			options ? sonos.on(options) : sonos.on()
 			break
 		case "Stop Playing":
-			options ? switchs.off(options) : switchs.off()
+			options ? sonos.off(options) : sonos.off()
 			break
 		case "Toggle Play/Pause":
 			def currentStatus = sonos.currentValue("status")

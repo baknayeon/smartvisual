@@ -1,5 +1,6 @@
 package node
 
+import org.codehaus.groovy.ast.expr.ConstantExpression
 import org.codehaus.groovy.ast.expr.VariableExpression
 import preferenceNode.Input
 import preferenceNode.Page
@@ -21,24 +22,26 @@ class SmartApp {
     HashMap<String, Page> dynamicMethodMap = new HashMap<>();
 
     //first action
-    private int actionCommand_In_handlerMethod = 0
+    private int action_In_handlerMethod = 0
 
     //second action
     HashMap<String, String> closureInputMap = new HashMap()
     HashMap<String, DeviceAction> actionsCommandMap = new HashMap()
     HashMap<String, Integer> unsupportedCommandMap = new HashMap()
+    HashMap<String, Integer> unsupportedCapMap = new HashMap()
     HashMap<String, HashSet> callGraphMap = new HashMap()
     HashMap methodMap_parameterInSend = new HashMap<>();
     HashMap methodMap_sendMethodsList = new HashMap<>();
     HashMap methodMap_setLocationMethodsList = new HashMap<>();
+    HashMap methodMap_unscheduleMethodsList = new HashMap<>();
 
     int sendMethod = 0;
     int setLocationMethod = 0;
-    int unscheduleMethod = 0;
+    int unschedule= 0;
     private HashMap variableInSendMethod = new HashMap<>();
     private HashSet sendMethodInMethod = new HashSet<>();
     private HashSet setLocationMethodInMethod = new HashSet<>();
-    private HashSet unscheduleMethod = new HashSet<>();
+    private HashSet unscheduleSet = new HashSet<>();
 
     //second dynamic
     ArrayList<Method> dynamicPageList =  new ArrayList<Method>()
@@ -154,7 +157,7 @@ class SmartApp {
 
 
     public int total_ActionCommand_In_handlerMethod(){
-        return actionCommand_In_handlerMethod;
+        return action_In_handlerMethod;
     }
 
     public int total_actionCommand(){
@@ -179,9 +182,15 @@ class SmartApp {
         return setLocationMethod;
     }
 
+    public void count_unschedule() {
+        unschedule++
+    }
+    public int total_unschedule() {
+        return unschedule;
+    }
 
     public void count_actionInEH(){
-        actionCommand_In_handlerMethod++;
+        action_In_handlerMethod++;
     }
 
 
@@ -189,6 +198,7 @@ class SmartApp {
         int event = 0;
         int action = 0;
         int data = 0;
+        int device = 0;
         for(def input : inputMap.values()){
             String name
             if(input in Input)
@@ -205,6 +215,8 @@ class SmartApp {
                         event++
                     if (isitAction)
                         action++
+                    if (isitEvent && isitAction)
+                        device++
                 }
                 else
                     data++
@@ -254,11 +266,16 @@ class SmartApp {
         }
         setLocationMethodInMethod.add(setLocation +"(" +mode+")")
     }
-    public void pushUnschedule(String method, String unschedule) {
-        if(method.length() > 0)
-            unscheduleMethod.add(unschedule +"(" +method+")")
+    public void pushUnschedule(def arg, String unschedule) {
+        if(arg in VariableExpression) {
+            arg = ((VariableExpression) arg).variable
+        }else if(arg in ConstantExpression) {
+            arg = ((ConstantExpression) arg).value
+        }
+        if(arg.length() > 0)
+            unscheduleSet.add(unschedule +"(" +arg+")")
         else
-            unscheduleMethod.add(unschedule +"()")
+            unscheduleSet.add(unschedule +"()")
     }
 
     public void collectSendMethd(def phone, def message, String sendMethod){
@@ -292,13 +309,16 @@ class SmartApp {
     }
 
     public void pushActionMethod(String methodName){
-        if(variableInSendMethod.size() > 0 || sendMethodInMethod.size() > 0 || setLocationMethodInMethod.size() > 0 ) {
+        if(variableInSendMethod.size() > 0 || sendMethodInMethod.size() > 0 || setLocationMethodInMethod.size() > 0 || unschedule > 0) {
             methodMap_parameterInSend.put(methodName, variableInSendMethod)
             methodMap_sendMethodsList.put(methodName, sendMethodInMethod)
             methodMap_setLocationMethodsList.put(methodName, setLocationMethodInMethod)
+            methodMap_unscheduleMethodsList.put(methodName, unscheduleSet)
+
             sendMethodInMethod = new HashSet()
             variableInSendMethod = new HashMap<>()
             setLocationMethodInMethod = new HashSet<>()
+            unscheduleSet = new HashSet<>()
         }
     }
     public def getVariableInSendMethod(){
@@ -307,9 +327,11 @@ class SmartApp {
     public HashMap getSendMethodByMethod(){
         return methodMap_sendMethodsList
     }
-
     public HashMap getSetLocaionMethodByMethod(){
         return methodMap_setLocationMethodsList
+    }
+    public HashMap getUnsheduleMethodByMethod(){
+        return methodMap_unscheduleMethodsList
     }
 
 
@@ -376,8 +398,21 @@ class SmartApp {
             unsupportedCommandMap.put(command, 1)
         }
     }
+
+
+    public void addUnSupportedCap(String command){
+        if(unsupportedCapMap.containsKey(command)){
+            int count = unsupportedCapMap.get(command)
+            count++
+            unsupportedCapMap.put(command, count)
+        }else{
+            unsupportedCapMap.put(command, 1)
+        }
+    }
+
+
     public int getUnSupportedCommand(){
-        ArrayList values = unsupportedCommandMap.values()
+        def values = unsupportedCommandMap.values()
         int sum = 0;
         for(int count : values){
             sum += count
@@ -385,5 +420,13 @@ class SmartApp {
         return sum
     }
 
+    public int getUnSupportedCap(){
+        def values = unsupportedCapMap.values()
+        int sum = 0;
+        for(int count : values){
+            sum += count
+        }
+        return sum
+    }
 
 }

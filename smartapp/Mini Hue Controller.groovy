@@ -27,6 +27,8 @@ definition(
 preferences {
 	section("Control these lights") {
 		input "bulbs", "capability.colorControl", title: "Hue light bulbs", multiple: true
+		input "bulbs2", "capability.switchLevel", title: "Hue light bulbs2", multiple: true
+		input "bulbs3", "capability.switch", title: "Hue light bulbs3", multiple: true
 	}
 	section("Using this controller") {
 		input "controller", "capability.button", title: "Aeon minimote"
@@ -53,7 +55,7 @@ def buttonHandler(evt) {
 	switch(evt.jsonData?.buttonNumber) {
     	case 2:
         	if (evt.value == "held") {
-            	bulbs.setLevel(100)
+            	bulbs2.setLevel(100)
             }
             else {
             	levelUp()
@@ -72,7 +74,7 @@ def buttonHandler(evt) {
         
         case 4:
         	if (evt.value == "held") {
-            	bulbs.setLevel(10)
+            	bulbs2.setLevel(10)
             }
             else {
             	levelDown()
@@ -88,24 +90,24 @@ def buttonHandler(evt) {
 private toggleState() {
 	if (currentSwitchState == "on") {
     	log.debug "off"
-    	bulbs.off()
+    	bulbs3.off()
     }
     else {
     	log.debug "on"
-    	bulbs.on()
+    	bulbs3.on()
     }
 }
 
 private levelUp() {
 	def level = Math.min(currentSwitchLevel + 10, 100)
     log.debug "level = $level"
-    bulbs.setLevel(level)
+    bulbs2.setLevel(level)
 }
 
 private levelDown() {
 	def level = Math.max(currentSwitchLevel - 10, 10)
 	log.debug "level = $level"
-    bulbs.setLevel(level)
+    bulbs2.setLevel(level)
 }
 
 private changeColor() {

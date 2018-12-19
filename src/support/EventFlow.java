@@ -17,10 +17,10 @@ public class EventFlow {
 
     private HashMap event2actionMap;
     private mxGraph graph;
-    private int Y = 35;
+    private int Y = 55;
     private int X = 25  ;
-    private int width = 130;
-    private int height = 20;
+    private int width = 150;
+    private int height = 30;
 
     public EventFlow(HashMap event2actionMap) {
         this.event2actionMap = event2actionMap;
@@ -36,7 +36,7 @@ public class EventFlow {
 
         graph.getModel().beginUpdate();
         ArrayList methodFlows = (ArrayList)event2actionMap.get(event);
-        Object eventNode = graph.insertVertex(defaultParent, event, event,  20, 10, width, height,"shape=ellipse;strokeColor=black;fillColor=#4ac0bd;fontColor=black");
+        Object eventNode = graph.insertVertex(defaultParent, event, event,  20, 10, width, height,"shape=ellipse;strokeColor=black;fillColor=#4ac0bd;fontColor=black;fontSize=12");
         mxCell parent = (mxCell)eventNode;
         for(Object obj3 : methodFlows) {
             ArrayList methodsList = (ArrayList)obj3;
@@ -56,11 +56,11 @@ public class EventFlow {
                     int length = method1.length()*7;
                     mxCell childnode;
                     if(length > width)
-                        childnode = (mxCell)graph.insertVertex(defaultParent, method1, method1,  x +j*X, y + Y, length, height,"strokeColor=black;fillColor=white;fontColor=black");
+                        childnode = (mxCell)graph.insertVertex(defaultParent, method1, method1,  x +j*X, y + Y, length, height,"strokeColor=black;fillColor=white;fontColor=black;fontSize=12");
                     else
-                        childnode = (mxCell)graph.insertVertex(defaultParent, method1, method1,  x +j*X, y + Y, width, height,"strokeColor=black;fillColor=white;fontColor=black");
+                        childnode = (mxCell)graph.insertVertex(defaultParent, method1, method1,  x +j*X, y + Y, width, height,"strokeColor=black;fillColor=white;fontColor=black;fontSize=12");
 
-                    graph.insertEdge(defaultParent, null, " ", parent, childnode,"strokeColor=black;");
+                    graph.insertEdge(defaultParent, null, " ", parent, childnode,"strokeColor=black;fontSize=12");
                     parent = childnode;
                 }
             }
@@ -76,11 +76,11 @@ public class EventFlow {
             int length = action.length()*7;
             mxCell actionNode;
             if(length > width)
-                 actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, length, height,"shape=ellipse;strokeColor=black;fillColor=#e5cc0d;fontColor=black");
+                 actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, length, height,"shape=ellipse;strokeColor=black;fillColor=#e5cc0d;fontColor=black;fontSize=12");
             else
-                actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, width, height,"shape=ellipse;strokeColor=black;fillColor=#e5cc0d;fontColor=black");
+                actionNode = (mxCell)graph.insertVertex(defaultParent, action, action,  x +j*X, y + Y, width, height,"shape=ellipse;strokeColor=black;fillColor=#e5cc0d;fontColor=black;fontSize=12");
 
-            graph.insertEdge(defaultParent, null, " ", parent, actionNode,"strokeColor=black;dashed=1");
+            graph.insertEdge(defaultParent, null, " ", parent, actionNode,"strokeColor=black;dashed=1;fontSize=12");
         }
 
 
@@ -113,7 +113,7 @@ public class EventFlow {
             double cell_y =cell.getGeometry().getY() ;
             if(cell_y == y ) { // alread exit
                 if( x <= (cell_x + cell_width ) && cell_x <= x  )
-                return true;
+                  return true;
             }
         }
         return false;

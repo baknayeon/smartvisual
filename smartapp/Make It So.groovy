@@ -28,6 +28,7 @@ definition(
 preferences {
 	section("Switches") {
 		input "switches", "capability.switch", multiple: true, required: false
+		input "switches2", "capability.switchLevel", multiple: true, required: false
 	}
 	section("Thermostats") {
 		input "thermostats", "capability.thermostat", multiple: true, required: false
@@ -70,7 +71,7 @@ private restoreState(mode)
 			def level = value.level
 			if (level) {
 				log.debug "setting $it.label level to $level"
-				it.setLevel(level)
+				switches2.setLevel(level)
 			}
 			else {
 				log.debug "turning $it.label on"

@@ -27,6 +27,7 @@ definition(
 preferences {
 	section("Choose thermostat... ") {
 		input "thermostat", "capability.thermostat"
+		input "polling", "capability.polling"
 	}
 	section("Heat setting...") {
 		input "heatingSetpoint", "number", title: "Degrees?"
@@ -76,7 +77,7 @@ def changedLocationMode(evt)
 
 	thermostat.setHeatingSetpoint(heatingSetpoint)
 	thermostat.setCoolingSetpoint(coolingSetpoint)
-	thermostat.poll()
+	polling.poll()
 }
 
 def appTouch(evt)
@@ -85,7 +86,7 @@ def appTouch(evt)
 
 	thermostat.setHeatingSetpoint(heatingSetpoint)
 	thermostat.setCoolingSetpoint(coolingSetpoint)
-	thermostat.poll()
+	polling.poll()
 }
 
 // catchall

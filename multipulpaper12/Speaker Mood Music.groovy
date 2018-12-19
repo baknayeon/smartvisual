@@ -10,24 +10,73 @@
  *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
  *  for the specific language governing permissions and limitations under the License.
  *
- *  Speaker Control
+ *  Speaker Mood Music
  *
  *  Author: SmartThings
- *
- *  Date: 2013-12-10
+ *  Date: 2014-02-12
  */
+
+
+private songOptions() {
+
+	// Make sure current selection is in the set
+
+	def options = new LinkedHashSet()
+	if (state.selectedSong?.station) {
+		options << state.selectedSong.station
+	}
+	else if (state.selectedSong?.description) {
+		// TODO - Remove eventually? 'description' for backward compatibility
+		options << state.selectedSong.description
+	}
+
+	// Query for recent tracks
+	def states = sonos.statesSince("trackData", new Date(0), [max:30])
+	def dataMaps = states.collect{it.jsonValue}
+	options.addAll(dataMaps.collect{it.station})
+
+	log.trace "${options.size()} songs in list"
+	options.take(20) as List
+}
+
+private saveSelectedSong() {
+	try {
+		def thisSong = song
+		log.info "Looking for $thisSong"
+		def songs = sonos.statesSince("trackData", new Date(0), [max:30]).collect{it.jsonValue}
+		log.info "Searching ${songs.size()} records"
+
+		def data = songs.find {s -> s.station == thisSong}
+		log.info "Found ${data?.station}"
+		if (data) {
+			state.selectedSong = data
+			log.debug "Selected song = $state.selectedSong"
+		}
+		else if (song == state.selectedSong?.station) {
+			log.debug "Selected existing entry '$song', which is no longer in the last 20 list"
+		}
+		else {
+			log.warn "Selected song '$song' not found"
+		}
+	}
+	catch (Throwable t) {
+		log.error t
+	}
+}
+
 definition(
-    name: "Speaker Control",
+    name: "Speaker Mood Music",
     namespace: "smartthings",
     author: "SmartThings",
-    description: "Play or pause your Speaker when certain actions take place in your home.",
+    description: "Plays a selected song or station.",
     category: "SmartThings Labs",
     iconUrl: "https://s3.amazonaws.com/smartapp-icons/Partner/sonos.png",
     iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Partner/sonos@2x.png"
 )
 
 preferences {
-	page(name: "mainPage", title: "Control your Speaker when something happens", install: true, uninstall: true)
+	page(name: "mainPage", title: "Play a selected song or station on your Speaker when something happens", nextPage: "chooseTrack", uninstall: true)
+	page(name: "chooseTrack", title: "Select a song", install: true)
 	page(name: "timeIntervalInput", title: "Only during a certain time") {
 		section {
 			input "starting", "time", title: "Starting", required: false
@@ -40,7 +89,7 @@ def mainPage() {
 	dynamicPage(name: "mainPage") {
 		def anythingSet = anythingSet()
 		if (anythingSet) {
-			section("When..."){
+			section("Play music when..."){
 				ifSet "motion", "capability.motionSensor", title: "Motion Here", required: false, multiple: true
 				ifSet "contact", "capability.contactSensor", title: "Contact Opens", required: false, multiple: true
 				ifSet "contactClosed", "capability.contactSensor", title: "Contact Closes", required: false, multiple: true
@@ -56,7 +105,11 @@ def mainPage() {
 				ifSet "timeOfDay", "time", title: "At a Scheduled Time", required: false
 			}
 		}
-		section(anythingSet ? "Select additional triggers" : "When...", hideable: anythingSet, hidden: true){
+
+		def hideable = anythingSet || app.installationState == "COMPLETE"
+		def sectionTitle = anythingSet ? "Select additional triggers" : "Play music when..."
+
+		section(sectionTitle, hideable: hideable, hidden: true){
 			ifUnset "motion", "capability.motionSensor", title: "Motion Here", required: false, multiple: true
 			ifUnset "contact", "capability.contactSensor", title: "Contact Opens", required: false, multiple: true
 			ifUnset "contactClosed", "capability.contactSensor", title: "Contact Closes", required: false, multiple: true
@@ -71,38 +124,37 @@ def mainPage() {
 			ifUnset "triggerModes", "mode", title: "System Changes Mode", required: false, multiple: true
 			ifUnset "timeOfDay", "time", title: "At a Scheduled Time", required: false
 		}
-		section("Perform this action"){
-			input "actionType", "enum", title: "Action?", required: true, defaultValue: "play", options: [
-				"Play",
-				"Stop Playing",
-				"Toggle Play/Pause",
-				"Skip to Next Track",
-				"Play Previous Track"
-			]
-		}
 		section {
-			input "switchs", "capability.switch", title: "Speaker music player", required: true
-			input "sonos", "capability.musicPlayer", title: "Speaker music player", required: true
+			input "sonos", "capability.musicPlayer", title: "On this Speaker player", required: true
 		}
 		section("More options", hideable: true, hidden: true) {
-			input "volume", "number", title: "Set the volume volume", description: "0-100%", required: false
+			input "volume", "number", title: "Set the volume", description: "0-100%", required: false
 			input "frequency", "decimal", title: "Minimum time between actions (defaults to every event)", description: "Minutes", required: false
 			href "timeIntervalInput", title: "Only during a certain time", description: timeLabel ?: "Tap to set", state: timeLabel ? "complete" : "incomplete"
-			input "days", "enum", title: "Only on certain days of the week", multiple: true, required: false, options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+			input "days", "enum", title: "Only on certain days of the week", multiple: true, required: false,
+				options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 			if (settings.modes) {
-				input "modes", "mode", title: "Only when mode is", multiple: true, required: false
-			}
+            	input "modes", "mode", title: "Only when mode is", multiple: true, required: false
+            }
 			input "oncePerDay", "bool", title: "Only once per day", required: false, defaultValue: false
+		}
+	}
+}
+
+def chooseTrack() {
+	dynamicPage(name: "chooseTrack") {
+		section{
+			input "song","enum",title:"Play this track", required:true, multiple: false, options: songOptions()
 		}
 		section([mobileOnly:true]) {
 			label title: "Assign a name", required: false
-			mode title: "Set for specific mode(s)"
+			mode title: "Set for specific mode(s)", required: false
 		}
 	}
 }
 
 private anythingSet() {
-	for (name in ["motion","contact","contactClosed","acceleration","mySwitch","mySwitchOff","arrivalPresence","departurePresence","smoke","water","button1","triggerModes","timeOfDay"]) {
+	for (name in ["motion","contact","contactClosed","acceleration","mySwitch","mySwitchOff","arrivalPresence","departurePresence","smoke","water","button1","timeOfDay","triggerModes","timeOfDay"]) {
 		if (settings[name]) {
 			return true
 		}
@@ -135,6 +187,8 @@ def updated() {
 }
 
 def subscribeToEvents() {
+	log.trace "subscribeToEvents()"
+	saveSelectedSong()
 
 	subscribe(app, appTouchHandler)
 	subscribe(contact, "contact.open", eventHandler)
@@ -162,28 +216,20 @@ def subscribeToEvents() {
 
 def eventHandler(evt) {
 	if (allOk) {
-		def lastTime = state[frequencyKey(evt)]
-		if (oncePerDayOk(lastTime)) {
-			if (frequency) {
-				if (lastTime == null || now() - lastTime >= frequency * 60000) {
-					takeAction(evt)
-				}
-				else {
-					log.debug "Not taking action because $frequency minutes have not elapsed since last action"
-				}
-			}
-			else {
+		if (frequency) {
+			def lastTime = state[frequencyKey(evt)]
+			if (lastTime == null || now() - lastTime >= frequency * 60000) {
 				takeAction(evt)
 			}
 		}
 		else {
-			log.debug "Not taking action because it was already taken today"
+			takeAction(evt)
 		}
 	}
 }
 
 def modeChangeHandler(evt) {
-
+	log.trace "modeChangeHandler $evt.name: $evt.value ($triggerModes)"
 	if (evt.value in triggerModes) {
 		eventHandler(evt)
 	}
@@ -198,46 +244,25 @@ def appTouchHandler(evt) {
 }
 
 private takeAction(evt) {
-	log.debug "takeAction($actionType)"
-	def options = [:]
-	if (volume) {
-		sonos.setLevel(volume as Integer)
-		options.delay = 1000
+
+	log.info "Playing '$state.selectedSong"
+
+	if (volume != null) {
+		sonos.stop()
+		pause(500)
+		sonos.setLevel(volume)
+		pause(500)
 	}
 
-	switch (actionType) {
-		case "Play":
-			options ? switchs.on(options) : switchs.on()
-			break
-		case "Stop Playing":
-			options ? switchs.off(options) : switchs.off()
-			break
-		case "Toggle Play/Pause":
-			def currentStatus = sonos.currentValue("status")
-			if (currentStatus == "playing") {
-				options ? sonos.pause(options) : sonos.pause()
-			}
-			else {
-				options ? sonos.play(options) : sonos.play()
-			}
-			break
-		case "Skip to Next Track":
-			options ? sonos.nextTrack(options) : sonos.nextTrack()
-			break
-		case "Play Previous Track":
-			options ? sonos.previousTrack(options) : sonos.previousTrack()
-			break
-		default:
-			log.error "Action type '$actionType' not defined"
-	}
+	sonos.playTrack(state.selectedSong)
 
-	if (frequency) {
-		state.lastActionTimeStamp = now()
+	if (frequency || oncePerDay) {
+		state[frequencyKey(evt)] = now()
 	}
+	log.trace "Exiting takeAction()"
 }
 
 private frequencyKey(evt) {
-	//evt.deviceId ?: evt.value
 	"lastActionTimeStamp"
 }
 
@@ -253,11 +278,8 @@ private dayString(Date date) {
 }
 
 private oncePerDayOk(Long lastTime) {
-	def result = true
-	if (oncePerDay) {
-		result = lastTime ? dayString(new Date()) != dayString(new Date(lastTime)) : true
-		log.trace "oncePerDayOk = $result"
-	}
+	def result = lastTime ? dayString(new Date()) != dayString(new Date(lastTime)) : true
+	log.trace "oncePerDayOk = $result"
 	result
 }
 
@@ -313,4 +335,5 @@ private timeIntervalLabel()
 {
 	(starting && ending) ? hhmm(starting) + "-" + hhmm(ending, "h:mm a z") : ""
 }
+// TODO - End Centralize
 

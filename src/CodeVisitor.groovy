@@ -84,7 +84,6 @@ class CodeVisitor extends CompilationCustomizer{
             }
 
         }
-
         map = smartAppInfo.getSetLocaionMethodByMethod()
         for(String method : map.keySet()) {
             HashSet setMethodSet = map.get(method)
@@ -96,6 +95,20 @@ class CodeVisitor extends CompilationCustomizer{
             }
 
         }
+
+        map = smartAppInfo.getUnsheduleMethodByMethod()
+        for(String method : map.keySet()) {
+            HashSet setMethodSet = map.get(method)
+            List<String> setMethodList = new ArrayList<String>(setMethodSet);
+            for(String setMethod : setMethodList){
+                ArrayList list = new ArrayList()
+                list.add(setMethod)
+                actionFlow(method, list)
+            }
+
+        }
+
+
     }
 
     public void actionFlow(String startingMethod, ArrayList flow){

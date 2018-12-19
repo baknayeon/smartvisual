@@ -86,6 +86,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         }else if(second){
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
                 actionsMethod = true
+                if("stop".equals(methodName) )
+                    actionsMethod = true
             }
             if(smartApp.isitDynamicPage(methodName)){
                 dynamicPre = true
@@ -103,6 +105,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
         else if(second) { //second
             if (!"run".equals(methodName) && !"main".equals(methodName) && !"updated".equals(methodName) && !"installed".equals(methodName)){
                 actionsMethod = false
+                if("stop".equals(methodName) )
+                    actionsMethod = false
             }
             smartApp.pushActionMethod(methodName)
 
@@ -234,7 +238,11 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 }
                 smartApp.count_sendMethod()
 
-            }else if (methodCall.equals("setLocationMode")) {
+            }
+        }
+        if(actionsMethod) {
+            actionMap(call)
+            if (methodCall.equals("setLocationMode")) {
 
                 if(args.size() >= 1){
                     def mode = args[0]
@@ -245,13 +253,10 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 def arg
                 if(args.size() >= 1){
                     arg = args[0]
-                    smartApp.pushSetLocation(arg, methodCall)
                 }
-                smartApp.count_setLocationMethod()
+                smartApp.pushUnschedule(arg, methodCall)
+                smartApp.count_unschedule()
             }
-        }
-        if(actionsMethod) {
-            actionMap(call)
         }
 
         super.visitMethodCallExpression(call)
@@ -341,7 +346,8 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
 
                         String device = smartApp.getInputDevi(input)
                         String cap = smartApp.getInputCap(input)
-                        if (CapHelper.rightCommand(cap, command)) {
+                        int result = CapHelper.rightCommand(cap, command)
+                        if (result == 1) {
                             if (smartApp.actionsCommandMap.containsKey(input)) {
                                 DeviceAction methodsMap1 = smartApp.actionsCommandMap.get(input) ?: null;
                                 methodsMap1.add(command, methodName)
@@ -350,8 +356,10 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                                 methodsMap1.add(command, methodName)
                                 smartApp.putActionsCommandMap(input, methodsMap1)
                             }
-                        } else {
+                        } else if (result == 0) {
                             smartApp.addUnSupportedCommand(command)
+                        }else if (result == -1) {
+                            smartApp.addUnSupportedCap(cap)
                         }
                     }
 
@@ -361,7 +369,9 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                     def parentDevice = smartApp.getEachDevice(obj)
                     String device = smartApp.getInputDevi(parentDevice)
                     String cap = smartApp.getInputCap(parentDevice)
-                    if (CapHelper.rightCommand(cap, command)) {
+
+                    int result = CapHelper.rightCommand(cap, command)
+                    if (result == 1) {
                         if (smartApp.actionsCommandMap.containsKey(parentDevice)) {
                             DeviceAction methodsMap1 = smartApp.actionsCommandMap.get(parentDevice) ?: null;
                             methodsMap1.add(command, methodName)
@@ -370,8 +380,10 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                             methodsMap1.add(command, methodName)
                             smartApp.putActionsCommandMap(parentDevice, methodsMap1)
                         }
-                    }else {
+                    } else if (result == 0) {
                         smartApp.addUnSupportedCommand(command)
+                    }else if (result == -1) {
+                        smartApp.addUnSupportedCap(cap)
                     }
 
                 } else if (obj == "this") {  //methodSet call
