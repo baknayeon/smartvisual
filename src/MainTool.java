@@ -455,23 +455,23 @@ public class MainTool extends JFrame{
 		int unSupportedCap = smartApp.getUnSupportedCap();
 
 
-		log.appendAfile("No. of input	: "+String.valueOf(input));
-		log.appendAfile("No. of event device : "+String.valueOf(event));
-		log.appendAfile("No. of action device : "+String.valueOf(action));
-		log.appendAfile("No. of input variable: "+String.valueOf(data));
+		log.appendAfile("No. of inputs	: "+String.valueOf(input));
+		log.appendAfile("No. of event devices : "+String.valueOf(event));
+		log.appendAfile("No. of action devices : "+String.valueOf(action));
+		log.appendAfile("No. of input variables: "+String.valueOf(data));
 
-        log.appendAfile("No. of subscribe : "+String.valueOf(sub));
-        log.appendAfile("No. of event handler method : "+String.valueOf(handler));
+        log.appendAfile("No. of subscribes : "+String.valueOf(sub));
+        log.appendAfile("No. of event handler methods : "+String.valueOf(handler));
 
-		log.appendAfile("No. of action command : "+String.valueOf(actionCommd));
-		log.appendAfile("No. of send method : "+String.valueOf(sendMethod));
-		log.appendAfile("No. of setLocationMode : "+String.valueOf(total_setLocation));
-		log.appendAfile("No. of unschedule : "+String.valueOf(total_unschdule));
+		log.appendAfile("No. of action commands : "+String.valueOf(actionCommd));
+		log.appendAfile("No. of send methods : "+String.valueOf(sendMethod));
+		log.appendAfile("No. of setLocationMode methods : "+String.valueOf(total_setLocation));
+		log.appendAfile("No. of unschedule methods : "+String.valueOf(total_unschdule));
 
-		log.appendAfile("No. of event flow : "+String.valueOf(eventFlow));
-		log.appendAfile("avg. path length  of event flow : "+String.valueOf(avg_path_length));
-		log.appendAfile("No. of action in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
-		log.appendAfile("No. of dynamicPage : "+String.valueOf(dynamicPage));
+		log.appendAfile("No. of event flows : "+String.valueOf(eventFlow));
+		log.appendAfile("avg. path length  of event flows : "+String.valueOf(avg_path_length));
+		log.appendAfile("No. of actions in event handler : "+String.valueOf(methodFlow_In_handlerMethod));
+		log.appendAfile("No. of dynamicPages : "+String.valueOf(dynamicPage));
 
 
 		barDataset.setValue(input, "smartApp", "input");

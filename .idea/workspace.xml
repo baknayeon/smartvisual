@@ -6,19 +6,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79be340b-680f-4bee-8adb-74d8129baf44" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/evaluate.txt" afterPath="$PROJECT_DIR$/evaluate.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartapp/Keep Me Cozy II.groovy" afterPath="$PROJECT_DIR$/smartapp/Keep Me Cozy II.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartapp/Keep Me Cozy.groovy" afterPath="$PROJECT_DIR$/smartapp/Keep Me Cozy.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartapp/Make It So.groovy" afterPath="$PROJECT_DIR$/smartapp/Make It So.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartapp/Mini Hue Controller.groovy" afterPath="$PROJECT_DIR$/smartapp/Mini Hue Controller.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartapp/Mood Cube.groovy" afterPath="$PROJECT_DIR$/smartapp/Mood Cube.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smartapp/Speaker Control.groovy" afterPath="$PROJECT_DIR$/smartapp/Speaker Control.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CodeVisitor.groovy" afterPath="$PROJECT_DIR$/src/CodeVisitor.groovy" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/evaluate.txt" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainTool.java" afterPath="$PROJECT_DIR$/src/MainTool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/node/SmartApp.groovy" afterPath="$PROJECT_DIR$/src/node/SmartApp.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/support/CapHelper.groovy" afterPath="$PROJECT_DIR$/src/support/CapHelper.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/support/EventFlow.java" afterPath="$PROJECT_DIR$/src/support/EventFlow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/traverseAST/MyClassCodeVisitorSupport.groovy" afterPath="$PROJECT_DIR$/src/traverseAST/MyClassCodeVisitorSupport.groovy" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,7 +19,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/SmartThings_VisualizationTool$MainTool.coverage" NAME="MainTool Coverage Results" MODIFIED="1544069583180" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/SmartThings_VisualizationTool$MainTool.coverage" NAME="MainTool Coverage Results" MODIFIED="1545804272484" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
@@ -47,9 +37,12 @@
       <file leaf-file-name="MainTool.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainTool.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="509">
-              <caret line="188" column="32" lean-forward="false" selection-start-line="188" selection-start-column="32" selection-end-line="188" selection-end-column="32" />
-              <folding />
+            <state relative-caret-position="684">
+              <caret line="473" column="78" lean-forward="true" selection-start-line="473" selection-start-column="78" selection-end-line="473" selection-end-column="78" />
+              <folding>
+                <element signature="e#11332#12144#0" expanded="true" />
+                <element signature="e#12143#12144#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -194,6 +187,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -323,8 +318,6 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -643,12 +636,12 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10412148" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29609543" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25053304" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25586355" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -660,7 +653,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286334" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -694,7 +687,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#11332#12144#0" expanded="true" />
+            <element signature="e#12143#12144#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -703,7 +699,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#11332#12144#0" expanded="true" />
+            <element signature="e#12143#12144#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -719,7 +718,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
           <caret line="68" column="11" lean-forward="false" selection-start-line="68" selection-start-column="11" selection-end-line="68" selection-end-column="11" />
-          <folding />
+          <folding>
+            <element signature="e#11332#12144#0" expanded="true" />
+            <element signature="e#12143#12144#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -901,9 +903,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="17" column="37" lean-forward="false" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
-          <folding>
-            <element signature="e#14#38#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -981,9 +980,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainTool.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="188" column="32" lean-forward="false" selection-start-line="188" selection-start-column="32" selection-end-line="188" selection-end-column="32" />
-          <folding />
+        <state relative-caret-position="684">
+          <caret line="473" column="78" lean-forward="true" selection-start-line="473" selection-start-column="78" selection-end-line="473" selection-end-column="78" />
+          <folding>
+            <element signature="e#11332#12144#0" expanded="true" />
+            <element signature="e#12143#12144#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
