@@ -58,10 +58,6 @@ class Visualization {
                             preferences.add(dynamicPage)
                         ++preferLevel
                     }
-                }else if(object instanceof String){
-                    String if_text = object
-                    ++preferLevel
-                    preferences.add(new DefaultMutableTreeNode(if_text))
                 }else if(object instanceof Section){
                     preferences.add(makeSection())
                 }

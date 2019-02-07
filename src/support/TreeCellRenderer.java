@@ -45,7 +45,7 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             imageUrl = setActionImageUrl(Object);
 
         }else if(i.equals("page")) {
-            int num = whartKindofDev(ObjectName);
+            int num = event_action(ObjectName);
             Font f = label.getFont();
             switch (num) {
                 case 1:  //event
@@ -62,9 +62,11 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
                         label.setForeground(Color.black);
                     else
                         label.setForeground(Color.gray);
-                    imageUrl = setPreImageUrl(Object);
                     break;
             }
+
+
+            imageUrl = setPreImageUrl(Object);
 
         }
 
@@ -92,9 +94,9 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
         return label;
     }
 
-    private int whartKindofDev(String inputName){
-        if(inputName.contains("input") && inputName.split(" ").length > 1) {
-            String device = inputName.split(" ")[1];
+    private int event_action(String s){
+        if(s.contains("input") && s.split(" ").length > 1) {
+            String device = s.split(" ")[1];
             if (smartApp.isitActionDevice(device) && smartApp.isitEventDevice(device)) {
                 return 3;
             } else if (smartApp.isitActionDevice(device)) {
@@ -102,7 +104,13 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             } else if (smartApp.isitEventDevice(device)) {
                 return 1;
             }
+
         }
+
+        if(isItEventValue(s))
+            return 1;
+        else if(isItActions(s) || isItAPI(s))
+            return 2;
         return 0;
     }
 
@@ -266,6 +274,35 @@ public class TreeCellRenderer extends DefaultTreeCellRenderer {
             if(ObjectName.contains("("+device+")"))
                 return true;
         }
+        return false;
+    }
+
+    private boolean isItEventValue(String ObjectName){
+
+        if (subscribeList != null) {
+            int size = subscribeList.size();
+            for (int i = 0; i < size; i++) {
+                Subscribe method = (Subscribe) subscribeList.get(i);
+                String capability = method.capability.toLowerCase();
+                if (ObjectName.equals(capability))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+    private boolean isItActions(String ObjectName){
+        if(ObjectName.contains("()"))
+            return true;
+        else
+            return false;
+    }
+    private boolean isItAPI(String ObjectName){
+
+        if(ObjectName.endsWith(")"))
+            if(ObjectName.contains("send") || ObjectName.contains("setLocation") || ObjectName.contains("unschedule") ) {
+             return true;
+            }
         return false;
     }
 }
