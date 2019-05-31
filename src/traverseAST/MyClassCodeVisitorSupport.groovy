@@ -159,7 +159,6 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                             var = ((ConstantExpression)var).getText()
                             smartApp.putDefinition(key, var)
                         }
-
                     }
                 }
             }else if (methodCall.equals("preferences")) {
@@ -199,21 +198,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 addList4Dynamic(new Section(args))
             }else if (methodCall.equals("input")) {
                 addinput4Dynamic(args)
-               // dynamicSubMethod = true
-            } /*else if(isitinput(args)) {
-                addinput4Dynamic(args)
-            } else {
-                if( smartApp.dynamicMethodMap.containsKey(methodCall))
-                    addList4Dynamic(new Page(methodCall, args, "methodCall"))
-
-                if (setting.showMethod())
-                    if(DynamicSubMethodList.contains(methodCall))
-                        addList4Dynamic(new Method(methodCall))
-
-                if (isitinput(args)) {
-                    addinput4Dynamic(args)
-                }
-            }*/
+            }
         }else if(second && preference == false ){
             if (methodCall.equals("input")) {
                 //smartApp.dynamicInputMap.put(methodName, new Input(args))
@@ -290,22 +275,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
 
         if(dynamicPre)
             level_up()
-
         for (Statement statement : block.getStatements()) {
-            /*if(actionsMethod) {
-                    if (statement in ExpressionStatement) {
-                        def methodcallExpression = statement.expression
-                        if (methodcallExpression instanceof MethodCallExpression) {
-                            if (methodcallExpression.objectExpression instanceof VariableExpression
-                                    && methodcallExpression.method instanceof ConstantExpression)
-
-                                actionMap(methodcallExpression)
-
-                        }
-
-                    }
-            }*/
-
             statement.visit(this);
         }
 
@@ -323,11 +293,7 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 String obj = methodcallExpression.objectExpression.variable
                 String command = methodcallExpression.method.value
                 String input = obj
-                if (smartApp.isitActionDevCommand(obj)) {
-                    //deveice command call
-                    //+"."+methodcallExpression.methodSet.value
-
-                    //String command = methodcallExpression.method.value
+                if (smartApp.isitActionDevCommand(obj)) {//deveice command call
                     if (command.equals("each") || command.equals("eachWithIndex")) {
                         if (methodcallExpression.arguments)
                             if (methodcallExpression.arguments.expressions && methodcallExpression.arguments.expressions.size > 0) {
@@ -365,7 +331,6 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
 
                 } else if (smartApp.isClosureInput(obj)) { //deveice command call with closure
 
-                    //String command = methodcallExpression.method.value
                     def parentDevice = smartApp.getEachDevice(obj)
                     String device = smartApp.getInputDevi(parentDevice)
                     String cap = smartApp.getInputCap(parentDevice)
@@ -485,13 +450,6 @@ public abstract class MyClassCodeVisitorSupport extends MyCodeVisitorSupport imp
                 member.getValue().visit(this);
             }
         }
-    }
-
-    protected void addError(String msg, ASTNode expr) {
-        SourceUnit source = getSourceUnit();
-        source.getErrorCollector().addErrorAndContinue(
-                new SyntaxErrorMessage(new SyntaxException(msg + '\n', expr.getLineNumber(), expr.getColumnNumber(), expr.getLastLineNumber(), expr.getLastColumnNumber()), source)
-        );
     }
 
     protected abstract SourceUnit getSourceUnit();

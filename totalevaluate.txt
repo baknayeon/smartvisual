@@ -1,0 +1,240 @@
+
+-----------Alfred Workflow.groovy-----------
+-----------Big Turn OFF.groovy-----------
+-----------Big Turn ON.groovy-----------
+-----------Brighten My Path.groovy-----------
+-----------Button Controller(for).groovy-----------
+-----------Carpool Notifier.groovy-----------
+-----------Darken Behind Me.groovy-----------
+-----------Energy Saver.groovy-----------
+-----------Feed My Pet.groovy-----------
+-----------Flood Alert!.groovy-----------
+-----------Garage Door Opener.groovy-----------
+-----------Gentle Wake Up(if)2.groovy-----------
+-----------Habit Helper.groovy-----------
+-----------Has Barkley Been Fed.groovy-----------
+-----------Hue Mood Lighting.groovy-----------
+-----------It Moved.groovy-----------
+-----------It's Too Cold.groovy-----------
+-----------It's Too Hot.groovy-----------
+-----------Keep Me Cozy II.groovy-----------
+-----------Keep Me Cozy II.groovy.bak-----------
+No. of unsupported command : 1
+-----------Keep Me Cozy.groovy-----------
+-----------Keep Me Cozy.groovy.bak-----------
+No. of unsupported command : 2
+-----------Laundry Monitor.groovy-----------
+-----------Left It Open.groovy-----------
+-----------Let There Be Light!.groovy-----------
+-----------Light Follows Me.groovy-----------
+-----------Light Up the Night.groovy-----------
+-----------Lights Off, When Closed.groovy-----------
+-----------Lock It When I Leave.groovy-----------
+-----------Mail Arrived.groovy-----------
+-----------Make It So.groovy-----------
+-----------Make It So.groovy.bak-----------
+No. of unsupported command : 1
+-----------Medicine Reminder.groovy-----------
+-----------Mini Hue Controller.groovy-----------
+-----------Mini Hue Controller.groovy.bak-----------
+No. of unsupported command : 6
+-----------Mood Cube.groovy-----------
+-----------Notify Me When It Opens.groovy-----------
+-----------Notify Me When.groovy-----------
+-----------Notify Me With Hue.groovy-----------
+-----------Once a Day.groovy-----------
+-----------Photo Burst When.groovy-----------
+-----------Power Allowance.groovy-----------
+-----------Presence Change Push.groovy-----------
+-----------Presence Change Text.groovy-----------
+-----------Ridiculously Automated Garage Door.groovy-----------
+-----------Rise and Shine.groovy-----------
+-----------Scheduled Mode Change.groovy-----------
+-----------Severe Weather Alert.groovy-----------
+-----------Sleepy Time.groovy-----------
+-----------Smart Nightlight.groovy-----------
+-----------SmartWeather Station Controller.groovy-----------
+-----------Speaker Control.groovy-----------
+-----------Speaker Mood Music.groovy-----------
+-----------Speaker Notify with Sound.groovy-----------
+No. of unsupported command : 3
+-----------Speaker Weather Forecast.groovy-----------
+No. of unsupported command : 3
+-----------Step Notifier.groovy-----------
+No. of unsupported command : 4
+-----------SunriseSunset.groovy-----------
+-----------Text Me When It Opens.groovy-----------
+-----------Text Me When There's Motion and I'm Not Here.groovy-----------
+-----------The Big Switch.groovy-----------
+-----------The Flasher.groovy-----------
+-----------The Gun Case Moved.groovy-----------
+-----------Turn It On For 5 Minutes.groovy-----------
+-----------Turn It On When I'm Here.groovy-----------
+-----------Turn It On When It Opens.groovy-----------
+-----------Turn On Only If I Arrive After Sunset.groovy-----------
+-----------Undead Early Warning.groovy-----------
+-----------Unlock It When I Arrive.groovy-----------
+-----------Virtual Thermostat.groovy-----------
+-----------When It's Going to Rain.groovy-----------
+-----------Withings Manager.groovy-----------
+-----------Alfred Workflow.groovy-----------
+-----------Big Turn OFF.groovy-----------
+-----------Big Turn ON.groovy-----------
+-----------Brighten My Path.groovy-----------
+-----------Button Controller(for).groovy-----------
+-----------Carpool Notifier.groovy-----------
+-----------Darken Behind Me.groovy-----------
+-----------Energy Saver.groovy-----------
+-----------Feed My Pet.groovy-----------
+-----------Flood Alert!.groovy-----------
+-----------Garage Door Opener.groovy-----------
+-----------Gentle Wake Up(if)2.groovy-----------
+-----------Habit Helper.groovy-----------
+-----------Has Barkley Been Fed.groovy-----------
+-----------Hue Mood Lighting.groovy-----------
+-----------It Moved.groovy-----------
+-----------It's Too Cold.groovy-----------
+-----------It's Too Hot.groovy-----------
+-----------Keep Me Cozy II.groovy-----------
+-----------Keep Me Cozy II.groovy.bak-----------
+No. of unsupported command : 1
+-----------Keep Me Cozy.groovy-----------
+-----------Keep Me Cozy.groovy.bak-----------
+No. of unsupported command : 2
+-----------Laundry Monitor.groovy-----------
+-----------Left It Open.groovy-----------
+-----------Let There Be Light!.groovy-----------
+-----------Light Follows Me.groovy-----------
+-----------Light Up the Night.groovy-----------
+-----------Lights Off, When Closed.groovy-----------
+-----------Lock It When I Leave.groovy-----------
+-----------Mail Arrived.groovy-----------
+-----------Make It So.groovy-----------
+-----------Make It So.groovy.bak-----------
+No. of unsupported command : 1
+-----------Medicine Reminder.groovy-----------
+-----------Mini Hue Controller.groovy-----------
+-----------Mini Hue Controller.groovy.bak-----------
+No. of unsupported command : 6
+-----------Mood Cube.groovy-----------
+-----------Notify Me When It Opens.groovy-----------
+-----------Notify Me When.groovy-----------
+-----------Notify Me With Hue.groovy-----------
+-----------Once a Day.groovy-----------
+-----------Photo Burst When.groovy-----------
+-----------Power Allowance.groovy-----------
+-----------Presence Change Push.groovy-----------
+-----------Presence Change Text.groovy-----------
+-----------Ridiculously Automated Garage Door.groovy-----------
+-----------Rise and Shine.groovy-----------
+-----------Scheduled Mode Change.groovy-----------
+-----------Severe Weather Alert.groovy-----------
+-----------Sleepy Time.groovy-----------
+-----------Smart Nightlight.groovy-----------
+-----------SmartWeather Station Controller.groovy-----------
+-----------Speaker Control.groovy-----------
+-----------Speaker Mood Music.groovy-----------
+-----------Speaker Notify with Sound.groovy-----------
+No. of unsupported command : 3
+-----------Speaker Weather Forecast.groovy-----------
+No. of unsupported command : 3
+-----------Step Notifier.groovy-----------
+No. of unsupported command : 4
+-----------SunriseSunset.groovy-----------
+-----------Text Me When It Opens.groovy-----------
+-----------Text Me When There's Motion and I'm Not Here.groovy-----------
+-----------The Big Switch.groovy-----------
+-----------The Flasher.groovy-----------
+-----------The Gun Case Moved.groovy-----------
+-----------Turn It On For 5 Minutes.groovy-----------
+-----------Turn It On When I'm Here.groovy-----------
+-----------Turn It On When It Opens.groovy-----------
+-----------Turn On Only If I Arrive After Sunset.groovy-----------
+-----------Undead Early Warning.groovy-----------
+-----------Unlock It When I Arrive.groovy-----------
+-----------Virtual Thermostat.groovy-----------
+-----------When It's Going to Rain.groovy-----------
+-----------Withings Manager.groovy-----------
+-----------Alfred Workflow.groovy-----------
+-----------Big Turn OFF.groovy-----------
+-----------Big Turn ON.groovy-----------
+-----------Brighten My Path.groovy-----------
+-----------Button Controller(for).groovy-----------
+-----------Alfred Workflow.groovy-----------
+-----------Big Turn OFF.groovy-----------
+-----------Big Turn ON.groovy-----------
+-----------Brighten My Path.groovy-----------
+-----------Button Controller(for).groovy-----------
+-----------Carpool Notifier.groovy-----------
+-----------Darken Behind Me.groovy-----------
+-----------Energy Saver.groovy-----------
+-----------Feed My Pet.groovy-----------
+-----------Flood Alert!.groovy-----------
+-----------Garage Door Opener.groovy-----------
+-----------Gentle Wake Up(if)2.groovy-----------
+-----------Habit Helper.groovy-----------
+-----------Has Barkley Been Fed.groovy-----------
+-----------Hue Mood Lighting.groovy-----------
+-----------It Moved.groovy-----------
+-----------It's Too Cold.groovy-----------
+-----------It's Too Hot.groovy-----------
+-----------Keep Me Cozy II.groovy-----------
+-----------Keep Me Cozy II.groovy.bak-----------
+No. of unsupported command : 1
+-----------Keep Me Cozy.groovy-----------
+-----------Keep Me Cozy.groovy.bak-----------
+No. of unsupported command : 2
+-----------Laundry Monitor.groovy-----------
+-----------Left It Open.groovy-----------
+-----------Let There Be Light!.groovy-----------
+-----------Light Follows Me.groovy-----------
+-----------Light Up the Night.groovy-----------
+-----------Lights Off, When Closed.groovy-----------
+-----------Lock It When I Leave.groovy-----------
+-----------Mail Arrived.groovy-----------
+-----------Make It So.groovy-----------
+-----------Make It So.groovy.bak-----------
+No. of unsupported command : 1
+-----------Medicine Reminder.groovy-----------
+-----------Mini Hue Controller.groovy-----------
+-----------Mini Hue Controller.groovy.bak-----------
+No. of unsupported command : 6
+-----------Mood Cube.groovy-----------
+-----------Notify Me When It Opens.groovy-----------
+-----------Notify Me When.groovy-----------
+-----------Notify Me With Hue.groovy-----------
+-----------Once a Day.groovy-----------
+-----------Photo Burst When.groovy-----------
+-----------Power Allowance.groovy-----------
+-----------Presence Change Push.groovy-----------
+-----------Presence Change Text.groovy-----------
+-----------Ridiculously Automated Garage Door.groovy-----------
+-----------Rise and Shine.groovy-----------
+-----------Scheduled Mode Change.groovy-----------
+-----------Severe Weather Alert.groovy-----------
+-----------Sleepy Time.groovy-----------
+-----------Smart Nightlight.groovy-----------
+-----------SmartWeather Station Controller.groovy-----------
+-----------Speaker Control.groovy-----------
+-----------Speaker Mood Music.groovy-----------
+-----------Speaker Notify with Sound.groovy-----------
+No. of unsupported command : 3
+-----------Speaker Weather Forecast.groovy-----------
+No. of unsupported command : 3
+-----------Step Notifier.groovy-----------
+No. of unsupported command : 4
+-----------SunriseSunset.groovy-----------
+-----------Text Me When It Opens.groovy-----------
+-----------Text Me When There's Motion and I'm Not Here.groovy-----------
+-----------The Big Switch.groovy-----------
+-----------The Flasher.groovy-----------
+-----------The Gun Case Moved.groovy-----------
+-----------Turn It On For 5 Minutes.groovy-----------
+-----------Turn It On When I'm Here.groovy-----------
+-----------Turn It On When It Opens.groovy-----------
+-----------Turn On Only If I Arrive After Sunset.groovy-----------
+-----------Undead Early Warning.groovy-----------
+-----------Unlock It When I Arrive.groovy-----------
+-----------Virtual Thermostat.groovy-----------
+-----------When It's Going to Rain.groovy-----------
+-----------Withings Manager.groovy-----------

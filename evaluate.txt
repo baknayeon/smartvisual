@@ -1,0 +1,377 @@
+
+-----------Step Notifier.groovy-----------
+No. of inputs	: 21
+No. of event devices : 1
+No. of action devices : 5
+No. of input variables: 15
+No. of subscribes : 2
+No. of event handler methods : 2
+No. of action commands : 9
+No. of send methods : 2
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 9
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 2
+No. of dynamicPages : 2
+-----------Speaker Control.groovy-----------
+No. of inputs	: 10
+No. of event devices : 0
+No. of action devices : 2
+No. of input variables: 8
+No. of subscribes : 16
+No. of event handler methods : 4
+No. of action commands : 13
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 21
+avg. path length  of event flows : 2.6666666666666665
+No. of actions in event handler : 0
+No. of dynamicPages : 1
+-----------Make It So.groovy-----------
+No. of inputs	: 4
+No. of event devices : 0
+No. of action devices : 4
+No. of input variables: 0
+No. of subscribes : 2
+No. of event handler methods : 2
+No. of action commands : 7
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 14
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 0
+No. of dynamicPages : 0
+-----------Make It So.groovy-----------
+No. of inputs	: 4
+No. of event devices : 0
+No. of action devices : 4
+No. of input variables: 0
+No. of subscribes : 2
+No. of event handler methods : 2
+No. of action commands : 7
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 14
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 0
+No. of dynamicPages : 0
+-----------elder-care-daily-routine.groovy-----------
+No. of inputs	: 7
+No. of event devices : 1
+No. of action devices : 0
+No. of input variables: 6
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 0
+No. of send methods : 3
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 3
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 3
+No. of dynamicPages : 0
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Turn It On When It Opens.groovy-----------
+No. of inputs	: 2
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 0
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 0
+-----------Turn It On When It Opens.groovy-----------
+No. of inputs	: 2
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 0
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 0
+-----------Turn It On When It Opens.groovy-----------
+No. of inputs	: 2
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 0
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 0
+-----------Turn It On When It Opens.groovy-----------
+No. of inputs	: 2
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 0
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 0
+-----------Turn It On When It Opens.groovy-----------
+No. of inputs	: 2
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 0
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 0
+-----------Turn It On When It Opens.groovy-----------
+No. of inputs	: 2
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 0
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 0
+-----------Unlock It When I Arrive -Revision.groovy-----------
+-----------Unlock It When I Arrive -Revision.groovy-----------
+No. of inputs	: 5
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 3
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 2
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 3
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 0
+No. of dynamicPages : 1
+-----------Unlock It When I Arrive2.groovy-----------
+No. of inputs	: 5
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 3
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 2
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 3
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 0
+No. of dynamicPages : 1
+-----------Unlock It When I Arrive2.groovy-----------
+No. of inputs	: 5
+No. of event devices : 1
+No. of action devices : 1
+No. of input variables: 3
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 2
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 3
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 0
+No. of dynamicPages : 1
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 3
+No. of input variables: 20
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 5
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 48
+avg. path length  of event flows : 4.666666666666667
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Gentle Wake Up(if)2.groovy-----------
+No. of inputs	: 2
+No. of event devices : 0
+No. of action devices : 1
+No. of input variables: 1
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 1
+-----------Gentle Wake Up(if)2.groovy-----------
+No. of inputs	: 2
+No. of event devices : 0
+No. of action devices : 1
+No. of input variables: 1
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 1
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 1
+avg. path length  of event flows : 1.0
+No. of actions in event handler : 1
+No. of dynamicPages : 1
+-----------Gentle Wake Up(if).groovy-----------
+No. of inputs	: 25
+No. of event devices : 2
+No. of action devices : 5
+No. of input variables: 18
+No. of subscribes : 5
+No. of event handler methods : 5
+No. of action commands : 7
+No. of send methods : 3
+No. of setLocationMode methods : 1
+No. of unschedule methods : 2
+No. of event flows : 58
+avg. path length  of event flows : 4.482758620689655
+No. of actions in event handler : 2
+No. of dynamicPages : 6
+-----------Mood Cube2.groovy-----------
+No. of inputs	: 3
+No. of event devices : 0
+No. of action devices : 0
+No. of input variables: 3
+No. of subscribes : 1
+No. of event handler methods : 1
+No. of action commands : 6
+No. of send methods : 0
+No. of setLocationMode methods : 0
+No. of unschedule methods : 0
+No. of event flows : 4
+avg. path length  of event flows : 2.0
+No. of actions in event handler : 0
+No. of dynamicPages : 1
