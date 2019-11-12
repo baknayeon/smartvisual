@@ -16,7 +16,7 @@ Smart Visual
 
 Smart Visual **visualizes** a page structure of SmartApp as a tree and **detects errors** about invalid Subscribe methods.
 
-![Smart Visual](https://github.com/baknayeon/smartblock/blob/master/main.PNG)
+![Smart Visual](https://github.com/baknayeon/smartvisual/blob/master/main.png)
 
 
 > **Note:**
