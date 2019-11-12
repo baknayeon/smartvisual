@@ -31,17 +31,3 @@ You need to add Groovy Library to you project when you try to run Visualization 
 we recommend to add Groovy-2.4.10
 
 
-
-How to run
--------------
-1. Download a ZIP file of source code from GitHub 
-
-    Clone with HTTPS which is https://github.com/baknayeon/SmartThings_VisualizationTool.git
-
-
-2. Import a ZIP file
-
-
-3. Run MainTool.main()
-![Visualization Tool](https://github.com/baknayeon/SmartThings_VisualizationTool/blob/master/maintool.PNG)
-
