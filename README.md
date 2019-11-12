@@ -1,4 +1,4 @@
-Visualization Tool for SmartThings
+Smart Visual: Visualization Tool for SmartThings
 ===================
 *Software Language Lab, Computer Science, Sookmyung Women’s University*
 
@@ -11,12 +11,12 @@ SmartThings
 **SmartApp** is a Groovy-based program that allows developers to create automation for users to tap into the capabilities of SmartDevice.
 
 
-Visualization Tool
+Smart Visual
 -------------
 
-Visualization Tool **visualizes** a page structure of SmartApp as a tree and **detects errors** about invalid Subscribe methods.
+Smart Visual **visualizes** a page structure of SmartApp as a tree and **detects errors** about invalid Subscribe methods.
 
-
+![Smart Visual](https://github.com/baknayeon/smartblock/blob/master/main.PNG)
 
 
 > **Note:**
