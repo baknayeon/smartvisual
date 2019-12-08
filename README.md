@@ -13,8 +13,10 @@ SmartThings
 
 Smart Visual
 -------------
-
-Smart Visual visualizes event flows of SmartApp as a graph, visualizes a page structure of SmartApp as a tree and detects errors about invalid methods.
+Smart Visual
+#### visualizes event flows of SmartApp as a graph
+#### visualizes a page structure of SmartApp as a tree 
+#### detects errors about invalid methods.
 
 ![Smart Visual](https://github.com/baknayeon/smartvisual/blob/master/main22.png)
 
