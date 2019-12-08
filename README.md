@@ -14,7 +14,7 @@ SmartThings
 Smart Visual
 -------------
 
-Smart Visual visualizes **event flows**  as  **graphs**  and a page structure of SmartApp as a tree and detects errors about invalid Subscribe methods.
+Smart Visual visualizes **event flows**  as  **graphs**  and a page structure of SmartApp as a tree and also detects errors about invalid  methods.
 
 ![Smart Visual](https://github.com/baknayeon/smartvisual/blob/master/main22.png)
 
