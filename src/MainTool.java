@@ -282,7 +282,7 @@ public class MainTool extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated helper stub
 
-
+			chooser.setCurrentDirectory(new File("."));
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("파일찾기", "groovy");
 			chooser.setFileFilter(filter);
 
