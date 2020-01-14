@@ -46,7 +46,7 @@ def rootPage() {
 	dynamicPage(name: "rootPage", title: "", install: true, uninstall: true) {
 
 		section("What to dim") {
-			input(name: "dimmers", type: "capability.switch, title: "Dimmers", description: null, multiple: true, required: true, submitOnChange: true)
+			input(name: "dimmers", type: "capability.switch", title: "Dimmers", description: null, multiple: true, required: true, submitOnChange: true)
 			input(name: "dimmer1", type: "capability.switch", title: "dimmer1", description: null, multiple: true, required: true, submitOnChange: true)
 			input(name: "dimmer2", type: "capability.colorControl", title: "dimmer2", description: null, multiple: true, required: true, submitOnChange: true)
 			input(name: "dimmer3", type: "capability.switchLevel", title: "Dimmers", description: null, multiple: true, required: true, submitOnChange: true)
